@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { User, Trophy, Wallet, Settings, LogOut } from "lucide-react";
 import type { SiteMenuFeature } from "./types";
 
 export interface AvatarDropdownProps {
@@ -48,20 +49,20 @@ export function AvatarDropdown({
         </span>
       </div>
       <a href={`https://tobe.fan/of/${username}`} className={menuItemClass} style={{ color: "#0A1628" }}>
-        <span>👤</span> My profile
+        <User size={16} strokeWidth={1.75} /> My profile
       </a>
       <a href="/my/clubs" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <span>🏆</span> My fan clubs
+        <Trophy size={16} strokeWidth={1.75} /> My fan clubs
       </a>
       <a href="/my/earnings" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <span>💰</span> My earnings & referrals
+        <Wallet size={16} strokeWidth={1.75} /> My earnings & referrals
       </a>
       <a href="/my/settings" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <span>⚙️</span> Settings
+        <Settings size={16} strokeWidth={1.75} /> Settings
       </a>
       <div className="mx-3 my-1 border-t border-gray-100" />
       <button onClick={onLogout} className={`${menuItemClass} w-full`} style={{ color: "#0A1628" }}>
-        <span>🚪</span> Log out
+        <LogOut size={16} strokeWidth={1.75} /> Log out
       </button>
 
       {/* Section 2 — site-specific */}
