@@ -68,7 +68,7 @@ export function SharedFooter() {
           style={{ borderTop: "1px solid #eee" }}
         >
           <span className="text-[12px]" style={{ color: "#9ca3af" }}>
-            © 2025 ToBe.fan · Come for the passion. Relate with fellow fans.
+            © 2025 ToBe.fan · Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
           </span>
           <a href="https://tobe.fan" className="text-[13px] font-bold" style={{ color: "#0C447C" }}>
             tobe.fan
