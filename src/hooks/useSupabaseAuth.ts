@@ -20,7 +20,7 @@ export function useSupabaseAuth() {
       const { data } = await supabase
         .from("users")
         .select("username")
-        .eq("id", supaUser.id)
+        .eq("auth_id", supaUser.id)
         .single();
       if (data?.username) username = data.username;
     } catch {
