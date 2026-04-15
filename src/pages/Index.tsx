@@ -1,5 +1,6 @@
 import { SharedHeader } from "@/components/shared/SharedHeader";
 import { SharedFooter } from "@/components/shared/SharedFooter";
+import { ContactForm } from "@/components/shared/ContactForm";
 
 const demoUser = { id: "1", email: "mk@tobe.fan", username: "MK", initials: "MK" };
 
@@ -57,6 +58,15 @@ const Index = () => {
           ]}
           demoUser={demoUser}
           demoAvatarOpen
+        />
+      </div>
+
+      {/* Contact Form Test */}
+      <div className="max-w-2xl mx-auto py-12 px-6">
+        <ContactForm
+          templateId="template_qfdy5nq"
+          heading="Contact us"
+          description="Have a question or feedback? Drop us a line."
         />
       </div>
 
