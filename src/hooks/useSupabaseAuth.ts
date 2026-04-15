@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 export interface AuthUser {
@@ -20,7 +20,7 @@ export function useSupabaseAuth() {
       const { data } = await supabase
         .from("users")
         .select("username")
-        .eq("id", supaUser.id)
+        .eq("auth_id", supaUser.id)
         .single();
       if (data?.username) username = data.username;
     } catch {
