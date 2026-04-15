@@ -183,7 +183,17 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
             <Step1ClaimUrl
               data={data}
               update={update}
-              onContinue={() => setStep(2)}
+              onContinue={() => {
+                // Fire welcome email (non-blocking)
+                if (user?.email && data.username) {
+                  sendWelcomeEmail({
+                    toEmail: user.email,
+                    username: data.username,
+                    profileUrl: `https://tobe.fan/of/${data.username}`,
+                  }).catch(console.error);
+                }
+                setStep(2);
+              }}
               userId={user?.id}
             />
           )}
