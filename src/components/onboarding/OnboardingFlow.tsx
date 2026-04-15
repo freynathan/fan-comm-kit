@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+import { sendWelcomeEmail } from "@/lib/emailjs";
 import { Step1ClaimUrl } from "./Step1ClaimUrl";
 import { Step2Passions } from "./Step2Passions";
 import { Step3Profile } from "./Step3Profile";
@@ -182,7 +183,17 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
             <Step1ClaimUrl
               data={data}
               update={update}
-              onContinue={() => setStep(2)}
+              onContinue={() => {
+                // Fire welcome email (non-blocking)
+                if (user?.email && data.username) {
+                  sendWelcomeEmail({
+                    toEmail: user.email,
+                    username: data.username,
+                    profileUrl: `https://tobe.fan/of/${data.username}`,
+                  }).catch(console.error);
+                }
+                setStep(2);
+              }}
               userId={user?.id}
             />
           )}
