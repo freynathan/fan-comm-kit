@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import type { OnboardingData } from "./OnboardingFlow";
 
 interface Site {
@@ -68,7 +68,11 @@ export function Step2Passions({ data, update, onContinue, onBack }: Props) {
         if (error || !rows || rows.length === 0) {
           setSites(FALLBACK_SITES);
         } else {
-          setSites(rows);
+          setSites(rows.map((r) => ({
+            ...r,
+            cluster: "",
+            is_active: true,
+          })));
         }
       });
   }, []);

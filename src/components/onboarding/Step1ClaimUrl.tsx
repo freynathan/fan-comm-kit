@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Check, X, User, Building2, ArrowRight } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import type { OnboardingData } from "./OnboardingFlow";
 
 interface Props {
