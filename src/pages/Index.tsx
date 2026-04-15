@@ -1,5 +1,6 @@
 import { SharedHeader } from "@/components/shared/SharedHeader";
 import { SharedFooter } from "@/components/shared/SharedFooter";
+import { ContactForm } from "@/components/shared/ContactForm";
 
 const demoUser = { id: "1", email: "mk@tobe.fan", username: "MK", initials: "MK" };
 
