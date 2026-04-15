@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+import { sendWelcomeEmail } from "@/lib/emailjs";
 import { Step1ClaimUrl } from "./Step1ClaimUrl";
 import { Step2Passions } from "./Step2Passions";
 import { Step3Profile } from "./Step3Profile";
