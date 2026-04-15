@@ -61,6 +61,15 @@ const Index = () => {
         />
       </div>
 
+      {/* Contact Form Test */}
+      <div className="max-w-2xl mx-auto py-12 px-6">
+        <ContactForm
+          templateId="template_qfdy5nq"
+          heading="Contact us"
+          description="Have a question or feedback? Drop us a line."
+        />
+      </div>
+
       <SharedFooter />
     </div>
   );
