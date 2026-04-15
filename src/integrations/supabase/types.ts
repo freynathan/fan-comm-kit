@@ -14,7 +14,349 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      brand_collabs: {
+        Row: {
+          brand_logo_url: string | null
+          brand_name: string
+          created_at: string
+          engagement_rate: number | null
+          id: string
+          post_count: number | null
+          reach: number | null
+          role: string | null
+          site_id: string | null
+          user_id: string
+          year: number | null
+        }
+        Insert: {
+          brand_logo_url?: string | null
+          brand_name: string
+          created_at?: string
+          engagement_rate?: number | null
+          id?: string
+          post_count?: number | null
+          reach?: number | null
+          role?: string | null
+          site_id?: string | null
+          user_id: string
+          year?: number | null
+        }
+        Update: {
+          brand_logo_url?: string | null
+          brand_name?: string
+          created_at?: string
+          engagement_rate?: number | null
+          id?: string
+          post_count?: number | null
+          reach?: number | null
+          role?: string | null
+          site_id?: string | null
+          user_id?: string
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_collabs_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "brand_collabs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fan_clubs: {
+        Row: {
+          accent_color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_free: boolean
+          member_count: number
+          name: string
+          owner_id: string
+          price: number | null
+          site_id: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_free?: boolean
+          member_count?: number
+          name: string
+          owner_id: string
+          price?: number | null
+          site_id?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_free?: boolean
+          member_count?: number
+          name?: string
+          owner_id?: string
+          price?: number | null
+          site_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fan_clubs_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fan_clubs_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      passion_points: {
+        Row: {
+          created_at: string
+          id: string
+          level: string
+          points: number
+          site_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: string
+          points?: number
+          site_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: string
+          points?: number
+          site_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "passion_points_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "passion_points_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          headline: string | null
+          hire_available: boolean
+          id: string
+          location: string | null
+          updated_at: string
+          user_id: string
+          verified: boolean
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          headline?: string | null
+          hire_available?: boolean
+          id?: string
+          location?: string | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          headline?: string | null
+          hire_available?: boolean
+          id?: string
+          location?: string | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      relationships: {
+        Row: {
+          created_at: string
+          from_user_id: string
+          id: string
+          relationship_type: string
+          to_user_id: string
+        }
+        Insert: {
+          created_at?: string
+          from_user_id: string
+          id?: string
+          relationship_type?: string
+          to_user_id: string
+        }
+        Update: {
+          created_at?: string
+          from_user_id?: string
+          id?: string
+          relationship_type?: string
+          to_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "relationships_from_user_id_fkey"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relationships_to_user_id_fkey"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sites: {
+        Row: {
+          accent_color: string
+          created_at: string
+          description: string | null
+          emoji: string
+          id: string
+          name: string
+        }
+        Insert: {
+          accent_color?: string
+          created_at?: string
+          description?: string | null
+          emoji?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          accent_color?: string
+          created_at?: string
+          description?: string | null
+          emoji?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string
+          display_order: number
+          follower_count: number
+          handle: string | null
+          id: string
+          platform: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          follower_count?: number
+          handle?: string | null
+          id?: string
+          platform: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          follower_count?: number
+          handle?: string | null
+          id?: string
+          platform?: string
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_links_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          auth_id: string | null
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string
+          id: string
+          initials: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          auth_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email: string
+          id?: string
+          initials?: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          auth_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string
+          id?: string
+          initials?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
