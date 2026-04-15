@@ -75,16 +75,8 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
       return;
     }
     if (!loading && user) {
-      supabase
-        .from("users")
-        .select("onboarding_completed")
-        .eq("id", user.id)
-        .single()
-        .then(({ data: row }) => {
-          if (row?.onboarding_completed) {
-            navigate(returnTo || "/dashboard");
-          }
-        });
+      // onboarding_completed column may not exist yet — skip redirect check
+      // navigate(returnTo || "/dashboard");
     }
   }, [user, loading, navigate, returnTo]);
 
@@ -101,17 +93,15 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
   const handleComplete = async () => {
     if (!user) return;
 
-    // Save to users table
+    // Save to users table (only columns that exist in schema)
     await supabase
       .from("users")
       .upsert({
         id: user.id,
         username: data.username,
         display_name: data.displayName,
-        bio: data.bio,
         avatar_url: data.avatarUrl || null,
-        account_type: data.accountType,
-        onboarding_completed: true,
+        email: user.email || "",
       });
 
     // Save to profiles table
@@ -119,8 +109,8 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
       .from("profiles")
       .upsert({
         user_id: user.id,
-        slug: data.username,
         headline: data.headline,
+        bio: data.bio,
       });
 
     // Save passion_points
