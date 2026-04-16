@@ -1,4 +1,5 @@
 import { useFeaturedProfiles } from "@/hooks/useHomepageStats";
+import { HeroClaim } from "./HeroClaim";
 
 const mockCreators = [
   {
@@ -92,11 +93,14 @@ export function FeaturedProfilesSection() {
           <h2 className="text-[36px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
             The bio link that builds your business.
           </h2>
-          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-10 max-w-2xl mx-auto">
+          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-6 max-w-2xl mx-auto">
             Real creators. Verified passions. Passive income. Free forever.
           </p>
+          <div className="mb-8">
+            <HeroClaim />
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             {realCards.map((p) => (
               <div
                 key={p.id}
