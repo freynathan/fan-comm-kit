@@ -1,7 +1,7 @@
 import {
   Star, Wine, Car, Flower2, Dumbbell, PersonStanding, Bike,
   Award, Leaf, Beef, ChefHat, Flame, Coffee,
-  Shirt, Lipstick, Music, Footprints,
+  Shirt, Sparkles, Music, Footprints,
   Sailboat, Mountain, Hammer, Trophy, Bot, PawPrint,
   TrendingUp, Diamond, Sun, GlassWater
 } from "lucide-react";
