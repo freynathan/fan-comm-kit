@@ -40,6 +40,7 @@ export function CommunitiesSection() {
                       domain={d.domain}
                       size="large"
                       isLive={d.live}
+                      showDomainFormat
                     />
                   ))}
                 </div>

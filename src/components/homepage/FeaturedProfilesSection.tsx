@@ -1,20 +1,29 @@
 import { useFeaturedProfiles } from "@/hooks/useHomepageStats";
 
-function PlaceholderCard() {
+const placeholderHooks = [
+  "Turn your passion into passive income",
+  "The only bio link AI agents find and trust",
+  "Free forever. Pays you back.",
+];
+
+function PlaceholderCard({ index }: { index: number }) {
   return (
     <div className="bg-white rounded-xl border border-ds-border p-5 text-center transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
-      <div className="w-16 h-16 mx-auto rounded-full bg-ds-surface flex items-center justify-center text-2xl text-ds-text-tertiary mb-3 font-semibold">
-        ?
+      <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-[18px] font-semibold mb-3" style={{ background: '#DBEAFE', color: '#2563EB' }}>
+        YN
       </div>
-      <p className="text-[14px] font-medium text-ds-accent">
-        tobe.fan/of/you
+      <p className="text-[14px] font-medium" style={{ color: '#2563EB' }}>
+        tobe.fan/of/yourname
       </p>
       <p className="text-[13px] text-ds-text-tertiary italic mt-1 mb-4 font-normal">
-        This could be you
+        {placeholderHooks[index] ?? placeholderHooks[0]}
       </p>
       <a
         href="/onboarding"
-        className="inline-flex h-9 px-4 items-center rounded-lg text-[14px] font-medium text-ds-accent-text bg-ds-accent hover:bg-ds-accent-hover transition-all active:scale-[0.98]"
+        className="inline-flex h-9 px-4 items-center rounded-lg text-[14px] font-medium text-ds-text-primary bg-transparent border transition-all active:scale-[0.98]"
+        style={{ borderColor: '#C8C8C8' }}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'hsl(var(--color-accent))')}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#C8C8C8')}
       >
         Claim your profile →
       </a>
@@ -97,7 +106,7 @@ export function FeaturedProfilesSection() {
               </div>
             ))}
             {Array.from({ length: placeholders }).map((_, i) => (
-              <PlaceholderCard key={`ph-${i}`} />
+              <PlaceholderCard key={`ph-${i}`} index={i} />
             ))}
           </div>
 
@@ -105,7 +114,7 @@ export function FeaturedProfilesSection() {
             href="/onboarding"
             className="inline-flex h-11 px-8 items-center rounded-lg text-[14px] font-medium border border-ds-border-strong text-ds-text-primary transition-colors hover:border-ds-accent hover:text-ds-accent"
           >
-            Get your free tobe.fan/of/you profile →
+            Get your free profile →
           </a>
           <p className="text-[13px] font-normal text-ds-text-tertiary mt-3">
             Joins 50,000+ creators who replaced Linktree with tobe.fan
