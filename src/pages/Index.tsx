@@ -49,7 +49,6 @@ const Index = () => {
             <p className="text-[15px] md:text-[18px] font-normal leading-[1.7] text-ds-text-tertiary mb-8 max-w-[560px] mx-auto">
               Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
             </p>
-            <HeroClaim />
             <div className="mt-8">
               <StatPills
                 totalFans={stats?.totalFans ?? 0}
