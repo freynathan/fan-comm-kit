@@ -23,7 +23,7 @@ const iconMap: Record<string, LucideIcon> = {
   coffee: Coffee,
   wine: Wine,
   fashion: Shirt,
-  beauty: Lipstick,
+  beauty: Sparkles,
   dance: Music,
   sneaker: Footprints,
   boat: Sailboat,
