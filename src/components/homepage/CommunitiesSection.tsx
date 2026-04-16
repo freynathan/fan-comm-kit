@@ -1,5 +1,4 @@
 import { categories, type CommunityDomain, getCategoryIcon } from "./communities";
-import { Icon } from "lucide-react";
 
 function DomainPill({ d }: { d: CommunityDomain }) {
   return (

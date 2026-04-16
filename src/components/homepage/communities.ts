@@ -1,4 +1,6 @@
-export interface CommunityDomain {
+import { Car, UtensilsCrossed, Compass, Palette, Cpu, HeartPulse } from "lucide-react";
+import React from "react";
+
   name: string;
   emoji: string;
   domain: string;
