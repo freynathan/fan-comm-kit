@@ -10,7 +10,7 @@ export function CommunitiesSection() {
             The network
           </p>
           <h2 className="text-[36px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
-            28 passion communities. One identity.
+            28 communities. One identity.
           </h2>
           <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-10 max-w-2xl mx-auto">
             Join the communities that match your passions. One login. One profile. Everything connected.

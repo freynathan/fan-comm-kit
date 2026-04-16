@@ -15,10 +15,10 @@ interface Site {
 const CLUSTER_ORDER = [
   "Active lifestyle & fitness",
   "Food & drink",
-  "Style & beauty",
-  "Adventure & machines",
-  "Tech & collecting",
-  "Ecosystem multipliers",
+  "Style & living",
+  "Adventure & nature",
+  "Machines & tech",
+  "Build & collect",
 ];
 
 // Fallback data if sites table doesn't exist yet
@@ -32,20 +32,18 @@ const FALLBACK_SITES: Site[] = [
   { id: "7", name: "cocktail", emoji: "🍹", accent_color: "#0C447C", cluster: "Food & drink", is_active: true },
   { id: "8", name: "burger", emoji: "🍔", accent_color: "#B45309", cluster: "Food & drink", is_active: false },
   { id: "9", name: "gourmet", emoji: "👨‍🍳", accent_color: "#7C2D12", cluster: "Food & drink", is_active: false },
-  { id: "10", name: "fashion", emoji: "👗", accent_color: "#BE185D", cluster: "Style & beauty", is_active: false },
-  { id: "11", name: "beauty", emoji: "💄", accent_color: "#DB2777", cluster: "Style & beauty", is_active: false },
-  { id: "12", name: "dance", emoji: "💃", accent_color: "#9333EA", cluster: "Style & beauty", is_active: false },
-  { id: "13", name: "car", emoji: "🚗", accent_color: "#1E3A5F", cluster: "Adventure & machines", is_active: true },
-  { id: "14", name: "boat", emoji: "⛵", accent_color: "#065F46", cluster: "Adventure & machines", is_active: false },
-  { id: "15", name: "trek", emoji: "🥾", accent_color: "#92400E", cluster: "Adventure & machines", is_active: false },
-  { id: "16", name: "diy", emoji: "🔧", accent_color: "#525252", cluster: "Adventure & machines", is_active: false },
-  { id: "17", name: "collector", emoji: "🎯", accent_color: "#4338CA", cluster: "Tech & collecting", is_active: false },
-  { id: "18", name: "robotic", emoji: "🤖", accent_color: "#0F766E", cluster: "Tech & collecting", is_active: false },
-  { id: "19", name: "capital", emoji: "📈", accent_color: "#15803D", cluster: "Ecosystem multipliers", is_active: false },
-  { id: "20", name: "luxury", emoji: "💎", accent_color: "#6D28D9", cluster: "Ecosystem multipliers", is_active: false },
-  { id: "21", name: "lifestyle", emoji: "✨", accent_color: "#0369A1", cluster: "Ecosystem multipliers", is_active: false },
-  { id: "22", name: "pet", emoji: "🐾", accent_color: "#A16207", cluster: "Active lifestyle & fitness", is_active: false },
-  { id: "23", name: "music", emoji: "🎵", accent_color: "#7E22CE", cluster: "Style & beauty", is_active: false },
+  { id: "10", name: "fashion", emoji: "👗", accent_color: "#BE185D", cluster: "Style & living", is_active: false },
+  { id: "11", name: "beauty", emoji: "💄", accent_color: "#DB2777", cluster: "Style & living", is_active: false },
+  { id: "12", name: "dance", emoji: "💃", accent_color: "#9333EA", cluster: "Style & living", is_active: false },
+  { id: "13", name: "car", emoji: "🚗", accent_color: "#1E3A5F", cluster: "Machines & tech", is_active: true },
+  { id: "14", name: "boat", emoji: "⛵", accent_color: "#065F46", cluster: "Adventure & nature", is_active: false },
+  { id: "15", name: "trek", emoji: "🥾", accent_color: "#92400E", cluster: "Adventure & nature", is_active: false },
+  { id: "16", name: "diy", emoji: "🔧", accent_color: "#525252", cluster: "Build & collect", is_active: false },
+  { id: "17", name: "collector", emoji: "🎯", accent_color: "#4338CA", cluster: "Build & collect", is_active: false },
+  { id: "18", name: "robotic", emoji: "🤖", accent_color: "#0F766E", cluster: "Machines & tech", is_active: false },
+  { id: "19", name: "capital", emoji: "📈", accent_color: "#15803D", cluster: "Build & collect", is_active: false },
+  { id: "20", name: "luxury", emoji: "💎", accent_color: "#6D28D9", cluster: "Style & living", is_active: false },
+  { id: "21", name: "lifestyle", emoji: "✨", accent_color: "#0369A1", cluster: "Style & living", is_active: false },
 ];
 
 interface Props {
