@@ -3,12 +3,11 @@ import { DomainButton } from "./DomainButton";
 
 const categories: { label: string; sites: string[] }[] = [
   { label: "Active lifestyle & fitness", sites: ["yoga", "gym", "running", "bike", "martialarts", "healthy"] },
-  { label: "Food & drink", sites: ["cocktail", "burger", "gourmet", "barbecue", "coffee", "wine"] },
-  { label: "Style & culture", sites: ["fashion", "beauty", "dance", "sneaker"] },
-  { label: "Adventure & machines", sites: ["car", "boat", "trek", "diy"] },
-  { label: "Tech & collecting", sites: ["collector", "robotic"] },
-  { label: "Nature & wildlife", sites: ["wildlife"] },
-  { label: "Ecosystem multipliers", sites: ["capital", "luxury", "lifestyle"] },
+  { label: "Food & drink", sites: ["cocktail", "wine", "coffee", "gourmet", "burger", "barbecue"] },
+  { label: "Style & living", sites: ["fashion", "luxury", "beauty", "dance", "sneaker", "lifestyle"] },
+  { label: "Adventure & nature", sites: ["trek", "wildlife", "boat"] },
+  { label: "Machines & tech", sites: ["car", "robotic"] },
+  { label: "Build & collect", sites: ["capital", "diy", "collector"] },
 ];
 
 const liveSites = new Set(["cocktail", "car", "yoga", "tobe"]);

@@ -1,4 +1,4 @@
-import { Car, UtensilsCrossed, Compass, Palette, Cpu, HeartPulse, TreePine, Sparkles } from "lucide-react";
+import { Car, UtensilsCrossed, Compass, Cpu, HeartPulse, Hammer, Sparkles } from "lucide-react";
 import React from "react";
 
 export interface CommunityDomain {
@@ -33,35 +33,34 @@ export const allDomains: CommunityDomain[] = [
   d("healthy", "🥗", "#1A5C1A"),
   // Food & drink
   d("cocktail", "🍹", "#C25B0A", true),
-  d("burger", "🍔", "#8B4A0A"),
-  d("gourmet", "👨‍🍳", "#8B3A0A"),
-  d("barbecue", "🔥", "#CC4A00"),
-  d("coffee", "☕", "#6B3A2A"),
   d("wine", "🍷", "#6B1A2A"),
-  // Style & culture
+  d("coffee", "☕", "#6B3A2A"),
+  d("gourmet", "👨‍🍳", "#8B3A0A"),
+  d("burger", "🍔", "#8B4A0A"),
+  d("barbecue", "🔥", "#CC4A00"),
+  // Style & living
   d("fashion", "👗", "#8B1A4A"),
+  d("luxury", "💎", "#B8960C"),
   d("beauty", "💄", "#9B4F6E"),
   d("dance", "💃", "#6B0A5C"),
   d("sneaker", "👟", "#1A1A1A"),
-  // Adventure & machines
-  d("car", "🚗", "#8B1A1A", true),
-  d("boat", "⛵", "#0A3D62"),
-  d("trek", "🥾", "#2D5A1A"),
-  d("diy", "🔧", "#5C3A0A"),
-  // Tech & collecting
-  d("collector", "🏺", "#3D1A5C"),
-  d("robotic", "🤖", "#0A3D5C"),
-  // Nature & wildlife
-  d("wildlife", "🦁", "#5C3D1A"),
-  // Ecosystem multipliers
-  d("capital", "📈", "#1A3D2B"),
-  d("luxury", "💎", "#B8960C"),
   d("lifestyle", "🌿", "#1A5C38"),
+  // Adventure & nature
+  d("trek", "🥾", "#2D5A1A"),
+  d("wildlife", "🦁", "#5C3D1A"),
+  d("boat", "⛵", "#0A3D62"),
+  // Machines & tech
+  d("car", "🚗", "#8B1A1A", true),
+  d("robotic", "🤖", "#0A3D5C"),
+  // Build & collect
+  d("capital", "📈", "#1A3D2B"),
+  d("diy", "🔧", "#5C3A0A"),
+  d("collector", "🏺", "#3D1A5C"),
 ];
 
 // Ticker order: active first, then curated order
 export const tickerDomains: CommunityDomain[] = [
-  "cocktail", "car", "yoga",
+  "cocktail", "car", "yoga", "tobe",
   "wine", "coffee", "sneaker", "fashion", "beauty", "luxury", "lifestyle",
   "running", "healthy", "gym", "bike", "martialarts",
   "burger", "gourmet", "barbecue",
@@ -72,11 +71,10 @@ export const tickerDomains: CommunityDomain[] = [
 const categoryIconMap: Record<string, React.ReactNode> = {
   "Active lifestyle & fitness": React.createElement(HeartPulse, { size: 16 }),
   "Food & drink": React.createElement(UtensilsCrossed, { size: 16 }),
-  "Style & culture": React.createElement(Palette, { size: 16 }),
-  "Adventure & machines": React.createElement(Car, { size: 16 }),
-  "Tech & collecting": React.createElement(Cpu, { size: 16 }),
-  "Nature & wildlife": React.createElement(TreePine, { size: 16 }),
-  "Ecosystem multipliers": React.createElement(Sparkles, { size: 16 }),
+  "Style & living": React.createElement(Sparkles, { size: 16 }),
+  "Adventure & nature": React.createElement(Compass, { size: 16 }),
+  "Machines & tech": React.createElement(Cpu, { size: 16 }),
+  "Build & collect": React.createElement(Hammer, { size: 16 }),
 };
 
 export function getCategoryIcon(title: string): React.ReactNode {
@@ -95,42 +93,35 @@ export const categories: CommunityCategory[] = [
     title: "Food & drink",
     icon: "🍽️",
     domains: allDomains.filter((d) =>
-      ["cocktail", "burger", "gourmet", "barbecue", "coffee", "wine"].includes(d.name)
+      ["cocktail", "wine", "coffee", "gourmet", "burger", "barbecue"].includes(d.name)
     ),
   },
   {
-    title: "Style & culture",
+    title: "Style & living",
     icon: "✨",
     domains: allDomains.filter((d) =>
-      ["fashion", "beauty", "dance", "sneaker"].includes(d.name)
+      ["fashion", "luxury", "beauty", "dance", "sneaker", "lifestyle"].includes(d.name)
     ),
   },
   {
-    title: "Adventure & machines",
+    title: "Adventure & nature",
+    icon: "🧭",
+    domains: allDomains.filter((d) =>
+      ["trek", "wildlife", "boat"].includes(d.name)
+    ),
+  },
+  {
+    title: "Machines & tech",
     icon: "🚗",
     domains: allDomains.filter((d) =>
-      ["car", "boat", "trek", "diy"].includes(d.name)
+      ["car", "robotic"].includes(d.name)
     ),
   },
   {
-    title: "Tech & collecting",
-    icon: "🤖",
+    title: "Build & collect",
+    icon: "🔨",
     domains: allDomains.filter((d) =>
-      ["collector", "robotic"].includes(d.name)
-    ),
-  },
-  {
-    title: "Nature & wildlife",
-    icon: "🦁",
-    domains: allDomains.filter((d) =>
-      ["wildlife"].includes(d.name)
-    ),
-  },
-  {
-    title: "Ecosystem multipliers",
-    icon: "💎",
-    domains: allDomains.filter((d) =>
-      ["capital", "luxury", "lifestyle"].includes(d.name)
+      ["capital", "diy", "collector"].includes(d.name)
     ),
   },
 ];

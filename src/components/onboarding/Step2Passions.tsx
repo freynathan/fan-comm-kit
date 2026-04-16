@@ -15,10 +15,10 @@ interface Site {
 const CLUSTER_ORDER = [
   "Active lifestyle & fitness",
   "Food & drink",
-  "Style & beauty",
-  "Adventure & machines",
-  "Tech & collecting",
-  "Ecosystem multipliers",
+  "Style & living",
+  "Adventure & nature",
+  "Machines & tech",
+  "Build & collect",
 ];
 
 // Fallback data if sites table doesn't exist yet
