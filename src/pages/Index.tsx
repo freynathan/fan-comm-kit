@@ -1,74 +1,88 @@
+import { Helmet } from "react-helmet-async";
 import { SharedHeader } from "@/components/shared/SharedHeader";
 import { SharedFooter } from "@/components/shared/SharedFooter";
-import { ContactForm } from "@/components/shared/ContactForm";
-
-const demoUser = { id: "1", email: "mk@tobe.fan", username: "MK", initials: "MK" };
+import { useHomepageStats } from "@/hooks/useHomepageStats";
+import { HeroClaim } from "@/components/homepage/HeroClaim";
+import { StatPills } from "@/components/homepage/StatPills";
+import { DomainTicker } from "@/components/homepage/DomainTicker";
+import { ContentHubSection } from "@/components/homepage/ContentHubSection";
+import { FeaturedProfilesSection } from "@/components/homepage/FeaturedProfilesSection";
+import { RelateSection } from "@/components/homepage/RelateSection";
+import { CommunitiesSection } from "@/components/homepage/CommunitiesSection";
+import { ForBrandsSection } from "@/components/homepage/ForBrandsSection";
+import { ClosingCTA } from "@/components/homepage/ClosingCTA";
+import { AIAdvantageStrip } from "@/components/homepage/AIAdvantageStrip";
 
 const Index = () => {
+  const { data: stats } = useHomepageStats();
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Example 1 — cocktail.fan (logged out) */}
-      <div className="mb-8">
-        <div className="text-xs text-gray-400 px-6 py-2 bg-gray-100 font-mono">
-          Example 1 — cocktail.fan · Logged out
-        </div>
-        <SharedHeader
-          siteName="cocktail"
-          siteEmoji="🍹"
-          accentColor="#0C447C"
-          aiFeatureLabel="AI Creator"
-          demoUser={null}
+    <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>ToBe.fan — Reinventing social in the AI era</title>
+        <meta
+          name="description"
+          content="Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever. 23 AI-native passion communities. Free forever."
         />
-      </div>
+        <meta property="og:title" content="ToBe.fan — Reinventing social in the AI era" />
+        <meta
+          property="og:description"
+          content="The first passion platform built for the AI era. Free creator profiles. Genuine human connection. Passive income forever."
+        />
+      </Helmet>
 
-      {/* Example 2 — car.fan (logged in, dropdown open) */}
-      <div className="mb-8">
-        <div className="text-xs text-gray-400 px-6 py-2 bg-gray-100 font-mono">
-          Example 2 — car.fan · Logged in as MK · Dropdown open
-        </div>
-        <SharedHeader
-          siteName="car"
-          siteEmoji="🚗"
-          accentColor="#1E3A5F"
-          aiFeatureLabel="AI Garage"
-          siteMenuFeatures={[
-            { label: "My garage", icon: "🚗", path: "/my/garage" },
-            { label: "My favourite cars", icon: "⭐", path: "/my/favourites" },
-            { label: "Track day log", icon: "🏁", path: "/my/trackdays" },
-          ]}
-          demoUser={demoUser}
-          demoAvatarOpen
-        />
-      </div>
+      <SharedHeader
+        siteName="tobe"
+        siteEmoji="⭐"
+        accentColor="#0C447C"
+        aiFeatureLabel="AI Relate"
+      />
 
-      {/* Example 3 — boat.fan (logged in, dropdown open) */}
-      <div className="mb-8">
-        <div className="text-xs text-gray-400 px-6 py-2 bg-gray-100 font-mono">
-          Example 3 — boat.fan · Logged in as MK · Dropdown open
+      {/* SECTION 1 — HERO */}
+      <section className="w-full pt-20 pb-12 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-[40px] md:text-[56px] font-bold leading-[1.1] tracking-tight mb-4" style={{ color: "#0A1628" }}>
+            Reinventing social in the{" "}
+            <span style={{ color: "#0C447C" }}>AI</span> era.
+          </h1>
+          <p className="text-[16px] md:text-[18px] text-[hsl(var(--grey-text))] mb-8 max-w-2xl mx-auto">
+            Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
+          </p>
+          <HeroClaim />
+          <div className="mt-8">
+            <StatPills
+              totalFans={stats?.totalFans ?? 0}
+              totalClubs={stats?.totalClubs ?? 0}
+              totalCommunities={stats?.totalCommunities ?? 23}
+              postsToday={stats?.postsToday ?? 0}
+            />
+          </div>
         </div>
-        <SharedHeader
-          siteName="boat"
-          siteEmoji="⛵"
-          accentColor="#065F46"
-          aiFeatureLabel="AI Navigator"
-          siteMenuFeatures={[
-            { label: "Nautical résumé", icon: "⚓", path: "/my/resume" },
-            { label: "My boat logbook", icon: "📋", path: "/my/logbook" },
-            { label: "Rental verification", icon: "✅", path: "/my/verification" },
-          ]}
-          demoUser={demoUser}
-          demoAvatarOpen
-        />
-      </div>
+        <div className="max-w-5xl mx-auto mt-6">
+          <DomainTicker />
+        </div>
+      </section>
 
-      {/* Contact Form Test */}
-      <div className="max-w-2xl mx-auto py-12 px-6">
-        <ContactForm
-          templateId="template_qfdy5nq"
-          heading="Contact us"
-          description="Have a question or feedback? Drop us a line."
-        />
-      </div>
+      {/* SECTION 2 — CONTENT HUB */}
+      <ContentHubSection />
+
+      {/* SECTION 3 — FEATURED PROFILES */}
+      <FeaturedProfilesSection />
+
+      {/* SECTION 4 — RELATE */}
+      <RelateSection />
+
+      {/* SECTION 5 — COMMUNITIES */}
+      <CommunitiesSection />
+
+      {/* SECTION 6 — FOR BRANDS */}
+      <ForBrandsSection />
+
+      {/* SECTION 7 — CLOSING CTA */}
+      <ClosingCTA />
+
+      {/* SECTION 8 — AI ADVANTAGE STRIP */}
+      <AIAdvantageStrip />
 
       <SharedFooter />
     </div>
