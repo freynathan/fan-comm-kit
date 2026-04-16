@@ -1,20 +1,5 @@
-import { categories, type CommunityDomain, getCategoryIcon } from "./communities.tsx";
-
-function DomainPill({ d }: { d: CommunityDomain }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-[3px] rounded-full text-[12px] font-normal bg-ds-surface text-ds-text-secondary border border-ds-border" style={{ borderWidth: '0.5px' }}>
-      {d.emoji} {d.domain}
-      {d.live ? (
-        <span className="inline-flex items-center gap-1 text-[11px] font-medium" style={{ color: '#1A5C1A' }}>
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#1A5C1A' }} />
-          Live
-        </span>
-      ) : (
-        <span className="text-[11px] font-medium text-ds-text-tertiary" style={{ background: '#F0F0F0', color: '#767676', padding: '1px 6px', borderRadius: '10px' }}>Soon</span>
-      )}
-    </span>
-  );
-}
+import { categories, getCategoryIcon } from "./communities.tsx";
+import { DomainButton } from "@/components/shared/DomainButton";
 
 export function CommunitiesSection() {
   return (
@@ -49,14 +34,19 @@ export function CommunitiesSection() {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {cat.domains.map((d) => (
-                    <DomainPill key={d.domain} d={d} />
+                    <DomainButton
+                      key={d.domain}
+                      siteName={d.name}
+                      domain={d.domain}
+                      size="large"
+                      isLive={d.live}
+                    />
                   ))}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Hub pill */}
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[14px] font-medium text-ds-accent-text bg-ds-accent">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             tobe.fan — connecting all 23 communities under one login
