@@ -1,4 +1,4 @@
-import { allDomains } from "./communities";
+import { allDomains } from "./communities.tsx";
 
 export function DomainTicker() {
   const doubled = [...allDomains, ...allDomains];
