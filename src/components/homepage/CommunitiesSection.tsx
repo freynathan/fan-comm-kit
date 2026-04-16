@@ -1,4 +1,4 @@
-import { categories, type CommunityDomain } from "./communities";
+import { categories, type CommunityDomain, getCategoryIcon } from "./communities";
 
 function DomainPill({ d }: { d: CommunityDomain }) {
   return (
@@ -37,8 +37,8 @@ export function CommunitiesSection() {
               className="bg-white rounded-xl border border-[hsl(var(--grey-border))] p-5"
             >
               <div className="flex items-center gap-2 mb-1">
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ backgroundColor: "#0C447C" }}>
-                  {cat.icon}
+                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: "#0C447C" }}>
+                  {getCategoryIcon(cat.title)}
                 </span>
                 <h3 className="text-[15px] font-bold text-[hsl(var(--navy))]">{cat.title}</h3>
               </div>
@@ -56,7 +56,8 @@ export function CommunitiesSection() {
 
         {/* Hub pill */}
         <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[14px] font-semibold text-white" style={{ backgroundColor: "#0C447C" }}>
-          ⭐ tobe.fan — connecting all 23 communities under one login
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          tobe.fan — connecting all 23 communities under one login
         </div>
       </div>
     </section>

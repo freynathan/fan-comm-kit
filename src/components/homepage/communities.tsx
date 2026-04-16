@@ -1,3 +1,6 @@
+import { Car, UtensilsCrossed, Compass, Palette, Cpu, HeartPulse } from "lucide-react";
+import React from "react";
+
 export interface CommunityDomain {
   name: string;
   emoji: string;
@@ -45,6 +48,19 @@ export const allDomains: CommunityDomain[] = [
   d("tech", "💻", "#3B82F6"),
   d("lifestyle", "🌿", "#059669"),
 ];
+
+const categoryIconMap: Record<string, React.ReactNode> = {
+  "Motor & Outdoor": React.createElement(Car, { size: 16 }),
+  "Food & Drink": React.createElement(UtensilsCrossed, { size: 16 }),
+  "Nature & Adventure": React.createElement(Compass, { size: 16 }),
+  "Style & Culture": React.createElement(Palette, { size: 16 }),
+  "Creative & Tech": React.createElement(Cpu, { size: 16 }),
+  "Lifestyle & Wellness": React.createElement(HeartPulse, { size: 16 }),
+};
+
+export function getCategoryIcon(title: string): React.ReactNode {
+  return categoryIconMap[title] ?? null;
+}
 
 export const categories: CommunityCategory[] = [
   {
