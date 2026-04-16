@@ -256,27 +256,42 @@ export type Database = {
       sites: {
         Row: {
           accent_color: string
+          ai_feature_label: string | null
+          cluster: string | null
           created_at: string
           description: string | null
+          domain: string | null
           emoji: string
           id: string
+          is_active: boolean
           name: string
+          slug: string | null
         }
         Insert: {
           accent_color?: string
+          ai_feature_label?: string | null
+          cluster?: string | null
           created_at?: string
           description?: string | null
+          domain?: string | null
           emoji?: string
           id?: string
+          is_active?: boolean
           name: string
+          slug?: string | null
         }
         Update: {
           accent_color?: string
+          ai_feature_label?: string | null
+          cluster?: string | null
           created_at?: string
           description?: string | null
+          domain?: string | null
           emoji?: string
           id?: string
+          is_active?: boolean
           name?: string
+          slug?: string | null
         }
         Relationships: []
       }

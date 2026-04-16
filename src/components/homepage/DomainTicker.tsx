@@ -1,8 +1,8 @@
-import { allDomains } from "./communities.tsx";
+import { tickerDomains } from "./communities.tsx";
 import { DomainButton } from "@/components/shared/DomainButton";
 
 export function DomainTicker() {
-  const doubled = [...allDomains, ...allDomains];
+  const doubled = [...tickerDomains, ...tickerDomains];
 
   return (
     <div className="w-full overflow-hidden py-4">

@@ -22,7 +22,7 @@ const Index = () => {
         <title>ToBe.fan — Reinventing social in the AI era</title>
         <meta
           name="description"
-          content="Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever. 23 AI-native passion communities. Free forever."
+          content="Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever. 28 AI-native passion communities. Free forever."
         />
         <meta property="og:title" content="ToBe.fan — Reinventing social in the AI era" />
         <meta
@@ -54,7 +54,7 @@ const Index = () => {
               <StatPills
                 totalFans={stats?.totalFans ?? 0}
                 totalClubs={stats?.totalClubs ?? 0}
-                totalCommunities={stats?.totalCommunities ?? 23}
+                totalCommunities={stats?.totalCommunities ?? 28}
                 postsToday={stats?.postsToday ?? 0}
               />
             </div>

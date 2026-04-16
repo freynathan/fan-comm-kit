@@ -1,4 +1,4 @@
-import { Car, UtensilsCrossed, Compass, Palette, Cpu, HeartPulse } from "lucide-react";
+import { Car, UtensilsCrossed, Compass, Palette, Cpu, HeartPulse, TreePine, Sparkles } from "lucide-react";
 import React from "react";
 
 export interface CommunityDomain {
@@ -24,37 +24,59 @@ const d = (name: string, emoji: string, accent: string, live = false): Community
 });
 
 export const allDomains: CommunityDomain[] = [
-  d("cocktail", "🍹", "#C25B0A", true),
-  d("car", "🚗", "#8B1A1A", true),
+  // Active lifestyle & fitness
   d("yoga", "🧘", "#4A1970", true),
-  d("boat", "⛵", "#0A3D62"),
-  d("fashion", "👗", "#8B1A4A"),
-  d("beauty", "💄", "#9B4F6E"),
-  d("running", "🏃", "#0A6B5C"),
   d("gym", "💪", "#1A3A5C"),
-  d("wildlife", "🦁", "#5C3D1A"),
-  d("lifestyle", "🌿", "#1A5C38"),
-  d("luxury", "💎", "#B8960C"),
-  d("capital", "📈", "#1A3D2B"),
-  d("gourmet", "👨‍🍳", "#8B3A0A"),
-  d("burger", "🍔", "#8B4A0A"),
-  d("dance", "💃", "#6B0A5C"),
-  d("collector", "🏺", "#3D1A5C"),
-  d("robotic", "🤖", "#0A3D5C"),
-  d("trek", "🥾", "#2D5A1A"),
-  d("diy", "🔧", "#5C3A0A"),
+  d("running", "🏃", "#0A6B5C"),
   d("bike", "🚴", "#0A4A5C"),
   d("martialarts", "🥋", "#3D0A0A"),
   d("healthy", "🥗", "#1A5C1A"),
+  // Food & drink
+  d("cocktail", "🍹", "#C25B0A", true),
+  d("burger", "🍔", "#8B4A0A"),
+  d("gourmet", "👨‍🍳", "#8B3A0A"),
+  d("barbecue", "🔥", "#CC4A00"),
+  d("coffee", "☕", "#6B3A2A"),
+  d("wine", "🍷", "#6B1A2A"),
+  // Style & culture
+  d("fashion", "👗", "#8B1A4A"),
+  d("beauty", "💄", "#9B4F6E"),
+  d("dance", "💃", "#6B0A5C"),
+  d("sneaker", "👟", "#1A1A1A"),
+  // Adventure & machines
+  d("car", "🚗", "#8B1A1A", true),
+  d("boat", "⛵", "#0A3D62"),
+  d("trek", "🥾", "#2D5A1A"),
+  d("diy", "🔧", "#5C3A0A"),
+  // Tech & collecting
+  d("collector", "🏺", "#3D1A5C"),
+  d("robotic", "🤖", "#0A3D5C"),
+  // Nature & wildlife
+  d("wildlife", "🦁", "#5C3D1A"),
+  // Ecosystem multipliers
+  d("capital", "📈", "#1A3D2B"),
+  d("luxury", "💎", "#B8960C"),
+  d("lifestyle", "🌿", "#1A5C38"),
 ];
 
+// Ticker order: active first, then curated order
+export const tickerDomains: CommunityDomain[] = [
+  "cocktail", "car", "yoga",
+  "wine", "coffee", "sneaker", "fashion", "beauty", "luxury", "lifestyle",
+  "running", "healthy", "gym", "bike", "martialarts",
+  "burger", "gourmet", "barbecue",
+  "boat", "trek", "diy", "wildlife",
+  "collector", "robotic", "capital", "dance",
+].map((name) => allDomains.find((d) => d.name === name)!).filter(Boolean);
+
 const categoryIconMap: Record<string, React.ReactNode> = {
-  "Motor & Outdoor": React.createElement(Car, { size: 16 }),
-  "Food & Drink": React.createElement(UtensilsCrossed, { size: 16 }),
-  "Nature & Adventure": React.createElement(Compass, { size: 16 }),
-  "Style & Culture": React.createElement(Palette, { size: 16 }),
-  "Creative & Tech": React.createElement(Cpu, { size: 16 }),
-  "Lifestyle & Wellness": React.createElement(HeartPulse, { size: 16 }),
+  "Active lifestyle & fitness": React.createElement(HeartPulse, { size: 16 }),
+  "Food & drink": React.createElement(UtensilsCrossed, { size: 16 }),
+  "Style & culture": React.createElement(Palette, { size: 16 }),
+  "Adventure & machines": React.createElement(Car, { size: 16 }),
+  "Tech & collecting": React.createElement(Cpu, { size: 16 }),
+  "Nature & wildlife": React.createElement(TreePine, { size: 16 }),
+  "Ecosystem multipliers": React.createElement(Sparkles, { size: 16 }),
 };
 
 export function getCategoryIcon(title: string): React.ReactNode {
@@ -63,45 +85,52 @@ export function getCategoryIcon(title: string): React.ReactNode {
 
 export const categories: CommunityCategory[] = [
   {
-    title: "Motor & Outdoor",
-    icon: "🏎️",
+    title: "Active lifestyle & fitness",
+    icon: "🏋️",
     domains: allDomains.filter((d) =>
-      ["car", "boat", "bike", "trek"].includes(d.name)
+      ["yoga", "gym", "running", "bike", "martialarts", "healthy"].includes(d.name)
     ),
   },
   {
-    title: "Food & Drink",
+    title: "Food & drink",
     icon: "🍽️",
     domains: allDomains.filter((d) =>
-      ["cocktail", "gourmet", "burger", "healthy"].includes(d.name)
+      ["cocktail", "burger", "gourmet", "barbecue", "coffee", "wine"].includes(d.name)
     ),
   },
   {
-    title: "Nature & Adventure",
-    icon: "🌍",
-    domains: allDomains.filter((d) =>
-      ["wildlife", "running", "martialarts", "yoga"].includes(d.name)
-    ),
-  },
-  {
-    title: "Style & Culture",
+    title: "Style & culture",
     icon: "✨",
     domains: allDomains.filter((d) =>
-      ["fashion", "beauty", "luxury", "collector"].includes(d.name)
+      ["fashion", "beauty", "dance", "sneaker"].includes(d.name)
     ),
   },
   {
-    title: "Creative & Tech",
-    icon: "🚀",
+    title: "Adventure & machines",
+    icon: "🚗",
     domains: allDomains.filter((d) =>
-      ["robotic", "diy", "capital", "dance"].includes(d.name)
+      ["car", "boat", "trek", "diy"].includes(d.name)
     ),
   },
   {
-    title: "Lifestyle & Wellness",
-    icon: "🧘",
+    title: "Tech & collecting",
+    icon: "🤖",
     domains: allDomains.filter((d) =>
-      ["lifestyle", "gym"].includes(d.name)
+      ["collector", "robotic"].includes(d.name)
+    ),
+  },
+  {
+    title: "Nature & wildlife",
+    icon: "🦁",
+    domains: allDomains.filter((d) =>
+      ["wildlife"].includes(d.name)
+    ),
+  },
+  {
+    title: "Ecosystem multipliers",
+    icon: "💎",
+    domains: allDomains.filter((d) =>
+      ["capital", "luxury", "lifestyle"].includes(d.name)
     ),
   },
 ];
