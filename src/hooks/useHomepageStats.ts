@@ -12,7 +12,7 @@ export function useHomepageStats() {
       return {
         totalFans: usersRes.count ?? 0,
         totalClubs: clubsRes.count ?? 0,
-        totalCommunities: 23,
+        totalCommunities: 28,
         postsToday: 0,
       };
     },
