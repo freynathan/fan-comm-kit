@@ -14,7 +14,6 @@ const navLinks = (aiLabel: string) => [
 ];
 
 interface HeaderInternalProps extends SharedHeaderProps {
-  /** For demo purposes: override auth state */
   demoUser?: AuthUser | null;
   demoAvatarOpen?: boolean;
 }
@@ -38,19 +37,19 @@ export function SharedHeader(props: HeaderInternalProps) {
   const [authModal, setAuthModal] = useState<"login" | "signup" | null>(null);
 
   return (
-    <header className="relative w-full bg-white" style={{ borderBottom: "1px solid #eee" }}>
-      <div className="max-w-7xl mx-auto flex items-center justify-between h-14 px-6">
+    <header className="relative w-full bg-white" style={{ borderBottom: '0.5px solid hsl(var(--color-border))' }}>
+      <div className="max-w-[1200px] mx-auto flex items-center justify-between h-14 px-6">
         {/* LEFT — Logo */}
         <a href="/" className="flex items-center gap-2 no-underline">
           <span
-            className="flex items-center justify-center rounded-lg text-lg"
-            style={{ width: 36, height: 36, backgroundColor: accentColor }}
+            className="flex items-center justify-center rounded-lg text-lg bg-ds-accent"
+            style={{ width: 36, height: 36 }}
           >
             {siteEmoji}
           </span>
-          <span className="text-[15px] font-bold" style={{ color: "#0A1628" }}>
+          <span className="text-[16px] font-semibold text-ds-text-primary">
             {siteName}
-            <span style={{ color: accentColor }}>.fan</span>
+            <span className="text-ds-accent">.fan</span>
           </span>
         </a>
 
@@ -60,16 +59,14 @@ export function SharedHeader(props: HeaderInternalProps) {
             <a
               key={l.label}
               href={l.path}
-              className="text-[13px] font-medium transition-colors hover:text-[#0A1628]"
-              style={{ color: "#6b7280" }}
+              className="text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
             >
               {l.label}
             </a>
           ))}
           <button
             onClick={() => setSitesOpen(!sitesOpen)}
-            className="flex items-center gap-1 text-[13px] font-medium transition-colors hover:text-[#0A1628]"
-            style={{ color: "#6b7280" }}
+            className="flex items-center gap-1 text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
           >
             All sites <ChevronDown size={14} />
           </button>
@@ -79,14 +76,14 @@ export function SharedHeader(props: HeaderInternalProps) {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <span className="text-[12px] hidden sm:block" style={{ color: "#6b7280" }}>
+              <span className="text-[13px] hidden sm:block font-normal text-ds-text-tertiary">
                 tobe.fan/@{user.username}
               </span>
               <div className="relative">
                 <button
                   onClick={() => setAvatarOpen(!avatarOpen)}
-                  className="flex items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ width: 36, height: 36, backgroundColor: accentColor }}
+                  className="flex items-center justify-center rounded-full text-xs font-medium text-ds-accent-text bg-ds-accent"
+                  style={{ width: 36, height: 36 }}
                 >
                   {user.initials}
                 </button>
@@ -105,15 +102,13 @@ export function SharedHeader(props: HeaderInternalProps) {
             <>
               <button
                 onClick={() => setAuthModal("login")}
-                className="h-9 px-4 rounded-lg text-[13px] font-medium border transition-colors hover:bg-gray-50"
-                style={{ borderColor: "#d1d5db", color: "#374151" }}
+                className="h-9 px-5 rounded-lg text-[14px] font-medium border border-ds-border-strong text-ds-text-primary transition-colors hover:border-ds-accent hover:text-ds-accent"
               >
                 Log in
               </button>
               <button
                 onClick={() => setAuthModal("signup")}
-                className="h-9 px-4 rounded-lg text-[13px] font-medium text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: accentColor }}
+                className="h-9 px-5 rounded-lg text-[14px] font-medium text-ds-accent-text bg-ds-accent hover:bg-ds-accent-hover transition-all active:scale-[0.98]"
               >
                 Join free
               </button>

@@ -23,7 +23,8 @@ export function StatPills({ totalFans, totalClubs, totalCommunities, postsToday 
       {items.map((text) => (
         <span
           key={text}
-          className="inline-flex items-center px-4 py-2 rounded-full text-[13px] font-medium bg-[hsl(var(--muted))] text-[hsl(var(--grey-text))]"
+          className="inline-flex items-center px-[14px] py-[6px] rounded-full text-[13px] font-normal bg-ds-surface text-ds-text-secondary border border-ds-border"
+          style={{ borderWidth: '0.5px' }}
         >
           {text}
         </span>

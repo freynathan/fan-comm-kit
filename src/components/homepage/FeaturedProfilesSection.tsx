@@ -1,22 +1,20 @@
 import { useFeaturedProfiles } from "@/hooks/useHomepageStats";
-import { HeroClaim } from "./HeroClaim";
 
 function PlaceholderCard() {
   return (
-    <div className="bg-white rounded-xl border border-[hsl(var(--grey-border))] p-6 text-center">
-      <div className="w-16 h-16 mx-auto rounded-full bg-[hsl(var(--muted))] flex items-center justify-center text-2xl text-[hsl(var(--grey-text))] mb-3 font-bold">
+    <div className="bg-white rounded-xl border border-ds-border p-5 text-center transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
+      <div className="w-16 h-16 mx-auto rounded-full bg-ds-surface flex items-center justify-center text-2xl text-ds-text-tertiary mb-3 font-semibold">
         ?
       </div>
-      <p className="text-[14px] font-semibold" style={{ color: "#0C447C" }}>
+      <p className="text-[14px] font-medium text-ds-accent">
         tobe.fan/of/you
       </p>
-      <p className="text-[13px] text-[hsl(var(--grey-text))] italic mt-1 mb-4">
+      <p className="text-[13px] text-ds-text-tertiary italic mt-1 mb-4 font-normal">
         This could be you
       </p>
       <a
         href="/onboarding"
-        className="inline-flex h-9 px-4 items-center rounded-lg text-[13px] font-medium text-white transition-opacity hover:opacity-90"
-        style={{ backgroundColor: "#0C447C" }}
+        className="inline-flex h-9 px-4 items-center rounded-lg text-[14px] font-medium text-ds-accent-text bg-ds-accent hover:bg-ds-accent-hover transition-all active:scale-[0.98]"
       >
         Claim your profile →
       </a>
@@ -31,87 +29,88 @@ export function FeaturedProfilesSection() {
   const placeholders = Math.max(0, 3 - cards.length);
 
   return (
-    <section className="w-full py-20 px-6" style={{ backgroundColor: "#F8FAFC" }}>
-      <div className="max-w-5xl mx-auto text-center">
-        <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[hsl(var(--grey-text))] mb-3">
-          Creator profiles
-        </p>
-        <h2 className="text-[36px] font-bold text-[hsl(var(--navy))] leading-tight mb-2">
-          The bio link that builds your business.
-        </h2>
-        <p className="text-[16px] text-[hsl(var(--grey-text))] mb-10 max-w-2xl mx-auto">
-          tobe.fan/of/you — verified passion identity that AI agents find, trust, and cite. Free forever.
-        </p>
+    <section className="w-full py-12 md:py-[80px] px-6 bg-ds-bg">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-[960px] mx-auto text-center">
+          <p className="text-[11px] font-medium tracking-[0.08em] uppercase text-ds-text-tertiary mb-3">
+            Creator profiles
+          </p>
+          <h2 className="text-[36px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
+            The bio link that builds your business.
+          </h2>
+          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-10 max-w-2xl mx-auto">
+            tobe.fan/of/you — verified passion identity that AI agents find, trust, and cite. Free forever.
+          </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {cards.map((p) => (
-            <div
-              key={p.id}
-              className="bg-white rounded-xl border border-[hsl(var(--grey-border))] p-6 text-left"
-            >
-              <div className="flex items-start gap-3 mb-3">
-                {p.avatarUrl ? (
-                  <img
-                    src={p.avatarUrl}
-                    alt={p.displayName}
-                    className="w-14 h-14 rounded-full object-cover border-2"
-                    style={{ borderColor: "#0C447C" }}
-                  />
-                ) : (
-                  <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center text-white text-sm font-bold border-2"
-                    style={{ backgroundColor: "#0C447C", borderColor: "#0C447C" }}
-                  >
-                    {p.initials}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {cards.map((p) => (
+              <div
+                key={p.id}
+                className="bg-white rounded-xl border border-ds-border p-5 text-left transition-colors hover:border-ds-border-strong"
+                style={{ borderWidth: '0.5px' }}
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  {p.avatarUrl ? (
+                    <img
+                      src={p.avatarUrl}
+                      alt={p.displayName}
+                      className="w-14 h-14 rounded-full object-cover border-2 border-ds-accent"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center text-ds-accent-text text-sm font-medium border-2 border-ds-accent bg-ds-accent">
+                      {p.initials}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[15px] font-medium text-ds-text-primary truncate">
+                      {p.displayName}
+                    </p>
+                    <p className="text-[13px] font-normal text-ds-text-tertiary">
+                      tobe.fan/of/{p.username}
+                    </p>
                   </div>
+                </div>
+                {p.headline && (
+                  <p className="text-[13px] font-normal text-ds-text-tertiary italic mb-3 line-clamp-2">
+                    {p.headline}
+                  </p>
                 )}
-                <div className="flex-1 min-w-0">
-                  <p className="text-[15px] font-bold text-[hsl(var(--navy))] truncate">
-                    {p.displayName}
-                  </p>
-                  <p className="text-[12px] text-[hsl(var(--grey-text))]">
-                    tobe.fan/of/{p.username}
-                  </p>
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {p.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-ds-surface text-ds-text-tertiary border border-ds-border"
+                      style={{ borderWidth: '0.5px' }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium mb-3"
+                  style={{ background: '#EAF5EA', color: '#1A5C1A' }}
+                >
+                  ✓ AI Search Ready
+                </span>
+                <div className="text-[13px] font-normal text-ds-text-tertiary pt-3 border-t border-ds-border">
+                  {p.fanCount} fans · {p.clubCount} clubs · {p.totalPoints} passion points
                 </div>
               </div>
-              {p.headline && (
-                <p className="text-[13px] text-[hsl(var(--grey-text))] italic mb-3 line-clamp-2">
-                  {p.headline}
-                </p>
-              )}
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {p.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-[hsl(var(--muted))] text-[hsl(var(--grey-text))]"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#E6FFFB] text-[#0D9488] mb-3">
-                ✓ AI Search Ready
-              </span>
-              <div className="text-[12px] text-[hsl(var(--grey-text))] pt-2 border-t border-[hsl(var(--grey-border))]">
-                {p.fanCount} fans · {p.clubCount} clubs · {p.totalPoints} passion points
-              </div>
-            </div>
-          ))}
-          {Array.from({ length: placeholders }).map((_, i) => (
-            <PlaceholderCard key={`ph-${i}`} />
-          ))}
-        </div>
+            ))}
+            {Array.from({ length: placeholders }).map((_, i) => (
+              <PlaceholderCard key={`ph-${i}`} />
+            ))}
+          </div>
 
-        <a
-          href="/onboarding"
-          className="inline-flex h-11 px-8 items-center rounded-lg text-[14px] font-semibold border-2 transition-colors hover:bg-[hsl(var(--muted))]"
-          style={{ borderColor: "#0C447C", color: "#0C447C" }}
-        >
-          Get your free tobe.fan/of/you profile →
-        </a>
-        <p className="text-[12px] text-[hsl(var(--grey-text))] mt-3">
-          Joins 50,000+ creators who replaced Linktree with tobe.fan
-        </p>
+          <a
+            href="/onboarding"
+            className="inline-flex h-11 px-8 items-center rounded-lg text-[14px] font-medium border border-ds-border-strong text-ds-text-primary transition-colors hover:border-ds-accent hover:text-ds-accent"
+          >
+            Get your free tobe.fan/of/you profile →
+          </a>
+          <p className="text-[13px] font-normal text-ds-text-tertiary mt-3">
+            Joins 50,000+ creators who replaced Linktree with tobe.fan
+          </p>
+        </div>
       </div>
     </section>
   );
