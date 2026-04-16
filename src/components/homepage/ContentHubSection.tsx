@@ -1,3 +1,5 @@
+import { Radio } from "lucide-react";
+
 export function ContentHubSection() {
   return (
     <section className="w-full py-20 px-6">
@@ -14,8 +16,8 @@ export function ContentHubSection() {
 
         {/* Placeholder state */}
         <div className="rounded-2xl border border-[hsl(var(--grey-border))] bg-[hsl(var(--muted))] py-16 px-8">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[hsl(var(--grey-border))] flex items-center justify-center text-2xl">
-            📡
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[hsl(var(--primary)/0.08)] flex items-center justify-center">
+            <Radio size={28} className="text-[hsl(var(--primary))]" />
           </div>
           <p className="text-[15px] font-medium text-[hsl(var(--navy))] mb-1">
             Content arriving soon

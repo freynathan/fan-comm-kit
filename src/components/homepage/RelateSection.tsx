@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Users } from "lucide-react";
+import { Fingerprint, MessagesSquare, Handshake } from "lucide-react";
 
 export function RelateSection() {
   return (
@@ -16,8 +16,8 @@ export function RelateSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
           <div className="text-center">
-            <div className="w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center" style={{ backgroundColor: "#EBF5FF" }}>
-              <Heart size={20} style={{ color: "#0C447C" }} />
+            <div className="w-10 h-10 mx-auto mb-3 rounded-xl flex items-center justify-center bg-[hsl(var(--primary)/0.08)]">
+              <Fingerprint size={20} className="text-[hsl(var(--primary))]" />
             </div>
             <h3 className="text-[15px] font-bold text-[hsl(var(--navy))] mb-1">Verified passion matching</h3>
             <p className="text-[13px] text-[hsl(var(--grey-text))]">
@@ -25,8 +25,8 @@ export function RelateSection() {
             </p>
           </div>
           <div className="text-center">
-            <div className="w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center" style={{ backgroundColor: "#E6FFFB" }}>
-              <MessageCircle size={20} style={{ color: "#0D9488" }} />
+            <div className="w-10 h-10 mx-auto mb-3 rounded-xl flex items-center justify-center bg-[hsl(var(--primary)/0.08)]">
+              <MessagesSquare size={20} className="text-[hsl(var(--primary))]" />
             </div>
             <h3 className="text-[15px] font-bold text-[hsl(var(--navy))] mb-1">Before the first message</h3>
             <p className="text-[13px] text-[hsl(var(--grey-text))]">
@@ -34,8 +34,8 @@ export function RelateSection() {
             </p>
           </div>
           <div className="text-center">
-            <div className="w-10 h-10 mx-auto mb-3 rounded-lg flex items-center justify-center" style={{ backgroundColor: "#ECFDF5" }}>
-              <Users size={20} style={{ color: "#059669" }} />
+            <div className="w-10 h-10 mx-auto mb-3 rounded-xl flex items-center justify-center bg-[hsl(var(--primary)/0.08)]">
+              <Handshake size={20} className="text-[hsl(var(--primary))]" />
             </div>
             <h3 className="text-[15px] font-bold text-[hsl(var(--navy))] mb-1">Not a dating app</h3>
             <p className="text-[13px] text-[hsl(var(--grey-text))]">
