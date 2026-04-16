@@ -44,7 +44,7 @@ const Index = () => {
           <div className="max-w-[960px] mx-auto text-center">
             <h1 className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] mb-4 text-ds-text-primary">
               Reinventing social in the{" "}
-              <span className="text-ds-accent">AI</span> era.
+              <span className="text-[#2563EB]">AI</span> era.
             </h1>
             <p className="text-[15px] md:text-[18px] font-normal leading-[1.7] text-ds-text-tertiary mb-8 max-w-[560px] mx-auto">
               Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
