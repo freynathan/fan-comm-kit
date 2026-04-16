@@ -5,7 +5,7 @@ const columns = [
       { label: "cocktail.fan", href: "https://cocktail.fan" },
       { label: "car.fan", href: "https://car.fan" },
       { label: "yoga.fan", href: "https://yoga.fan" },
-      { label: "View all 22 →", href: "https://tobe.fan/communities" },
+      { label: "View all 28 →", href: "https://tobe.fan/communities" },
     ],
   },
   {
