@@ -1,19 +1,28 @@
-import { tickerDomains } from "./communities.tsx";
 import { DomainButton } from "@/components/shared/DomainButton";
 
+const tickerOrder = [
+  "cocktail", "car", "yoga", "wine", "coffee", "sneaker", "fashion", "beauty",
+  "luxury", "lifestyle", "running", "healthy", "gym", "bike", "martialarts",
+  "burger", "gourmet", "barbecue", "boat", "trek", "diy", "wildlife",
+  "collector", "robotic", "capital", "dance", "tobe",
+];
+
+const liveSites = new Set(["cocktail", "car", "yoga"]);
+
 export function DomainTicker() {
-  const doubled = [...tickerDomains, ...tickerDomains];
+  const doubled = [...tickerOrder, ...tickerOrder];
 
   return (
     <div className="w-full overflow-hidden py-4">
       <div className="flex animate-ticker gap-3" style={{ width: "max-content" }}>
-        {doubled.map((d, i) => (
+        {doubled.map((name, i) => (
           <DomainButton
-            key={`${d.domain}-${i}`}
-            siteName={d.name}
-            domain={d.domain}
+            key={`${name}-${i}`}
+            siteName={`${name}.fan`}
+            domain={`${name}.fan`}
             size="medium"
-            isLive={d.live}
+            isLive={liveSites.has(name)}
+            showDomainFormat
           />
         ))}
       </div>
