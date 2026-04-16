@@ -1,4 +1,4 @@
-import { categories, type CommunityDomain, getCategoryIcon } from "./communities";
+import { categories, type CommunityDomain, getCategoryIcon } from "./communities.tsx";
 
 function DomainPill({ d }: { d: CommunityDomain }) {
   return (
