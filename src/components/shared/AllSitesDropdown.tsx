@@ -3,12 +3,15 @@ import { DomainButton } from "./DomainButton";
 
 const categories: { label: string; sites: string[] }[] = [
   { label: "Active lifestyle & fitness", sites: ["yoga", "gym", "running", "bike", "martialarts", "healthy"] },
-  { label: "Food & drink", sites: ["cocktail", "burger", "gourmet"] },
-  { label: "Style & beauty", sites: ["fashion", "beauty", "dance"] },
+  { label: "Food & drink", sites: ["cocktail", "burger", "gourmet", "barbecue", "coffee", "wine"] },
+  { label: "Style & culture", sites: ["fashion", "beauty", "dance", "sneaker"] },
   { label: "Adventure & machines", sites: ["car", "boat", "trek", "diy"] },
   { label: "Tech & collecting", sites: ["collector", "robotic"] },
+  { label: "Nature & wildlife", sites: ["wildlife"] },
   { label: "Ecosystem multipliers", sites: ["capital", "luxury", "lifestyle"] },
 ];
+
+const liveSites = new Set(["cocktail", "car", "yoga", "tobe"]);
 
 interface AllSitesDropdownProps {
   isOpen: boolean;
@@ -32,7 +35,7 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
   if (!isOpen) return null;
 
   return (
-    <div ref={ref} className="absolute left-0 right-0 top-full bg-white shadow-lg border-t border-gray-100 z-40">
+    <div ref={ref} className="absolute left-0 right-0 top-full bg-white shadow-lg border-t border-ds-border z-40">
       <div className="max-w-6xl mx-auto px-6 py-6">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {categories.map((cat) => (
@@ -47,6 +50,7 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
                     siteName={s}
                     domain={`${s}.fan`}
                     size="medium"
+                    isLive={liveSites.has(s)}
                     isSelected={s === currentSite}
                     onClick={() => window.open(`https://${s}.fan`, "_blank")}
                   />
@@ -60,7 +64,7 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
             ← Back to tobe.fan
           </a>
           <a href="https://tobe.fan/communities" className="text-sm font-medium text-ds-accent">
-            View all 22 communities →
+            View all 28 communities →
           </a>
         </div>
       </div>
