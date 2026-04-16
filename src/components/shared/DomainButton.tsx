@@ -51,6 +51,8 @@ export interface DomainButtonProps {
   isSelected?: boolean;
   onClick?: () => void;
   className?: string;
+  /** When true, display siteName as-is (e.g. "car.fan") instead of capitalising */
+  showDomainFormat?: boolean;
 }
 
 export function DomainButton({
@@ -61,18 +63,23 @@ export function DomainButton({
   isSelected = false,
   onClick,
   className = "",
+  showDomainFormat = false,
 }: DomainButtonProps) {
   const cfg = sizeConfig[size];
-  const key = siteName.toLowerCase().replace(/\s/g, "");
+  const key = siteName.toLowerCase().replace(/\.fan$/, "").replace(/\s/g, "");
   const Icon = iconMap[key] ?? Star;
   const dotSize = size === "large" ? 8 : size === "medium" ? 7 : 6;
+
+  const label = showDomainFormat
+    ? siteName.toLowerCase()
+    : siteName.charAt(0).toUpperCase() + siteName.slice(1);
 
   return (
     <button
       onClick={onClick}
       className={`group relative inline-flex items-center bg-white cursor-pointer transition-all duration-150 ease-in-out
-        border-2 border-ds-text-primary
-        hover:border-ds-accent hover:bg-ds-accent-light
+        border border-[#C8C8C8]
+        hover:border-[#767676] hover:bg-ds-accent-light
         ${isSelected ? "border-ds-accent bg-ds-accent-light text-ds-accent" : ""}
         ${className}`}
       style={{
@@ -95,7 +102,7 @@ export function DomainButton({
         className={`font-medium whitespace-nowrap ${isSelected ? "text-ds-accent" : "text-ds-text-primary"} group-hover:text-ds-accent`}
         style={{ fontSize: cfg.text, letterSpacing: 0 }}
       >
-        {siteName.charAt(0).toUpperCase() + siteName.slice(1)}
+        {label}
       </span>
 
       {isLive && (
