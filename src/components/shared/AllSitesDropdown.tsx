@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { DomainButton } from "./DomainButton";
 
 const categories: { label: string; sites: string[] }[] = [
   { label: "Active lifestyle & fitness", sites: ["yoga", "gym", "running", "bike", "martialarts", "healthy"] },
@@ -36,36 +37,29 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {categories.map((cat) => (
             <div key={cat.label}>
-              <h4 className="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-2">
+              <h4 className="text-[10px] uppercase tracking-widest text-ds-text-tertiary font-medium mb-2">
                 {cat.label}
               </h4>
               <div className="flex flex-wrap gap-2">
-                {cat.sites.map((s) => {
-                  const isCurrent = s === currentSite;
-                  return (
-                    <a
-                      key={s}
-                      href={`https://${s}.fan`}
-                      className="px-3 py-1 rounded-full text-xs font-medium transition-colors"
-                      style={
-                        isCurrent
-                          ? { backgroundColor: accentColor, color: "#fff" }
-                          : { backgroundColor: "#f3f4f6", color: "#4b5563" }
-                      }
-                    >
-                      {s}.fan
-                    </a>
-                  );
-                })}
+                {cat.sites.map((s) => (
+                  <DomainButton
+                    key={s}
+                    siteName={s}
+                    domain={`${s}.fan`}
+                    size="medium"
+                    isSelected={s === currentSite}
+                    onClick={() => window.open(`https://${s}.fan`, "_blank")}
+                  />
+                ))}
               </div>
             </div>
           ))}
         </div>
-        <div className="flex justify-between mt-6 pt-4 border-t border-gray-100">
-          <a href="https://tobe.fan" className="text-sm font-medium" style={{ color: "#0C447C" }}>
+        <div className="flex justify-between mt-6 pt-4 border-t border-ds-border">
+          <a href="https://tobe.fan" className="text-sm font-medium text-ds-accent">
             ← Back to tobe.fan
           </a>
-          <a href="https://tobe.fan/communities" className="text-sm font-medium" style={{ color: "#0C447C" }}>
+          <a href="https://tobe.fan/communities" className="text-sm font-medium text-ds-accent">
             View all 22 communities →
           </a>
         </div>
