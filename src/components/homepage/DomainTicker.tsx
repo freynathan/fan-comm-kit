@@ -9,7 +9,8 @@ export function DomainTicker() {
         {doubled.map((d, i) => (
           <span
             key={`${d.domain}-${i}`}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium bg-[hsl(var(--muted))] text-[hsl(var(--grey-text))] whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-[5px] rounded-full text-[13px] font-normal bg-ds-surface text-ds-text-secondary whitespace-nowrap shrink-0 border border-ds-border"
+            style={{ borderWidth: '0.5px' }}
           >
             {d.emoji} {d.domain}
           </span>

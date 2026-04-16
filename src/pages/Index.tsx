@@ -17,7 +17,7 @@ const Index = () => {
   const { data: stats } = useHomepageStats();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-ds-bg">
       <Helmet>
         <title>ToBe.fan — Reinventing social in the AI era</title>
         <meta
@@ -34,54 +34,56 @@ const Index = () => {
       <SharedHeader
         siteName="tobe"
         siteEmoji="⭐"
-        accentColor="#0C447C"
+        accentColor="hsl(var(--color-accent))"
         aiFeatureLabel="AI Relate"
       />
 
-      {/* SECTION 1 — HERO */}
-      <section className="w-full pt-20 pb-12 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-[40px] md:text-[56px] font-bold leading-[1.1] tracking-tight mb-4" style={{ color: "#0A1628" }}>
-            Reinventing social in the{" "}
-            <span style={{ color: "#0C447C" }}>AI</span> era.
-          </h1>
-          <p className="text-[16px] md:text-[18px] text-[hsl(var(--grey-text))] mb-8 max-w-2xl mx-auto">
-            Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
-          </p>
-          <HeroClaim />
-          <div className="mt-8">
-            <StatPills
-              totalFans={stats?.totalFans ?? 0}
-              totalClubs={stats?.totalClubs ?? 0}
-              totalCommunities={stats?.totalCommunities ?? 23}
-              postsToday={stats?.postsToday ?? 0}
-            />
+      {/* SECTION 1 — HERO (white) */}
+      <section className="w-full bg-ds-bg py-20 md:py-[80px] px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="max-w-[960px] mx-auto text-center">
+            <h1 className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] mb-4 text-ds-text-primary">
+              Reinventing social in the{" "}
+              <span className="text-ds-accent">AI</span> era.
+            </h1>
+            <p className="text-[15px] md:text-[18px] font-normal leading-[1.7] text-ds-text-tertiary mb-8 max-w-[560px] mx-auto">
+              Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
+            </p>
+            <HeroClaim />
+            <div className="mt-8">
+              <StatPills
+                totalFans={stats?.totalFans ?? 0}
+                totalClubs={stats?.totalClubs ?? 0}
+                totalCommunities={stats?.totalCommunities ?? 23}
+                postsToday={stats?.postsToday ?? 0}
+              />
+            </div>
           </div>
-        </div>
-        <div className="max-w-5xl mx-auto mt-6">
-          <DomainTicker />
+          <div className="max-w-[960px] mx-auto mt-6">
+            <DomainTicker />
+          </div>
         </div>
       </section>
 
-      {/* SECTION 2 — CONTENT HUB */}
+      {/* SECTION 2 — CONTENT HUB (grey) */}
       <ContentHubSection />
 
-      {/* SECTION 3 — FEATURED PROFILES */}
+      {/* SECTION 3 — FEATURED PROFILES (white) */}
       <FeaturedProfilesSection />
 
-      {/* SECTION 4 — RELATE */}
+      {/* SECTION 4 — RELATE (grey) */}
       <RelateSection />
 
-      {/* SECTION 5 — COMMUNITIES */}
+      {/* SECTION 5 — COMMUNITIES (white) */}
       <CommunitiesSection />
 
-      {/* SECTION 6 — FOR BRANDS */}
+      {/* SECTION 6 — FOR BRANDS (grey) */}
       <ForBrandsSection />
 
-      {/* SECTION 7 — CLOSING CTA */}
+      {/* SECTION 7 — CLOSING CTA (white) */}
       <ClosingCTA />
 
-      {/* SECTION 8 — AI ADVANTAGE STRIP */}
+      {/* SECTION 8 — AI ADVANTAGE STRIP (grey) */}
       <AIAdvantageStrip />
 
       <SharedFooter />

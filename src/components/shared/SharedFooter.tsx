@@ -39,12 +39,12 @@ const columns = [
 
 export function SharedFooter() {
   return (
-    <footer className="w-full bg-white" style={{ borderTop: "1px solid #eee" }}>
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <footer className="w-full bg-white" style={{ borderTop: '0.5px solid hsl(var(--color-border))' }}>
+      <div className="max-w-[1200px] mx-auto px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="text-[13px] font-semibold mb-3" style={{ color: "#0A1628" }}>
+              <h4 className="text-[13px] font-medium mb-3 text-ds-text-primary">
                 {col.title}
               </h4>
               <ul className="flex flex-col gap-2">
@@ -52,8 +52,7 @@ export function SharedFooter() {
                   <li key={l.label}>
                     <a
                       href={l.href}
-                      className="text-[13px] transition-colors hover:text-[#0A1628]"
-                      style={{ color: "#6b7280" }}
+                      className="text-[13px] font-normal text-ds-text-tertiary transition-colors hover:text-ds-text-primary"
                     >
                       {l.label}
                     </a>
@@ -65,12 +64,12 @@ export function SharedFooter() {
         </div>
         <div
           className="flex flex-col sm:flex-row justify-between items-center mt-10 pt-6"
-          style={{ borderTop: "1px solid #eee" }}
+          style={{ borderTop: '0.5px solid hsl(var(--color-border))' }}
         >
-          <span className="text-[12px]" style={{ color: "#9ca3af" }}>
+          <span className="text-[13px] font-normal text-ds-text-tertiary">
             © 2025 ToBe.fan · Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
           </span>
-          <a href="https://tobe.fan" className="text-[13px] font-bold" style={{ color: "#0C447C" }}>
+          <a href="https://tobe.fan" className="text-[14px] font-semibold text-ds-accent">
             tobe.fan
           </a>
         </div>
