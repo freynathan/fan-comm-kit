@@ -31,8 +31,8 @@ export function DomainTicker() {
   return (
     <div ref={wrapRef} className="w-full relative">
       <div
-        className="flex justify-center gap-2"
-        style={{ whiteSpace: "nowrap", overflow: "hidden", flexWrap: "nowrap" }}
+        className="flex justify-start gap-2"
+        style={{ whiteSpace: "nowrap", overflow: "hidden", flexWrap: "nowrap", paddingLeft: 24 }}
       >
         {visibleDomains.map((name) => (
           <DomainButton
@@ -46,7 +46,7 @@ export function DomainTicker() {
         ))}
         <button
           onClick={() => setOpen((o) => !o)}
-          className="inline-flex items-center justify-center font-medium whitespace-nowrap transition-all duration-150 ease-in-out text-white shrink-0"
+          className="inline-flex items-center justify-center whitespace-nowrap transition-all duration-150 ease-in-out text-white shrink-0"
           style={{
             height: 36,
             paddingLeft: 12,
@@ -55,10 +55,11 @@ export function DomainTicker() {
             paddingBottom: 8,
             borderRadius: 12,
             fontSize: 13,
+            fontWeight: 500,
             backgroundColor: "#0A0A0A",
           }}
         >
-          +16 more
+          +19 more domains
         </button>
       </div>
 
