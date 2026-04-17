@@ -44,34 +44,48 @@ const sizeConfig = {
   small:  { height: 28, icon: 16, text: 12, px: 10, py: 5,  radius: 8  },
 } as const;
 
-/** Per-site accent palette: border/icon/text use accent, bg uses accent at ~8% opacity */
-const accentPalette: Record<string, { accent: string; bg: string; bgHover: string }> = {
+/** Per-site accent palette: border/icon/text use accent, bg uses accent-light (~8% opacity) */
+const accentPalette: Record<string, { accent: string; border?: string; bg: string; bgHover: string }> = {
+  /* Active lifestyle & fitness */
   yoga:        { accent: "#4A1970", bg: "#F0EAF7", bgHover: "#E3D6F0" },
-  gym:         { accent: "#1A3A5C", bg: "#EAF0F7", bgHover: "#D6E2F0" },
-  running:     { accent: "#0A6B5C", bg: "#E8F5F2", bgHover: "#D1ECE6" },
-  bike:        { accent: "#0A4A5C", bg: "#E8F3F7", bgHover: "#D1E8F0" },
-  martialarts: { accent: "#3D0A0A", bg: "#F5E8E8", bgHover: "#EDD3D3" },
-  healthy:     { accent: "#1A5C1A", bg: "#EAF5EA", bgHover: "#D6ECD6" },
-  cocktail:    { accent: "#C25B0A", bg: "#FDF0E8", bgHover: "#FCE2D1" },
-  wine:        { accent: "#6B1A2A", bg: "#F5EAF0", bgHover: "#EDD6E0" },
-  coffee:      { accent: "#6B3A2A", bg: "#F5EEE8", bgHover: "#EDDFD3" },
-  gourmet:     { accent: "#8B3A0A", bg: "#F5EDE8", bgHover: "#EDDDD3" },
-  burger:      { accent: "#8B4A0A", bg: "#F5F0E8", bgHover: "#EDE3D3" },
-  barbecue:    { accent: "#CC4A00", bg: "#FDF0E8", bgHover: "#FCE2D1" },
-  fashion:     { accent: "#8B1A4A", bg: "#F5EAF0", bgHover: "#EDD6E0" },
-  luxury:      { accent: "#B8960C", bg: "#FBF6E3", bgHover: "#F7EEC7" },
-  beauty:      { accent: "#9B4F6E", bg: "#F7EEF2", bgHover: "#F0DDE6" },
-  dance:       { accent: "#6B0A5C", bg: "#F5E8F3", bgHover: "#EDD3E8" },
-  sneaker:     { accent: "#1A1A1A", bg: "#F0F0F0", bgHover: "#E0E0E0" },
-  lifestyle:   { accent: "#1A5C38", bg: "#EAF5EE", bgHover: "#D6ECDD" },
-  trek:        { accent: "#2D5A1A", bg: "#EDF5E8", bgHover: "#DCEDD3" },
-  wildlife:    { accent: "#5C3D1A", bg: "#F5EFE8", bgHover: "#EDE0D3" },
-  boat:        { accent: "#0A3D62", bg: "#E8F1F8", bgHover: "#D1E4F0" },
-  car:         { accent: "#8B1A1A", bg: "#F5EAEA", bgHover: "#EDD6D6" },
-  robotic:     { accent: "#0A3D5C", bg: "#E8F1F7", bgHover: "#D1E4F0" },
-  capital:     { accent: "#1A3D2B", bg: "#EAF2EE", bgHover: "#D6E5DD" },
-  diy:         { accent: "#5C3A0A", bg: "#F5EEE8", bgHover: "#EDDDD3" },
-  collector:   { accent: "#3D1A5C", bg: "#F0EAF7", bgHover: "#E3D6F0" },
+  gym:         { accent: "#005CB9", bg: "#E6F0FB", bgHover: "#D1E2F5" },
+  running:     { accent: "#AB2432", bg: "#F5E8EA", bgHover: "#EDD3D7" },
+  bike:        { accent: "#01A7B7", bg: "#E6F7F9", bgHover: "#D1F0F3" },
+  martialarts: { accent: "#1A1A1A", border: "#333333", bg: "#F0F0F0", bgHover: "#E0E0E0" },
+  healthy:     { accent: "#8AA312", bg: "#F3F7E6", bgHover: "#E8EFD1" },
+
+  /* Food & drink */
+  cocktail:    { accent: "#CF3B12", bg: "#FBEEE9", bgHover: "#F7DDD3" },
+  wine:        { accent: "#790222", bg: "#F2E6EA", bgHover: "#E8D1D7" },
+  coffee:      { accent: "#775E35", bg: "#F2EDE4", bgHover: "#E8DECB" },
+  gourmet:     { accent: "#81797A", bg: "#F2F1F1", bgHover: "#E5E3E3" },
+  burger:      { accent: "#D97904", bg: "#FBF0E2", bgHover: "#F7E1C5" },
+  barbecue:    { accent: "#4A130C", bg: "#F0E8E7", bgHover: "#E3D3D1" },
+
+  /* Style & living */
+  fashion:     { accent: "#9A031E", bg: "#F5E6E9", bgHover: "#EDD1D6" },
+  luxury:      { accent: "#DAA520", bg: "#FBF6E3", bgHover: "#F7EEC7" },
+  beauty:      { accent: "#CA47BD", bg: "#FAECF9", bgHover: "#F5D9F2" },
+  dance:       { accent: "#2460BD", bg: "#EAF0FB", bgHover: "#D6E2F5" },
+  sneaker:     { accent: "#FF312E", bg: "#FFECEC", bgHover: "#FED9D9" },
+  lifestyle:   { accent: "#004466", bg: "#E6EFF5", bgHover: "#D1E0EB" },
+
+  /* Adventure & nature */
+  trek:        { accent: "#898177", bg: "#F2F1F0", bgHover: "#E5E3E0" },
+  wildlife:    { accent: "#B7683B", bg: "#F8EEE6", bgHover: "#F1DDCB" },
+  boat:        { accent: "#1C749D", bg: "#E7F2F8", bgHover: "#D1E5F0" },
+
+  /* Machines & tech */
+  car:         { accent: "#FF2800", bg: "#FFEBEA", bgHover: "#FED7D5" },
+  robotic:     { accent: "#5D627F", bg: "#EEEEF2", bgHover: "#DDDDE5" },
+
+  /* Build & collect */
+  capital:     { accent: "#2FA98C", bg: "#E8F7F3", bgHover: "#D1F0E7" },
+  diy:         { accent: "#39425D", bg: "#ECEEF2", bgHover: "#D9DDE5" },
+  collector:   { accent: "#684792", bg: "#F0EBF6", bgHover: "#E1D7ED" },
+
+  /* Hub */
+  tobe:        { accent: "#1A1A2E", bg: "#EEEEF2", bgHover: "#DDDDE5" },
 };
 
 export interface DomainButtonProps {
