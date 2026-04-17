@@ -3,7 +3,7 @@ import { PassionWall } from "./PassionWall";
 
 export function ContentHubSection() {
   return (
-    <section className="w-full bg-white overflow-hidden" style={{ paddingTop: 72, paddingBottom: 64 }}>
+    <section className="w-full bg-white overflow-hidden" style={{ paddingTop: 72, paddingBottom: 24 }}>
       {/* Full-bleed Passion Wall */}
       <PassionWall />
 
