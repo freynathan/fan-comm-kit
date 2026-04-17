@@ -153,7 +153,7 @@ export function DomainButton({
         paddingTop: cfg.py,
         paddingBottom: cfg.py,
         borderRadius: cfg.radius,
-        gap: size === "large" ? 10 : size === "medium" ? 8 : 6,
+        gap: size === "large" ? 6 : size === "medium" ? 5 : 4,
         minWidth: "fit-content",
         ...accentInlineStyle,
       }}
