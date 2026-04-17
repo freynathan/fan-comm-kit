@@ -128,7 +128,7 @@ export function DomainButton({
 
   const accentInlineStyle: React.CSSProperties = accentMode
     ? {
-        borderColor: palette.accent,
+        borderColor: palette.border ?? palette.accent,
         backgroundColor: hover ? palette.bgHover : palette.bg,
         color: palette.accent,
         transform: hover ? "scale(1.02)" : "scale(1)",
