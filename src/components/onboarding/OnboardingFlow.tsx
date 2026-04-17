@@ -106,13 +106,13 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
     setData((d) => ({ ...d, ...partial }));
 
   const handleComplete = async () => {
-    if (!user) return;
+    if (!user?.dbUserId) return;
 
     // Save to users table (only columns that exist in schema)
     await supabase
       .from("users")
       .upsert({
-        id: user.id,
+        id: user.dbUserId,
         username: data.username,
         display_name: data.displayName,
         avatar_url: data.avatarUrl || null,
@@ -123,7 +123,7 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
     await supabase
       .from("profiles")
       .upsert({
-        user_id: user.id,
+        user_id: user.dbUserId,
         headline: data.headline,
         bio: data.bio,
       });
@@ -131,7 +131,7 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
     // Save passion_points
     if (data.selectedSites.length > 0) {
       const points = data.selectedSites.map((s) => ({
-        user_id: user.id,
+        user_id: user.dbUserId,
         site_id: s.id,
         points: 0,
         level: "enthusiast",
@@ -199,7 +199,7 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
                 }
                 setStep(2);
               }}
-              userId={user?.id}
+              userId={user?.dbUserId}
             />
           )}
           {step === 2 && (
