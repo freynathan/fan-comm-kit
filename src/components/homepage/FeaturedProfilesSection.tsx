@@ -90,7 +90,7 @@ export function FeaturedProfilesSection() {
           <p className="text-[13px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-3">
             Creator profiles
           </p>
-          <h2 className="text-[44px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
+          <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
             The bio link that builds your business.
           </h2>
           <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-6 max-w-2xl mx-auto">

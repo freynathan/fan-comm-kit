@@ -13,7 +13,7 @@ export function ForBrandsSection() {
           <p className="text-[13px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-3">
             For brands
           </p>
-          <h2 className="text-[44px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
+          <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
             Your audience is already here.
           </h2>
           <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-12 max-w-2xl mx-auto">
