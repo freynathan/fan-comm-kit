@@ -221,7 +221,6 @@ function WallCard({ card, height, slug, onNavigateGuard }: CardProps) {
 }
 
 export function PassionWall() {
-  const [flippedId, setFlippedId] = useState<string | null>(null);
   const [paused, setPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
