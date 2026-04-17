@@ -33,7 +33,7 @@ const mockCreators = [
 
 function CreatorCard({ creator }: { creator: typeof mockCreators[number] }) {
   return (
-    <div className="relative bg-white rounded-xl border border-ds-border p-6 text-left transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
+    <div className="relative bg-white rounded-xl border border-ds-border p-4 text-left transition-colors hover:border-ds-border-strong h-full flex flex-col" style={{ borderWidth: '0.5px' }}>
       <span
         className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium"
         style={{ background: '#EAF5EA', color: '#1A5C1A' }}
@@ -70,7 +70,7 @@ function CreatorCard({ creator }: { creator: typeof mockCreators[number] }) {
           </span>
         ))}
       </div>
-      <div className="text-[13px] font-normal text-ds-text-tertiary pt-3 border-t border-ds-border">
+      <div className="text-[12px] font-normal text-ds-text-tertiary pt-3 border-t border-ds-border whitespace-nowrap mt-auto">
         {creator.stats}
       </div>
     </div>
@@ -100,11 +100,11 @@ export function FeaturedProfilesSection() {
             <HeroClaim />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 items-stretch">
             {realCards.map((p) => (
               <div
                 key={p.id}
-                className="relative bg-white rounded-xl border border-ds-border p-6 text-left transition-colors hover:border-ds-border-strong"
+                className="relative bg-white rounded-xl border border-ds-border p-4 text-left transition-colors hover:border-ds-border-strong h-full flex flex-col"
                 style={{ borderWidth: '0.5px' }}
               >
                 <span
@@ -150,7 +150,7 @@ export function FeaturedProfilesSection() {
                     </span>
                   ))}
                 </div>
-                <div className="text-[13px] font-normal text-ds-text-tertiary pt-3 border-t border-ds-border">
+                <div className="text-[12px] font-normal text-ds-text-tertiary pt-3 border-t border-ds-border whitespace-nowrap mt-auto">
                   {p.fanCount} fans · {p.clubCount} clubs · {p.totalPoints} passion points
                 </div>
               </div>
