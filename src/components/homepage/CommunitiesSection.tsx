@@ -46,7 +46,15 @@ export function CommunitiesSection() {
                 <p className="text-[13px] font-normal text-ds-text-tertiary mb-4">
                   {cat.domains.length} communities
                 </p>
-                <div className="flex flex-wrap gap-2.5">
+                <div
+                  className={
+                    cat.domains.length === 6
+                      ? "grid grid-cols-3 gap-2.5"
+                      : cat.domains.length === 3
+                        ? "grid grid-cols-3 gap-2.5"
+                        : "flex flex-wrap gap-2.5"
+                  }
+                >
                   {cat.domains.map((d) => (
                     <div key={d.domain} className="relative">
                       <DomainButton
