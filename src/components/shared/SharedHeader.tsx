@@ -5,6 +5,7 @@ import { AvatarDropdown } from "./AvatarDropdown";
 import { AllSitesDropdown } from "./AllSitesDropdown";
 import { AuthModal } from "./AuthModals";
 import type { SharedHeaderProps } from "./types";
+import tobeLogo from "@/assets/tobe-logo.png";
 
 const navLinks = (aiLabel: string) => [
   { label: "Feed", path: "/feed" },
@@ -40,17 +41,12 @@ export function SharedHeader(props: HeaderInternalProps) {
     <header className="relative w-full bg-white" style={{ borderBottom: '0.5px solid hsl(var(--color-border))' }}>
       <div className="max-w-[1200px] mx-auto flex items-center justify-between h-14 px-6">
         {/* LEFT — Logo */}
-        <a href="/" className="flex items-center gap-2 no-underline">
-          <span
-            className="flex items-center justify-center rounded-lg text-lg bg-ds-accent"
-            style={{ width: 36, height: 36 }}
-          >
-            {siteEmoji}
-          </span>
-          <span className="text-[16px] font-semibold text-ds-text-primary">
-            {siteName}
-            <span className="text-ds-accent">.fan</span>
-          </span>
+        <a href="/" className="flex items-center no-underline">
+          <img
+            src={tobeLogo}
+            alt="ToBe.fan"
+            style={{ height: 24, width: "auto" }}
+          />
         </a>
 
         {/* CENTER — Nav */}
