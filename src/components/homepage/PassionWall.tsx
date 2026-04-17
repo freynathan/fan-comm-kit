@@ -129,11 +129,12 @@ const SAMPLE_CARDS: PassionCard[] = [
 interface CardProps {
   card: PassionCard;
   height: number;
+  width?: number;
   slug: string;
   onNavigateGuard: () => boolean;
 }
 
-function WallCard({ card, height, slug, onNavigateGuard }: CardProps) {
+function WallCard({ card, height, width = 260, slug, onNavigateGuard }: CardProps) {
   return (
     <Link
       to={`/feed/${slug}`}
@@ -142,8 +143,8 @@ function WallCard({ card, height, slug, onNavigateGuard }: CardProps) {
           e.preventDefault();
         }
       }}
-      className="relative shrink-0 cursor-pointer select-none block group"
-      style={{ width: 260, height }}
+      className="relative cursor-pointer select-none block group"
+      style={{ width, height }}
       draggable={false}
     >
       <div className="relative w-full h-full rounded-[12px] overflow-hidden">
