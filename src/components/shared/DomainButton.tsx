@@ -121,7 +121,7 @@ export function DomainButton({
   const [hover, setHover] = useState(false);
 
   const label = showDomainFormat
-    ? siteName.toLowerCase()
+    ? (siteName.toLowerCase().endsWith(".fan") ? siteName.toLowerCase() : `${siteName.toLowerCase()}.fan`)
     : siteName.charAt(0).toUpperCase() + siteName.slice(1);
 
   const accentMode = useAccentStyle && palette;
