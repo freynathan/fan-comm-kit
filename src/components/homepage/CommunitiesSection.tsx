@@ -1,7 +1,21 @@
+import { useState } from "react";
 import { categories, getCategoryIcon } from "./communities.tsx";
 import { DomainButton } from "@/components/shared/DomainButton";
 
 export function CommunitiesSection() {
+  const [toastDomain, setToastDomain] = useState<string | null>(null);
+
+  const handleClick = (domain: string, isLive: boolean) => {
+    if (isLive) {
+      window.location.href = `#${domain.replace(".fan", "")}`;
+      return;
+    }
+    setToastDomain(domain);
+    setTimeout(() => {
+      setToastDomain((current) => (current === domain ? null : current));
+    }, 3000);
+  };
+
   return (
     <section className="w-full py-12 md:py-[80px] px-6 bg-ds-bg">
       <div className="max-w-[1200px] mx-auto">
@@ -34,15 +48,26 @@ export function CommunitiesSection() {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {cat.domains.map((d) => (
-                    <DomainButton
-                      key={d.domain}
-                      siteName={d.name}
-                      domain={d.domain}
-                      size="large"
-                      isLive={d.live}
-                      showDomainFormat
-                      useAccentStyle
-                    />
+                    <div key={d.domain} className="relative">
+                      <DomainButton
+                        siteName={d.name}
+                        domain={d.domain}
+                        size="large"
+                        isLive={d.live}
+                        showDomainFormat
+                        useAccentStyle
+                        onClick={() => handleClick(d.domain, d.live)}
+                      />
+                      {toastDomain === d.domain && (
+                        <div
+                          role="status"
+                          className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-20 whitespace-nowrap bg-white px-3 py-2 text-[12px] text-ds-text-secondary animate-in fade-in-0 zoom-in-95 duration-200"
+                          style={{ border: '1px solid #E5E5E5', borderRadius: 10 }}
+                        >
+                          Coming soon — join the waitlist to be notified when {d.domain} launches.
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
