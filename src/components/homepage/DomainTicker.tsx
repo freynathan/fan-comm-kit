@@ -31,19 +31,24 @@ export function DomainTicker() {
   return (
     <div ref={wrapRef} className="w-full relative">
       <div
-        className="flex justify-start gap-2"
-        style={{ whiteSpace: "nowrap", overflow: "hidden", flexWrap: "nowrap", paddingLeft: 24 }}
+        className="flex justify-start items-center gap-2"
+        style={{ flexWrap: "nowrap", paddingLeft: 24, paddingRight: 24 }}
       >
-        {visibleDomains.map((name) => (
-          <DomainButton
-            key={name}
-            siteName={`${name}.fan`}
-            domain={`${name}.fan`}
-            size="medium"
-            isLive={liveSites.has(name)}
-            showDomainFormat
-          />
-        ))}
+        <div
+          className="flex items-center gap-2 min-w-0"
+          style={{ whiteSpace: "nowrap", overflow: "hidden", flexWrap: "nowrap", flex: "1 1 auto" }}
+        >
+          {visibleDomains.map((name) => (
+            <DomainButton
+              key={name}
+              siteName={`${name}.fan`}
+              domain={`${name}.fan`}
+              size="medium"
+              isLive={liveSites.has(name)}
+              showDomainFormat
+            />
+          ))}
+        </div>
         <button
           onClick={() => setOpen((o) => !o)}
           className="inline-flex items-center justify-center whitespace-nowrap transition-all duration-150 ease-in-out text-white shrink-0"

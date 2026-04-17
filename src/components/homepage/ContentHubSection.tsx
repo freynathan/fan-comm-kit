@@ -3,7 +3,7 @@ import { PassionWall } from "./PassionWall";
 
 export function ContentHubSection() {
   return (
-    <section className="w-full bg-white overflow-hidden" style={{ paddingTop: 40, paddingBottom: 80 }}>
+    <section className="w-full bg-white overflow-hidden" style={{ paddingTop: 56, paddingBottom: 80 }}>
       {/* Full-bleed Passion Wall */}
       <PassionWall />
 
@@ -12,7 +12,7 @@ export function ContentHubSection() {
           to="/feed"
           className="text-[13px] font-medium text-ds-text-tertiary hover:text-ds-text-primary transition-colors"
         >
-          Explore all posts →
+          Explore all the latest posts →
         </Link>
       </div>
     </section>
