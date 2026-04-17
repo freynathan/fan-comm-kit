@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
+import { SharedHeader } from "@/components/shared/SharedHeader";
+import { SharedFooter } from "@/components/shared/SharedFooter";
 import { ProfileSkeleton } from "./ProfileSkeleton";
 import { NotFoundProfile } from "./NotFoundProfile";
 import { ProfileHeader } from "./ProfileHeader";
@@ -52,8 +54,14 @@ export function PublicProfile() {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-white">
-        <div className="max-w-3xl mx-auto px-6">
+      <div className="min-h-screen bg-white flex flex-col">
+        <SharedHeader
+          siteName="tobe"
+          siteEmoji="⭐"
+          accentColor="hsl(var(--color-accent))"
+          aiFeatureLabel="AI Relate"
+        />
+        <div className="max-w-3xl mx-auto px-6 w-full flex-1">
           <ProfileHeader
             user={user}
             profile={profile}
@@ -85,6 +93,7 @@ export function PublicProfile() {
         </div>
 
         <ProfileFooter />
+        <SharedFooter />
       </div>
     </>
   );
