@@ -3,15 +3,7 @@ import { PassionWall } from "./PassionWall";
 
 export function ContentHubSection() {
   return (
-    <section className="w-full py-20 md:py-[120px] bg-white overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-6">
-        <div className="max-w-[960px] mx-auto text-center">
-          <p className="text-[16px] font-medium tracking-[0.08em] uppercase text-[#0C447C]" style={{ marginBottom: 24 }}>
-            Latest from the network
-          </p>
-        </div>
-      </div>
-
+    <section className="w-full bg-white overflow-hidden" style={{ paddingTop: 24, paddingBottom: 80 }}>
       {/* Full-bleed Passion Wall */}
       <PassionWall />
 

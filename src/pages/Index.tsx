@@ -50,7 +50,7 @@ const Index = () => {
               Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
             </p>
           </div>
-          <div className="max-w-[960px] mx-auto mt-12">
+          <div className="max-w-[960px] mx-auto" style={{ marginTop: 32 }}>
             <DomainTicker />
           </div>
         </div>
