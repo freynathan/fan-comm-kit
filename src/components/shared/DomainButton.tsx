@@ -39,7 +39,7 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const sizeConfig = {
-  large:  { height: 44, icon: 24, text: 14, px: 16, py: 10, radius: 14 },
+  large:  { height: 44, icon: 24, text: 14, px: 12, py: 10, radius: 14 },
   medium: { height: 36, icon: 20, text: 13, px: 12, py: 8,  radius: 12 },
   small:  { height: 28, icon: 16, text: 12, px: 10, py: 5,  radius: 8  },
 } as const;
@@ -153,7 +153,7 @@ export function DomainButton({
         paddingTop: cfg.py,
         paddingBottom: cfg.py,
         borderRadius: cfg.radius,
-        gap: size === "large" ? 6 : size === "medium" ? 5 : 4,
+        gap: size === "large" ? 4 : size === "medium" ? 4 : 3,
         minWidth: "fit-content",
         ...accentInlineStyle,
       }}
