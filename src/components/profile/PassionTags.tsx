@@ -9,7 +9,18 @@ interface PassionTagsProps {
 }
 
 export function PassionTags({ passionPoints }: PassionTagsProps) {
-  if (passionPoints.length === 0) return null;
+  if (passionPoints.length === 0) {
+    return (
+      <section className="py-8">
+        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-ds-text-tertiary mb-3">
+          Passions
+        </h2>
+        <a href="/onboarding" className="text-[13px] text-gray-400 italic hover:text-[#0C447C] transition-colors">
+          Join communities to earn passion points →
+        </a>
+      </section>
+    );
+  }
 
   return (
     <section className="py-8">

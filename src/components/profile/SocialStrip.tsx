@@ -14,9 +14,9 @@ export function SocialStrip({ socialLinks, fanCount }: SocialStripProps) {
   if (socialLinks.length === 0 && fanCount === 0) {
     return (
       <section className="py-8">
-        <p className="text-[13px] text-gray-400 italic">
-          Add your social accounts to show your reach →
-        </p>
+        <a href="/settings" className="text-[13px] text-gray-400 italic hover:text-[#0C447C] transition-colors">
+          Connect your social accounts to show your reach →
+        </a>
       </section>
     );
   }
@@ -26,7 +26,7 @@ export function SocialStrip({ socialLinks, fanCount }: SocialStripProps) {
 
   return (
     <section className="py-8">
-      <div className="flex flex-wrap gap-3">
+      <div className="flex gap-3 overflow-x-auto pb-2" style={{ scrollbarWidth: "thin" }}>
         {/* tobe.fan card always first */}
         <SocialCard platform="tobe.fan" count={fanCount} handle={null} />
         {sorted.map((link) => (
