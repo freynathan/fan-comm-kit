@@ -39,13 +39,13 @@ export function SharedHeader(props: HeaderInternalProps) {
 
   return (
     <header className="relative w-full bg-white" style={{ borderBottom: '0.5px solid hsl(var(--color-border))' }}>
-      <div className="max-w-[1200px] mx-auto flex items-center justify-between h-14 px-6">
+      <div className="max-w-[1200px] mx-auto flex items-center justify-between h-20 px-6">
         {/* LEFT — Logo */}
         <a href="/" className="flex items-center no-underline">
           <img
             src={tobeLogo}
             alt="ToBe.fan"
-            style={{ height: 24, width: "auto" }}
+            style={{ height: 44, width: "auto" }}
           />
         </a>
 
