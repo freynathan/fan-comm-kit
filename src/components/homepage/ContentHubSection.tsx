@@ -1,9 +1,10 @@
-import { Radio } from "lucide-react";
+import { Link } from "react-router-dom";
+import { PassionWall } from "./PassionWall";
 
 export function ContentHubSection() {
   return (
-    <section className="w-full py-20 md:py-[120px] px-6 bg-ds-surface">
-      <div className="max-w-[1200px] mx-auto">
+    <section className="w-full py-20 md:py-[120px] bg-ds-surface overflow-hidden">
+      <div className="max-w-[1200px] mx-auto px-6">
         <div className="max-w-[960px] mx-auto text-center">
           <p className="text-[16px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-4">
             Latest from the network
@@ -14,20 +15,19 @@ export function ContentHubSection() {
           <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-12 max-w-2xl mx-auto">
             AI-powered content published here first — dispatched to the communities that care most.
           </p>
-
-          {/* Placeholder state */}
-          <div className="rounded-xl border border-ds-border bg-white py-16 px-8" style={{ borderWidth: '0.5px' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-ds-accent-light flex items-center justify-center">
-              <Radio size={28} className="text-ds-accent" />
-            </div>
-            <p className="text-[15px] font-medium text-ds-text-primary mb-1">
-              Content arriving soon
-            </p>
-            <p className="text-[13px] font-normal text-ds-text-tertiary">
-              Our AI is scanning the web as we speak.
-            </p>
-          </div>
         </div>
+      </div>
+
+      {/* Full-bleed Passion Wall */}
+      <PassionWall />
+
+      <div className="max-w-[1200px] mx-auto px-6 text-center mt-10">
+        <Link
+          to="/feed"
+          className="text-[13px] font-medium text-ds-text-tertiary hover:text-ds-text-primary transition-colors"
+        >
+          Explore all posts →
+        </Link>
       </div>
     </section>
   );
