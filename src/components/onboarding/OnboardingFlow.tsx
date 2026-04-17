@@ -38,7 +38,11 @@ interface OnboardingFlowProps {
 
 export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading } = useSupabaseAuth();
+
+  const sourceIsGoogle = searchParams.get("source") === "google";
+  const requestedStep = parseInt(searchParams.get("step") ?? "", 10);
 
   const [step, setStep] = useState(1);
   const [data, setData] = useState<OnboardingData>(() => {
@@ -52,8 +56,12 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
     return defaultData;
   });
 
-  // Restore step from localStorage
+  // Restore step from localStorage — but ?step= URL param wins for Google flow
   useEffect(() => {
+    if (sourceIsGoogle && requestedStep >= 1 && requestedStep <= 4) {
+      setStep(requestedStep);
+      return;
+    }
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -61,7 +69,7 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
         if (parsed.step) setStep(parsed.step);
       }
     } catch {}
-  }, []);
+  }, [sourceIsGoogle, requestedStep]);
 
   // Save progress to localStorage
   useEffect(() => {
@@ -74,17 +82,24 @@ export function OnboardingFlow({ returnTo }: OnboardingFlowProps) {
       navigate("/");
       return;
     }
-    if (!loading && user) {
-      // onboarding_completed column may not exist yet — skip redirect check
-      // navigate(returnTo || "/dashboard");
-    }
   }, [user, loading, navigate, returnTo]);
 
-  // Pre-fill display name from auth
+  // Pre-fill from auth — for Google sign-in, pull display_name + avatar from session metadata
   useEffect(() => {
-    if (user && !data.displayName) {
-      setData((d) => ({ ...d, displayName: user.username || "" }));
-    }
+    if (!user) return;
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      const meta = session?.user?.user_metadata ?? {};
+      const googleName: string | undefined = meta.full_name || meta.name;
+      const googleAvatar: string | undefined = meta.avatar_url || meta.picture;
+
+      setData((d) => ({
+        ...d,
+        username: d.username || user.username || "",
+        displayName: d.displayName || googleName || user.username || "",
+        avatarUrl: d.avatarUrl || googleAvatar || "",
+      }));
+    })();
   }, [user]);
 
   const update = (partial: Partial<OnboardingData>) =>
