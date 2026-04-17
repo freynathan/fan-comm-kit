@@ -27,7 +27,10 @@ export function ForBrandsSection() {
                 <div className="flex-1 flex items-center h-10 rounded-lg border border-ds-border px-3">
                   <span className="text-[14px] font-normal text-ds-text-tertiary">yourbrand.com</span>
                 </div>
-                <button className="h-10 px-4 rounded-lg text-[14px] font-medium text-ds-accent-text whitespace-nowrap bg-ds-accent hover:bg-ds-accent-hover transition-all active:scale-[0.98]">
+                <button
+                  className="h-10 px-4 rounded-lg text-[14px] font-medium whitespace-nowrap bg-transparent text-ds-text-primary transition-colors hover:border-ds-accent hover:text-ds-accent active:scale-[0.98]"
+                  style={{ border: '1px solid #C8C8C8' }}
+                >
                   Generate →
                 </button>
               </div>

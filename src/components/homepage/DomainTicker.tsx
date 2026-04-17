@@ -13,7 +13,7 @@ export function DomainTicker() {
   const doubled = [...tickerOrder, ...tickerOrder];
 
   return (
-    <div className="w-full overflow-hidden py-4">
+    <div className="w-full overflow-hidden py-4 px-6">
       <div className="flex animate-ticker gap-3" style={{ width: "max-content" }}>
         {doubled.map((name, i) => (
           <DomainButton

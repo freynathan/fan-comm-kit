@@ -40,8 +40,8 @@ const columns = [
 export function SharedFooter() {
   return (
     <footer className="w-full bg-white" style={{ borderTop: '0.5px solid hsl(var(--color-border))' }}>
-      <div className="max-w-[1200px] mx-auto px-6 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
           {columns.map((col) => (
             <div key={col.title}>
               <h4 className="text-[13px] font-medium mb-3 text-ds-text-primary">
