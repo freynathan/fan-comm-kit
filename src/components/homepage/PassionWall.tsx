@@ -11,8 +11,6 @@ interface PassionCard {
   tags: string[];
 }
 
-
-
 const SAMPLE_CARDS: PassionCard[] = [
   {
     id: "1",
@@ -129,12 +127,12 @@ const SAMPLE_CARDS: PassionCard[] = [
 interface CardProps {
   card: PassionCard;
   height: number;
-  width?: number;
+  width: number;
   slug: string;
   onNavigateGuard: () => boolean;
 }
 
-function WallCard({ card, height, width = 260, slug, onNavigateGuard }: CardProps) {
+function WallCard({ card, height, width, slug, onNavigateGuard }: CardProps) {
   return (
     <Link
       to={`/feed/${slug}`}
@@ -147,7 +145,7 @@ function WallCard({ card, height, width = 260, slug, onNavigateGuard }: CardProp
       style={{ width, height }}
       draggable={false}
     >
-      <div className="relative w-full h-full rounded-[12px] overflow-hidden">
+      <div className="relative w-full h-full overflow-hidden" style={{ borderRadius: 14 }}>
         <img
           src={card.image}
           alt={card.title}
@@ -221,12 +219,30 @@ function WallCard({ card, height, width = 260, slug, onNavigateGuard }: CardProp
   );
 }
 
-type Orientation = "portrait" | "landscape";
+// Masonry column template — fixed pattern that repeats across the infinite scroll
+type ColumnSlot =
+  | { kind: "single"; width: number; height: number; marginTop: number }
+  | { kind: "stack"; width: number; height: number; marginTop: number; gap: number };
 
-const COLUMN_HEIGHT = 300;
-const COLUMN_WIDTH = 260;
-const COLUMN_GAP = 12;
-const STACK_GAP = 8;
+const COLUMN_TEMPLATE: ColumnSlot[] = [
+  { kind: "single", width: 200, height: 340, marginTop: 0 },   // Col 1 — portrait tall
+  { kind: "stack",  width: 260, height: 155, marginTop: 40, gap: 8 }, // Col 2 — double stacked
+  { kind: "single", width: 220, height: 380, marginTop: 0 },   // Col 3 — portrait tall
+  { kind: "single", width: 300, height: 200, marginTop: 80 },  // Col 4 — landscape single wide
+  { kind: "single", width: 180, height: 280, marginTop: 20 },  // Col 5 — portrait medium
+  { kind: "stack",  width: 240, height: 145, marginTop: 60, gap: 8 }, // Col 6 — double stacked
+  { kind: "single", width: 210, height: 360, marginTop: 0 },   // Col 7 — portrait tall
+  { kind: "single", width: 280, height: 190, marginTop: 100 }, // Col 8 — landscape single
+];
+
+const COLUMN_GAP = 10;
+const WALL_HEIGHT = 420;
+
+interface BuiltColumn {
+  slot: ColumnSlot;
+  cards: PassionCard[];
+  key: string;
+}
 
 export function PassionWall() {
   const [paused, setPaused] = useState(false);
@@ -234,7 +250,6 @@ export function PassionWall() {
   const [offset, setOffset] = useState(0);
   const offsetRef = useRef(0);
   const lastTickRef = useRef<number | null>(null);
-  const [orientations, setOrientations] = useState<Record<string, Orientation>>({});
   const dragRef = useRef<{ active: boolean; startX: number; startOffset: number; moved: boolean }>({
     active: false,
     startX: 0,
@@ -242,53 +257,39 @@ export function PassionWall() {
     moved: false,
   });
 
-  // Detect aspect ratios on mount
-  useEffect(() => {
-    SAMPLE_CARDS.forEach((card) => {
-      const img = new Image();
-      img.onload = () => {
-        setOrientations((prev) => ({
-          ...prev,
-          [card.id]: img.naturalWidth > img.naturalHeight ? "landscape" : "portrait",
-        }));
-      };
-      img.src = card.image;
-    });
-  }, []);
-
-  // Build columns: portrait => 1 card; pair landscape cards into stacked columns
-  type Column = { key: string; cards: PassionCard[] };
-  const buildColumns = (): Column[] => {
-    const cols: Column[] = [];
-    let pendingLandscape: PassionCard | null = null;
-    SAMPLE_CARDS.forEach((card) => {
-      const o = orientations[card.id] ?? "portrait";
-      if (o === "landscape") {
-        if (pendingLandscape) {
-          cols.push({ key: `${pendingLandscape.id}-${card.id}`, cards: [pendingLandscape, card] });
-          pendingLandscape = null;
-        } else {
-          pendingLandscape = card;
+  // Build one full pass of columns by walking template + cards in order
+  const buildBase = (): BuiltColumn[] => {
+    const cols: BuiltColumn[] = [];
+    let cardIdx = 0;
+    // Repeat template enough times to consume all cards at least once
+    const passes = Math.ceil((SAMPLE_CARDS.length * 2) / COLUMN_TEMPLATE.length);
+    for (let p = 0; p < passes; p++) {
+      for (let s = 0; s < COLUMN_TEMPLATE.length; s++) {
+        const slot = COLUMN_TEMPLATE[s];
+        const need = slot.kind === "stack" ? 2 : 1;
+        const cards: PassionCard[] = [];
+        for (let i = 0; i < need; i++) {
+          cards.push(SAMPLE_CARDS[cardIdx % SAMPLE_CARDS.length]);
+          cardIdx++;
         }
-      } else {
-        if (pendingLandscape) {
-          cols.push({ key: `${pendingLandscape.id}-solo`, cards: [pendingLandscape] });
-          pendingLandscape = null;
-        }
-        cols.push({ key: card.id, cards: [card] });
+        cols.push({
+          slot,
+          cards,
+          key: `p${p}-s${s}`,
+        });
       }
-    });
-    if (pendingLandscape) {
-      cols.push({ key: `${pendingLandscape.id}-solo`, cards: [pendingLandscape] });
     }
     return cols;
   };
 
-  const baseColumns = buildColumns();
-  const sequence = [...baseColumns, ...baseColumns, ...baseColumns];
-  const singleSetWidth = baseColumns.length * (COLUMN_WIDTH + COLUMN_GAP);
+  const baseColumns = buildBase();
+  const sequence = [...baseColumns, ...baseColumns];
+  const singleSetWidth = baseColumns.reduce(
+    (acc, c) => acc + c.slot.width + COLUMN_GAP,
+    0
+  );
 
-  // Animate via rAF so we can pause + drag
+  // Animate via rAF
   useEffect(() => {
     let raf = 0;
     const speed = 40; // px/sec
@@ -301,7 +302,6 @@ export function PassionWall() {
       if (!paused && !dragRef.current.active) {
         offsetRef.current -= speed * dt;
       }
-      // wrap
       if (offsetRef.current <= -singleSetWidth) {
         offsetRef.current += singleSetWidth;
       }
@@ -346,7 +346,7 @@ export function PassionWall() {
       className="w-screen relative left-1/2 right-1/2 -mx-[50vw] overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      style={{ touchAction: "pan-y" }}
+      style={{ touchAction: "pan-y", height: WALL_HEIGHT }}
     >
       <style>{`
         .passion-wall-card:hover [data-pill] { width: auto !important; padding-inline: 0 !important; }
@@ -355,11 +355,10 @@ export function PassionWall() {
       `}</style>
       <div
         ref={trackRef}
-        className="flex items-start cursor-grab active:cursor-grabbing"
+        className="flex items-start cursor-grab active:cursor-grabbing h-full"
         style={{
           transform: `translate3d(${offset}px, 0, 0)`,
           willChange: "transform",
-          paddingBlock: 8,
           gap: COLUMN_GAP,
         }}
         onPointerDown={onPointerDown}
@@ -368,27 +367,49 @@ export function PassionWall() {
         onPointerCancel={onPointerUp}
       >
         {sequence.map((col, ci) => {
-          const stacked = col.cards.length > 1;
-          const cardHeight = stacked
-            ? (COLUMN_HEIGHT - STACK_GAP) / 2
-            : COLUMN_HEIGHT;
+          const { slot, cards } = col;
+          if (slot.kind === "stack") {
+            return (
+              <div
+                key={`${col.key}-${ci}`}
+                className="shrink-0 flex flex-col"
+                style={{
+                  width: slot.width,
+                  marginTop: slot.marginTop,
+                  gap: slot.gap,
+                }}
+              >
+                {cards.map((card, idx) => (
+                  <div key={`${card.id}-${idx}`} className="passion-wall-card">
+                    <WallCard
+                      card={card}
+                      height={slot.height}
+                      width={slot.width}
+                      slug={slugify(card.title)}
+                      onNavigateGuard={() => !dragRef.current.moved}
+                    />
+                  </div>
+                ))}
+              </div>
+            );
+          }
+          const card = cards[0];
           return (
             <div
               key={`${col.key}-${ci}`}
-              className="shrink-0 flex flex-col"
-              style={{ width: COLUMN_WIDTH, height: COLUMN_HEIGHT, gap: STACK_GAP }}
+              className="shrink-0 passion-wall-card"
+              style={{
+                width: slot.width,
+                marginTop: slot.marginTop,
+              }}
             >
-              {col.cards.map((card, idx) => (
-                <div key={`${card.id}-${idx}`} className="passion-wall-card">
-                  <WallCard
-                    card={card}
-                    height={cardHeight}
-                    width={COLUMN_WIDTH}
-                    slug={slugify(card.title)}
-                    onNavigateGuard={() => !dragRef.current.moved}
-                  />
-                </div>
-              ))}
+              <WallCard
+                card={card}
+                height={slot.height}
+                width={slot.width}
+                slug={slugify(card.title)}
+                onNavigateGuard={() => !dragRef.current.moved}
+              />
             </div>
           );
         })}

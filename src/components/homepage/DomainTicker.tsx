@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { DomainButton } from "@/components/shared/DomainButton";
 
 const visibleDomains = [
-  "cocktail", "car", "yoga", "wine", "coffee", "sneaker", "fashion", "beauty",
-  "luxury", "lifestyle", "running", "healthy", "gym", "bike", "martialarts",
+  "cocktail", "car", "yoga", "wine", "coffee", "sneaker",
+  "fashion", "beauty", "running", "lifestyle", "wildlife", "luxury",
 ];
 
 const moreDomains = [
-  "burger", "gourmet", "barbecue", "boat", "trek", "diy", "wildlife",
-  "collector", "robotic", "capital", "dance", "sneaker", "tobe",
+  "healthy", "gym", "bike", "martialarts", "burger", "gourmet", "barbecue",
+  "boat", "trek", "diy", "collector", "robotic", "capital", "dance", "sneaker", "tobe",
 ];
 
 const liveSites = new Set(["cocktail", "car", "yoga", "tobe"]);
@@ -30,7 +30,10 @@ export function DomainTicker() {
 
   return (
     <div ref={wrapRef} className="w-full relative">
-      <div className="flex flex-wrap justify-center gap-2">
+      <div
+        className="flex justify-center gap-2"
+        style={{ whiteSpace: "nowrap", overflow: "hidden", flexWrap: "nowrap" }}
+      >
         {visibleDomains.map((name) => (
           <DomainButton
             key={name}
@@ -43,7 +46,7 @@ export function DomainTicker() {
         ))}
         <button
           onClick={() => setOpen((o) => !o)}
-          className="inline-flex items-center justify-center font-medium whitespace-nowrap transition-all duration-150 ease-in-out text-white"
+          className="inline-flex items-center justify-center font-medium whitespace-nowrap transition-all duration-150 ease-in-out text-white shrink-0"
           style={{
             height: 36,
             paddingLeft: 12,
@@ -55,7 +58,7 @@ export function DomainTicker() {
             backgroundColor: "#0A0A0A",
           }}
         >
-          +13 more
+          +16 more
         </button>
       </div>
 
