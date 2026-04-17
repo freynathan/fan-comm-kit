@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 
 export interface AuthUser {
   id: string;
+  dbUserId: string | null;
   email: string;
   username: string;
   initials: string;
@@ -32,21 +33,26 @@ function buildFallbackAuthUser(supaUser: User): AuthUser {
 
   return {
     id: supaUser.id,
+    dbUserId: null,
     email: supaUser.email || "",
     username,
     initials,
   };
 }
 
-async function ensureUserRecord(supaUser: User): Promise<string | null> {
+async function ensureUserRecord(supaUser: User): Promise<{ username: string; dbUserId: string } | null> {
   try {
     const { data: existing } = await supabase
       .from("users")
       .select("id, username")
       .eq("auth_id", supaUser.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
 
-    if (existing?.username) return existing.username;
+    if (existing?.id && existing?.username) {
+      return { username: existing.username, dbUserId: existing.id };
+    }
 
     const metadata = supaUser.user_metadata ?? {};
     const seed: string =
@@ -119,17 +125,21 @@ async function ensureUserRecord(supaUser: User): Promise<string | null> {
         window.location.href = "/onboarding?step=2&source=google";
       }
 
-      return inserted.username;
+      return { username: inserted.username, dbUserId: inserted.id };
     }
 
     if (insertErr) {
       const { data: recovered } = await supabase
         .from("users")
-        .select("username")
+        .select("id, username")
         .eq("auth_id", supaUser.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
         .maybeSingle();
 
-      if (recovered?.username) return recovered.username;
+      if (recovered?.id && recovered?.username) {
+        return { username: recovered.username, dbUserId: recovered.id };
+      }
 
       console.error("Failed to create user record:", insertErr);
     }
@@ -151,24 +161,28 @@ async function resolveAuthUser(supaUser: User): Promise<AuthUser> {
     try {
       const { data } = await supabase
         .from("users")
-        .select("username, initials")
+        .select("id, username, initials")
         .eq("auth_id", supaUser.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
         .maybeSingle();
 
       if (data?.username) {
         return {
           ...fallbackUser,
+          dbUserId: data.id,
           username: data.username,
           initials: data.initials || fallbackUser.initials,
         };
       }
 
-      const createdUsername = await ensureUserRecord(supaUser);
-      if (createdUsername) {
+      const createdUser = await ensureUserRecord(supaUser);
+      if (createdUser) {
         return {
           ...fallbackUser,
-          username: createdUsername,
-          initials: createdUsername.slice(0, 2).toUpperCase(),
+          dbUserId: createdUser.dbUserId,
+          username: createdUser.username,
+          initials: createdUser.username.slice(0, 2).toUpperCase(),
         };
       }
     } catch (err) {
