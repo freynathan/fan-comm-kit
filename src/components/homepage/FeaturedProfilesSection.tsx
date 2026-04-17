@@ -33,14 +33,14 @@ const mockCreators = [
 
 function CreatorCard({ creator }: { creator: typeof mockCreators[number] }) {
   return (
-    <div className="relative bg-white rounded-xl border border-ds-border p-5 text-left transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
+    <div className="relative bg-white rounded-xl border border-ds-border p-6 text-left transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
       <span
         className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium"
         style={{ background: '#EAF5EA', color: '#1A5C1A' }}
       >
         ✓ AI Search Ready
       </span>
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex items-start gap-3 mb-4">
         <div
           className="w-14 h-14 rounded-full flex items-center justify-center text-white text-[16px] font-semibold shrink-0"
           style={{ background: creator.bg }}
@@ -59,7 +59,7 @@ function CreatorCard({ creator }: { creator: typeof mockCreators[number] }) {
       <p className="text-[13px] font-normal text-ds-text-tertiary italic mb-3">
         {creator.headline}
       </p>
-      <div className="flex flex-wrap gap-1.5 mb-3">
+      <div className="flex flex-wrap gap-1.5 mb-4">
         {creator.tags.map((tag) => (
           <span
             key={tag}
@@ -104,7 +104,7 @@ export function FeaturedProfilesSection() {
             {realCards.map((p) => (
               <div
                 key={p.id}
-                className="relative bg-white rounded-xl border border-ds-border p-5 text-left transition-colors hover:border-ds-border-strong"
+                className="relative bg-white rounded-xl border border-ds-border p-6 text-left transition-colors hover:border-ds-border-strong"
                 style={{ borderWidth: '0.5px' }}
               >
                 <span
@@ -113,7 +113,7 @@ export function FeaturedProfilesSection() {
                 >
                   ✓ AI Search Ready
                 </span>
-                <div className="flex items-start gap-3 mb-3">
+                <div className="flex items-start gap-3 mb-4">
                   {p.avatarUrl ? (
                     <img
                       src={p.avatarUrl}
@@ -139,7 +139,7 @@ export function FeaturedProfilesSection() {
                     {p.headline}
                   </p>
                 )}
-                <div className="flex flex-wrap gap-1.5 mb-3">
+                <div className="flex flex-wrap gap-1.5 mb-4">
                   {p.tags.map((tag) => (
                     <span
                       key={tag}
