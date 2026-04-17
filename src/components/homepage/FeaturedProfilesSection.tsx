@@ -33,14 +33,14 @@ const mockCreators = [
 
 function CreatorCard({ creator }: { creator: typeof mockCreators[number] }) {
   return (
-    <div className="relative bg-white rounded-xl border border-ds-border p-5 text-left transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
+    <div className="relative bg-white rounded-xl border border-ds-border p-6 text-left transition-colors hover:border-ds-border-strong" style={{ borderWidth: '0.5px' }}>
       <span
         className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium"
         style={{ background: '#EAF5EA', color: '#1A5C1A' }}
       >
         ✓ AI Search Ready
       </span>
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex items-start gap-3 mb-4">
         <div
           className="w-14 h-14 rounded-full flex items-center justify-center text-white text-[16px] font-semibold shrink-0"
           style={{ background: creator.bg }}
@@ -59,7 +59,7 @@ function CreatorCard({ creator }: { creator: typeof mockCreators[number] }) {
       <p className="text-[13px] font-normal text-ds-text-tertiary italic mb-3">
         {creator.headline}
       </p>
-      <div className="flex flex-wrap gap-1.5 mb-3">
+      <div className="flex flex-wrap gap-1.5 mb-4">
         {creator.tags.map((tag) => (
           <span
             key={tag}
@@ -84,27 +84,27 @@ export function FeaturedProfilesSection() {
   const mocksNeeded = Math.max(0, 3 - realCards.length);
 
   return (
-    <section className="w-full py-12 md:py-[80px] px-6 bg-ds-bg">
+    <section className="w-full py-20 md:py-[120px] px-6 bg-ds-bg">
       <div className="max-w-[1200px] mx-auto">
         <div className="max-w-[960px] mx-auto text-center">
-          <p className="text-[13px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-3">
+          <p className="text-[16px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-4">
             Creator profiles
           </p>
-          <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
+          <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-5">
             The bio link that builds your business.
           </h2>
-          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-6 max-w-2xl mx-auto">
+          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-12 max-w-2xl mx-auto">
             Real creators. Verified passions. Passive income. Free forever.
           </p>
-          <div className="mb-8">
+          <div className="mb-12">
             <HeroClaim />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {realCards.map((p) => (
               <div
                 key={p.id}
-                className="relative bg-white rounded-xl border border-ds-border p-5 text-left transition-colors hover:border-ds-border-strong"
+                className="relative bg-white rounded-xl border border-ds-border p-6 text-left transition-colors hover:border-ds-border-strong"
                 style={{ borderWidth: '0.5px' }}
               >
                 <span
@@ -113,7 +113,7 @@ export function FeaturedProfilesSection() {
                 >
                   ✓ AI Search Ready
                 </span>
-                <div className="flex items-start gap-3 mb-3">
+                <div className="flex items-start gap-3 mb-4">
                   {p.avatarUrl ? (
                     <img
                       src={p.avatarUrl}
@@ -139,7 +139,7 @@ export function FeaturedProfilesSection() {
                     {p.headline}
                   </p>
                 )}
-                <div className="flex flex-wrap gap-1.5 mb-3">
+                <div className="flex flex-wrap gap-1.5 mb-4">
                   {p.tags.map((tag) => (
                     <span
                       key={tag}

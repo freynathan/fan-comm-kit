@@ -2,7 +2,7 @@ import { HeroClaim } from "./HeroClaim";
 
 export function ClosingCTA() {
   return (
-    <section className="w-full py-12 md:py-[80px] px-6 bg-ds-bg">
+    <section className="w-full py-20 md:py-[120px] px-6 bg-ds-bg">
       <div className="max-w-[1200px] mx-auto">
         <div className="max-w-[960px] mx-auto text-center">
           <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-3">

@@ -17,16 +17,16 @@ export function CommunitiesSection() {
   };
 
   return (
-    <section className="w-full py-12 md:py-[80px] px-6 bg-ds-bg">
+    <section className="w-full py-20 md:py-[120px] px-6 bg-ds-bg">
       <div className="max-w-[1200px] mx-auto">
         <div className="max-w-[960px] mx-auto text-center">
-          <p className="text-[13px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-3">
+          <p className="text-[16px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-4">
             The network
           </p>
-          <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
+          <h2 className="text-[48px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-5">
             28 communities. One identity.
           </h2>
-          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-10 max-w-2xl mx-auto">
+          <p className="text-[15px] font-normal leading-[1.7] text-ds-text-tertiary mb-12 max-w-2xl mx-auto">
             Join the communities that match your passions. One login. One profile. Everything connected.
           </p>
 
@@ -34,7 +34,7 @@ export function CommunitiesSection() {
             {categories.map((cat) => (
               <div
                 key={cat.title}
-                className="bg-white rounded-xl border border-ds-border p-5 transition-colors hover:border-ds-border-strong"
+                className="bg-white rounded-xl border border-ds-border p-6 transition-colors hover:border-ds-border-strong"
                 style={{ borderWidth: '0.5px' }}
               >
                 <div className="flex items-center gap-2 mb-1">
@@ -43,10 +43,10 @@ export function CommunitiesSection() {
                   </span>
                   <h3 className="text-[15px] font-medium text-ds-text-primary">{cat.title}</h3>
                 </div>
-                <p className="text-[13px] font-normal text-ds-text-tertiary mb-3">
+                <p className="text-[13px] font-normal text-ds-text-tertiary mb-4">
                   {cat.domains.length} communities
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2.5">
                   {cat.domains.map((d) => (
                     <div key={d.domain} className="relative">
                       <DomainButton
