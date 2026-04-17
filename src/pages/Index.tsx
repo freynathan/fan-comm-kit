@@ -3,7 +3,7 @@ import { SharedHeader } from "@/components/shared/SharedHeader";
 import { SharedFooter } from "@/components/shared/SharedFooter";
 import { useHomepageStats } from "@/hooks/useHomepageStats";
 import { HeroClaim } from "@/components/homepage/HeroClaim";
-import { StatPills } from "@/components/homepage/StatPills";
+
 import { DomainTicker } from "@/components/homepage/DomainTicker";
 import { ContentHubSection } from "@/components/homepage/ContentHubSection";
 import { FeaturedProfilesSection } from "@/components/homepage/FeaturedProfilesSection";
@@ -49,14 +49,6 @@ const Index = () => {
             <p className="text-[15px] md:text-[18px] font-normal leading-[1.7] text-ds-text-tertiary mb-8 max-w-[560px] mx-auto">
               Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
             </p>
-            <div className="mt-8">
-              <StatPills
-                totalFans={stats?.totalFans ?? 0}
-                totalClubs={stats?.totalClubs ?? 0}
-                totalCommunities={stats?.totalCommunities ?? 28}
-                postsToday={stats?.postsToday ?? 0}
-              />
-            </div>
           </div>
           <div className="max-w-[960px] mx-auto mt-6">
             <DomainTicker />
