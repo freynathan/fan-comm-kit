@@ -58,7 +58,7 @@ const accentPalette: Record<string, { accent: string; border?: string; bg: strin
   cocktail:    { accent: "#CF3B12", bg: "#FBEEE9", bgHover: "#F7DDD3" },
   wine:        { accent: "#790222", bg: "#F2E6EA", bgHover: "#E8D1D7" },
   coffee:      { accent: "#775E35", bg: "#F2EDE4", bgHover: "#E8DECB" },
-  gourmet:     { accent: "#81797A", bg: "#F2F1F1", bgHover: "#E5E3E3" },
+  gourmet:     { accent: "#8BDD4B", bg: "#F2F1F1", bgHover: "#E5E3E3" },
   burger:      { accent: "#D97904", bg: "#FBF0E2", bgHover: "#F7E1C5" },
   barbecue:    { accent: "#4A130C", bg: "#F0E8E7", bgHover: "#E3D3D1" },
 
@@ -77,11 +77,11 @@ const accentPalette: Record<string, { accent: string; border?: string; bg: strin
 
   /* Machines & tech */
   car:         { accent: "#FF2800", bg: "#FFEBEA", bgHover: "#FED7D5" },
-  robotic:     { accent: "#5D627F", bg: "#EEEEF2", bgHover: "#DDDDE5" },
+  robotic:     { accent: "#084165", bg: "#EEEEF2", bgHover: "#DDDDE5" },
 
   /* Build & collect */
   capital:     { accent: "#2FA98C", bg: "#E8F7F3", bgHover: "#D1F0E7" },
-  diy:         { accent: "#39425D", bg: "#ECEEF2", bgHover: "#D9DDE5" },
+  diy:         { accent: "#FF9040", bg: "#ECEEF2", bgHover: "#D9DDE5" },
   collector:   { accent: "#684792", bg: "#F0EBF6", bgHover: "#E1D7ED" },
 
   /* Hub */
