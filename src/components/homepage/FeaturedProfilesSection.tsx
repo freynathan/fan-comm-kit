@@ -84,7 +84,7 @@ export function FeaturedProfilesSection() {
   const mocksNeeded = Math.max(0, 3 - realCards.length);
 
   return (
-    <section className="w-full py-20 md:py-[120px] px-6 bg-ds-bg">
+    <section className="w-full pt-10 pb-20 md:pt-12 md:pb-[120px] px-6 bg-ds-bg">
       <div className="max-w-[1200px] mx-auto">
         <div className="max-w-[960px] mx-auto text-center">
           <p className="text-[16px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-4">
