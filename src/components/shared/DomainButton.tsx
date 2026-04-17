@@ -77,11 +77,11 @@ const accentPalette: Record<string, { accent: string; border?: string; bg: strin
 
   /* Machines & tech */
   car:         { accent: "#FF2800", bg: "#FFEBEA", bgHover: "#FED7D5" },
-  robotic:     { accent: "#5D627F", bg: "#EEEEF2", bgHover: "#DDDDE5" },
+  robotic:     { accent: "#084165", bg: "#EEEEF2", bgHover: "#DDDDE5" },
 
   /* Build & collect */
   capital:     { accent: "#2FA98C", bg: "#E8F7F3", bgHover: "#D1F0E7" },
-  diy:         { accent: "#39425D", bg: "#ECEEF2", bgHover: "#D9DDE5" },
+  diy:         { accent: "#FF9040", bg: "#ECEEF2", bgHover: "#D9DDE5" },
   collector:   { accent: "#684792", bg: "#F0EBF6", bgHover: "#E1D7ED" },
 
   /* Hub */
