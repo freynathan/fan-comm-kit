@@ -136,23 +136,33 @@ export function useSupabaseAuth() {
   }, []);
 
   useEffect(() => {
-    // Set up listener FIRST, then check for existing session
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    // Set up listener FIRST — DO NOT await inside the callback (deadlock risk).
+    // Defer all async Supabase work via setTimeout so the auth client can release its lock.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        const u = await buildAuthUser(session.user);
-        setUser(u);
+        const supaUser = session.user;
+        setTimeout(() => {
+          buildAuthUser(supaUser)
+            .then((u) => setUser(u))
+            .catch((err) => console.error("buildAuthUser failed:", err))
+            .finally(() => setLoading(false));
+        }, 0);
       } else {
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    // Then check for an existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        const u = await buildAuthUser(session.user);
-        setUser(u);
+        buildAuthUser(session.user)
+          .then((u) => setUser(u))
+          .catch((err) => console.error("buildAuthUser failed:", err))
+          .finally(() => setLoading(false));
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
