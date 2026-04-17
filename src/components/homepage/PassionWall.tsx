@@ -129,122 +129,94 @@ const SAMPLE_CARDS: PassionCard[] = [
 interface CardProps {
   card: PassionCard;
   height: number;
-  isFlipped: boolean;
-  onFlip: () => void;
+  slug: string;
+  onNavigateGuard: () => boolean;
 }
 
-function WallCard({ card, height, isFlipped, onFlip }: CardProps) {
+function WallCard({ card, height, slug, onNavigateGuard }: CardProps) {
   return (
-    <div
-      className="relative shrink-0 cursor-pointer select-none"
-      style={{ width: 260, height, perspective: "1000px" }}
+    <Link
+      to={`/feed/${slug}`}
       onClick={(e) => {
-        e.stopPropagation();
-        onFlip();
+        if (!onNavigateGuard()) {
+          e.preventDefault();
+        }
       }}
+      className="relative shrink-0 cursor-pointer select-none block group"
+      style={{ width: 260, height }}
+      draggable={false}
     >
-      <div
-        className="relative w-full h-full transition-transform"
-        style={{
-          transformStyle: "preserve-3d",
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-          transitionDuration: "0.4s",
-          transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      >
-        {/* FRONT */}
+      <div className="relative w-full h-full rounded-[12px] overflow-hidden">
+        <img
+          src={card.image}
+          alt={card.title}
+          loading="lazy"
+          draggable={false}
+          className="w-full h-full object-cover"
+        />
+
+        {/* dot → pill */}
         <div
-          className="absolute inset-0 rounded-[12px] overflow-hidden group"
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          className="absolute top-3 right-3 z-20 flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ease-out"
+          style={{
+            backgroundColor: card.accent,
+            height: 18,
+            width: 10,
+            padding: 0,
+          }}
+          data-pill
         >
-          <img
-            src={card.image}
-            alt={card.title}
-            loading="lazy"
-            draggable={false}
-            className="w-full h-full object-cover"
-          />
-          {/* hover gradient */}
-          <div
-            className="absolute inset-x-0 bottom-0 h-1/3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.3), rgba(0,0,0,0))",
-            }}
-          />
-          {/* dot → pill */}
-          <div
-            className="absolute top-3 right-3 flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ease-out"
-            style={{
-              backgroundColor: card.accent,
-              height: 18,
-              width: 10,
-              padding: 0,
-            }}
-            data-pill
+          <span
+            className="text-white text-[11px] font-medium whitespace-nowrap opacity-0 transition-opacity duration-200"
+            style={{ paddingInline: 10 }}
+            data-pill-label
           >
-            <span
-              className="text-white text-[11px] font-medium whitespace-nowrap opacity-0 transition-opacity duration-200"
-              style={{ paddingInline: 10 }}
-              data-pill-label
-            >
-              {card.site}
-            </span>
-          </div>
+            {card.site}
+          </span>
         </div>
 
-        {/* BACK */}
+        {/* Hover overlay — curtain rising from bottom */}
         <div
-          className="absolute inset-0 rounded-[12px] overflow-hidden bg-white p-4 flex flex-col"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"
           style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-            border: "0.5px solid #E5E5E5",
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0) 100%)",
           }}
+        />
+
+        {/* Hover content */}
+        <div
+          className="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-[250ms] ease-out pointer-events-none"
+          style={{
+            transform: "translateY(8px)",
+          }}
+          data-overlay-content
         >
           <div
-            className="self-start inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium text-white mb-3"
+            className="self-start inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium text-white mb-2"
             style={{ backgroundColor: card.accent }}
           >
             {card.site}
           </div>
-          <h3
-            className="text-[15px] font-medium leading-[1.35] mb-2 line-clamp-2"
-            style={{ color: "#0A0A0A" }}
-          >
+          <h3 className="text-[14px] font-medium leading-[1.35] text-white mb-2 line-clamp-2">
             {card.title}
           </h3>
-          <p
-            className="text-[13px] leading-[1.5] line-clamp-2 mb-3"
-            style={{ color: "#767676" }}
-          >
-            {card.excerpt}
-          </p>
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="flex flex-wrap gap-1">
             {card.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium border"
+                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium text-white"
                 style={{
-                  borderColor: card.accent,
-                  color: card.accent,
-                  borderWidth: "0.5px",
+                  border: "0.5px solid rgba(255,255,255,0.3)",
                 }}
               >
                 {tag}
               </span>
             ))}
           </div>
-          <div
-            className="mt-auto text-[12px] font-medium"
-            style={{ color: card.accent }}
-          >
-            Read more →
-          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
