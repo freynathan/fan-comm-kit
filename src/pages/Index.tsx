@@ -39,7 +39,7 @@ const Index = () => {
       />
 
       {/* SECTION 1 — HERO (white) */}
-      <section className="w-full bg-ds-bg py-20 md:py-[120px] px-6">
+      <section className="w-full bg-ds-bg px-6" style={{ paddingTop: 80, paddingBottom: 0 }}>
         <div className="max-w-[1200px] mx-auto">
           <div className="max-w-[960px] mx-auto text-center">
             <h1 className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] mb-4 text-ds-text-primary">
