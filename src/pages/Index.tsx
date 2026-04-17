@@ -39,18 +39,18 @@ const Index = () => {
       />
 
       {/* SECTION 1 — HERO (white) */}
-      <section className="w-full bg-ds-bg py-20 md:py-[80px] px-6">
+      <section className="w-full bg-ds-bg py-20 md:py-[120px] px-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="max-w-[960px] mx-auto text-center">
             <h1 className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] mb-4 text-ds-text-primary">
               Reinventing social in the{" "}
               <span className="text-[#0C447C]">AI</span> era.
             </h1>
-            <p className="text-[15px] md:text-[18px] font-normal leading-[1.7] text-ds-text-tertiary mb-8 max-w-[560px] mx-auto">
+            <p className="text-[15px] md:text-[18px] font-normal leading-[1.7] text-ds-text-tertiary max-w-[560px] mx-auto">
               Come for the passion. Relate with fellow fans. Convert your social clout into passive income, forever.
             </p>
           </div>
-          <div className="max-w-[960px] mx-auto mt-6">
+          <div className="max-w-[960px] mx-auto mt-12">
             <DomainTicker />
           </div>
         </div>
