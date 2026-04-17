@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { DomainButton } from "@/components/shared/DomainButton";
 
 const visibleDomains = [
-  "cocktail", "car", "yoga", "wine", "coffee", "sneaker", "fashion", "beauty",
-  "luxury", "lifestyle", "running", "healthy", "gym", "bike", "martialarts",
+  "cocktail", "car", "yoga", "wine", "coffee", "sneaker",
+  "fashion", "beauty", "running", "lifestyle", "wildlife", "luxury",
 ];
 
 const moreDomains = [
-  "burger", "gourmet", "barbecue", "boat", "trek", "diy", "wildlife",
-  "collector", "robotic", "capital", "dance", "sneaker", "tobe",
+  "healthy", "gym", "bike", "martialarts", "burger", "gourmet", "barbecue",
+  "boat", "trek", "diy", "collector", "robotic", "capital", "dance", "sneaker", "tobe",
 ];
 
 const liveSites = new Set(["cocktail", "car", "yoga", "tobe"]);
