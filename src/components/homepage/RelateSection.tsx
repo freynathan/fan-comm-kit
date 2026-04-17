@@ -46,19 +46,26 @@ export function RelateSection() {
           </div>
 
           {/* Blurred teaser */}
-          <div className="relative rounded-xl overflow-hidden border border-ds-border p-8" style={{ borderWidth: '0.5px' }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 blur-sm opacity-50 pointer-events-none">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-white rounded-xl border border-ds-border p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-ds-surface" />
-                  <div className="flex-1 space-y-1.5">
-                    <div className="w-24 h-3 rounded bg-ds-surface" />
-                    <div className="w-32 h-2 rounded bg-ds-surface" />
-                  </div>
+          <div className="relative rounded-xl overflow-hidden border border-ds-border p-8 min-h-[220px]" style={{ borderWidth: '0.5px' }}>
+            <div
+              className="absolute inset-0 flex items-center justify-center gap-6 pointer-events-none"
+              style={{ filter: 'blur(6px)' }}
+            >
+              {[
+                { initials: 'AM', bg: '#7C3AED' },
+                { initials: 'SK', bg: '#0D9488' },
+                { initials: 'JT', bg: '#D97706' },
+              ].map((p) => (
+                <div
+                  key={p.initials}
+                  className="w-[60px] h-[60px] rounded-full flex items-center justify-center text-white text-[18px] font-semibold"
+                  style={{ background: p.bg }}
+                >
+                  {p.initials}
                 </div>
               ))}
             </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="relative flex flex-col items-center justify-center">
               <p className="text-[18px] font-semibold text-ds-text-primary mb-3 tracking-[-0.3px]">
                 3 people near you share your exact passions.
               </p>

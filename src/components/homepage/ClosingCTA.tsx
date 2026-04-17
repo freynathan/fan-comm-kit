@@ -12,9 +12,6 @@ export function ClosingCTA() {
             tobe.fan/of/you — the only profile AI agents find, trust, and cite.
           </p>
           <HeroClaim />
-          <p className="text-[13px] font-normal text-ds-text-tertiary mt-4 leading-[1.5]">
-            No credit card · No premium tier · No catch · Yours forever
-          </p>
         </div>
       </div>
     </section>
