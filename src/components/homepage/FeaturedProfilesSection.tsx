@@ -87,7 +87,7 @@ export function FeaturedProfilesSection() {
     <section className="w-full py-12 md:py-[80px] px-6 bg-ds-bg">
       <div className="max-w-[1200px] mx-auto">
         <div className="max-w-[960px] mx-auto text-center">
-          <p className="text-[11px] font-medium tracking-[0.08em] uppercase text-ds-text-tertiary mb-3">
+          <p className="text-[13px] font-medium tracking-[0.08em] uppercase text-[#0C447C] mb-3">
             Creator profiles
           </p>
           <h2 className="text-[36px] font-semibold text-ds-text-primary leading-[1.2] tracking-[-0.8px] mb-2">
