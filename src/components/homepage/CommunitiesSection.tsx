@@ -41,6 +41,7 @@ export function CommunitiesSection() {
                       size="large"
                       isLive={d.live}
                       showDomainFormat
+                      useAccentStyle
                     />
                   ))}
                 </div>
