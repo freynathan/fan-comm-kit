@@ -11,7 +11,7 @@ interface PassionCard {
   tags: string[];
 }
 
-const HEIGHTS = [300, 220, 280];
+
 
 const SAMPLE_CARDS: PassionCard[] = [
   {
