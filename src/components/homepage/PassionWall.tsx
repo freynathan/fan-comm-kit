@@ -297,6 +297,7 @@ export function PassionWall() {
       <style>{`
         .passion-wall-card:hover [data-pill] { width: auto !important; padding-inline: 0 !important; }
         .passion-wall-card:hover [data-pill-label] { opacity: 1 !important; }
+        .passion-wall-card:hover [data-overlay-content] { transform: translateY(0) !important; }
       `}</style>
       <div
         ref={trackRef}
@@ -314,16 +315,14 @@ export function PassionWall() {
         {sequence.map((card, i) => {
           const height = HEIGHTS[i % HEIGHTS.length];
           const uniqueId = `${card.id}-${i}`;
+          const slug = card.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
           return (
             <div key={uniqueId} className="passion-wall-card">
               <WallCard
                 card={card}
                 height={height}
-                isFlipped={flippedId === uniqueId}
-                onFlip={() => {
-                  if (dragRef.current.moved) return;
-                  setFlippedId((prev) => (prev === uniqueId ? null : uniqueId));
-                }}
+                slug={slug}
+                onNavigateGuard={() => !dragRef.current.moved}
               />
             </div>
           );
