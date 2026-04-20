@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard.tsx";
 import DashboardClubs from "./pages/DashboardClubs.tsx";
 import DashboardClubNew from "./pages/DashboardClubNew.tsx";
 import DashboardFans from "./pages/DashboardFans.tsx";
+import PublicClub from "./pages/PublicClub.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/of/:username" element={<ProfilePage />} />
+            <Route path="/c/:slug" element={<PublicClub />} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/clubs" element={<DashboardClubs />} />
