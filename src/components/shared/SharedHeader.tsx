@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useSupabaseAuth, type AuthUser } from "@/hooks/useSupabaseAuth";
 import { AvatarDropdown } from "./AvatarDropdown";
@@ -36,6 +36,21 @@ export function SharedHeader(props: HeaderInternalProps) {
   const [avatarOpen, setAvatarOpen] = useState(demoAvatarOpen ?? false);
   const [sitesOpen, setSitesOpen] = useState(false);
   const [authModal, setAuthModal] = useState<"login" | "signup" | null>(null);
+
+  // Auto-open auth modal when redirected here with ?auth=signup or ?auth=login
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get("auth");
+    if ((requested === "signup" || requested === "login") && !realUser) {
+      setAuthModal(requested);
+      params.delete("auth");
+      const newSearch = params.toString();
+      const newUrl =
+        window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash;
+      window.history.replaceState({}, "", newUrl);
+    }
+  }, [realUser]);
 
   return (
     <header className="relative w-full bg-white" style={{ borderBottom: '0.5px solid hsl(var(--color-border))' }}>

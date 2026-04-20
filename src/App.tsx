@@ -8,6 +8,9 @@ import Index from "./pages/Index.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import ProfileEdit from "./pages/ProfileEdit.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import DashboardClubs from "./pages/DashboardClubs.tsx";
+import DashboardClubNew from "./pages/DashboardClubNew.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,6 +27,9 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/of/:username" element={<ProfilePage />} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/clubs" element={<DashboardClubs />} />
+            <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
