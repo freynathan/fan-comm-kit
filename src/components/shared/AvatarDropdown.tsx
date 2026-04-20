@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { User, Trophy, Wallet, Settings, LogOut } from "lucide-react";
+import { User, Trophy, Wallet, Settings, LogOut, LayoutDashboard, Users } from "lucide-react";
 import type { SiteMenuFeature } from "./types";
 
 export interface AvatarDropdownProps {
