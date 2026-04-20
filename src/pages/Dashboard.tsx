@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { useJoinedClubs } from "@/hooks/useJoinedClubs";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { EmptyState } from "@/components/dashboard/EmptyState";
-import { Users, Sparkles, Wallet, TrendingUp, Plus } from "lucide-react";
+import { Users, Sparkles, Wallet, TrendingUp, Plus, Heart, ArrowUpRight } from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
