@@ -71,42 +71,169 @@ export type Database = {
           },
         ]
       }
+      fan_club_invitations: {
+        Row: {
+          club_id: string
+          code: string
+          created_at: string
+          email: string | null
+          expires_at: string | null
+          id: string
+          invited_by: string | null
+          used_at: string | null
+          used_by: string | null
+        }
+        Insert: {
+          club_id: string
+          code: string
+          created_at?: string
+          email?: string | null
+          expires_at?: string | null
+          id?: string
+          invited_by?: string | null
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Update: {
+          club_id?: string
+          code?: string
+          created_at?: string
+          email?: string | null
+          expires_at?: string | null
+          id?: string
+          invited_by?: string | null
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fan_club_invitations_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "fan_clubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fan_club_invitations_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fan_club_invitations_used_by_fkey"
+            columns: ["used_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fan_club_memberships: {
+        Row: {
+          club_id: string
+          id: string
+          joined_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          club_id: string
+          id?: string
+          joined_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          club_id?: string
+          id?: string
+          joined_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fan_club_memberships_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "fan_clubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fan_club_memberships_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fan_clubs: {
         Row: {
           accent_color: string | null
+          benefits: string[] | null
+          cover_image_url: string | null
           created_at: string
           description: string | null
+          fan_trust_score: number
           id: string
           is_free: boolean
           member_count: number
           name: string
           owner_id: string
+          post_count: number
           price: number | null
+          price_monthly: number | null
           site_id: string | null
+          site_slug: string | null
+          slug: string | null
+          tagline: string | null
+          visibility: string
+          welcome_message: string | null
         }
         Insert: {
           accent_color?: string | null
+          benefits?: string[] | null
+          cover_image_url?: string | null
           created_at?: string
           description?: string | null
+          fan_trust_score?: number
           id?: string
           is_free?: boolean
           member_count?: number
           name: string
           owner_id: string
+          post_count?: number
           price?: number | null
+          price_monthly?: number | null
           site_id?: string | null
+          site_slug?: string | null
+          slug?: string | null
+          tagline?: string | null
+          visibility?: string
+          welcome_message?: string | null
         }
         Update: {
           accent_color?: string | null
+          benefits?: string[] | null
+          cover_image_url?: string | null
           created_at?: string
           description?: string | null
+          fan_trust_score?: number
           id?: string
           is_free?: boolean
           member_count?: number
           name?: string
           owner_id?: string
+          post_count?: number
           price?: number | null
+          price_monthly?: number | null
           site_id?: string | null
+          site_slug?: string | null
+          slug?: string | null
+          tagline?: string | null
+          visibility?: string
+          welcome_message?: string | null
         }
         Relationships: [
           {
@@ -121,6 +248,51 @@ export type Database = {
             columns: ["site_id"]
             isOneToOne: false
             referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fan_trust_events: {
+        Row: {
+          club_id: string
+          created_at: string
+          description: string | null
+          event_type: string
+          id: string
+          points_awarded: number
+          user_id: string
+        }
+        Insert: {
+          club_id: string
+          created_at?: string
+          description?: string | null
+          event_type: string
+          id?: string
+          points_awarded?: number
+          user_id: string
+        }
+        Update: {
+          club_id?: string
+          created_at?: string
+          description?: string | null
+          event_type?: string
+          id?: string
+          points_awarded?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fan_trust_events_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "fan_clubs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fan_trust_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
