@@ -11,6 +11,7 @@ import ProfileEdit from "./pages/ProfileEdit.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import DashboardClubs from "./pages/DashboardClubs.tsx";
 import DashboardClubNew from "./pages/DashboardClubNew.tsx";
+import DashboardFans from "./pages/DashboardFans.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/clubs" element={<DashboardClubs />} />
             <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
+            <Route path="/dashboard/fans" element={<DashboardFans />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
