@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { User, Trophy, Wallet, Settings, LogOut } from "lucide-react";
+import { User, Trophy, Wallet, Settings, LogOut, LayoutDashboard, Users } from "lucide-react";
 import type { SiteMenuFeature } from "./types";
 
 export interface AvatarDropdownProps {
@@ -48,11 +48,17 @@ export function AvatarDropdown({
           My account
         </span>
       </div>
-      <a href={`https://tobe.fan/of/${username}`} className={menuItemClass} style={{ color: "#0A1628" }}>
+      <a href={`/of/${username}`} className={menuItemClass} style={{ color: "#0A1628" }}>
         <User size={16} strokeWidth={1.75} /> My profile
       </a>
-      <a href="/my/clubs" className={menuItemClass} style={{ color: "#0A1628" }}>
+      <a href="/dashboard" className={menuItemClass} style={{ color: "#0A1628" }}>
+        <LayoutDashboard size={16} strokeWidth={1.75} /> Dashboard
+      </a>
+      <a href="/dashboard/clubs" className={menuItemClass} style={{ color: "#0A1628" }}>
         <Trophy size={16} strokeWidth={1.75} /> My fan clubs
+      </a>
+      <a href="/dashboard/fans" className={menuItemClass} style={{ color: "#0A1628" }}>
+        <Users size={16} strokeWidth={1.75} /> My fans
       </a>
       <a href="/my/earnings" className={menuItemClass} style={{ color: "#0A1628" }}>
         <Wallet size={16} strokeWidth={1.75} /> My earnings & referrals
