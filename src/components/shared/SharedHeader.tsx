@@ -10,7 +10,7 @@ import tobeLogo from "@/assets/tobe-logo.png";
 const navLinks = (aiLabel: string) => [
   { label: "Feed", path: "/feed" },
   { label: "Discover", path: "/discover" },
-  { label: "Fan clubs", path: "/clubs" },
+  { label: "Fan clubs", path: "/dashboard/clubs" },
   { label: aiLabel, path: "/ai" },
 ];
 
