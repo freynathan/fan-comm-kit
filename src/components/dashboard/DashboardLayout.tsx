@@ -13,9 +13,9 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: "Overview", icon: LayoutGrid, path: "/dashboard" },
   { label: "Clubs", icon: Users, path: "/dashboard/clubs" },
-  { label: "Fans", icon: Sparkles, path: "/dashboard/fans" },
+  { label: "My connections", icon: Sparkles, path: "/dashboard/fans" },
   { label: "Earnings", icon: Wallet, path: "/dashboard/earnings" },
-  { label: "Analytics", icon: BarChart3, path: "/dashboard/analytics" },
+  { label: "Fan Trust Score", icon: BarChart3, path: "/dashboard/analytics" },
   { label: "Settings", icon: Settings, path: "/dashboard/settings" },
 ];
 
@@ -56,11 +56,19 @@ export function DashboardLayout({ user, children }: { user: AuthUser; children: 
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
-                className={`w-full flex items-center gap-3 px-3 h-10 rounded-lg text-[14px] font-medium transition-colors ${
+                className={`w-full flex items-center gap-3 px-3 h-10 rounded-lg text-[14px] font-medium transition-colors relative ${
                   active
-                    ? "bg-[#F5F5F7] text-[#0A1628]"
+                    ? "text-[#0C447C]"
                     : "text-ds-text-secondary hover:bg-[#F5F5F7] hover:text-[#0A1628]"
                 }`}
+                style={
+                  active
+                    ? {
+                        backgroundColor: "rgba(12, 68, 124, 0.10)",
+                        boxShadow: "inset 2px 0 0 0 #0C447C",
+                      }
+                    : undefined
+                }
               >
                 <Icon size={18} strokeWidth={1.75} />
                 {item.label}
@@ -89,6 +97,9 @@ export function DashboardLayout({ user, children }: { user: AuthUser; children: 
             <LogOut size={16} strokeWidth={1.75} />
             Log out
           </button>
+          <p className="text-[10px] text-ds-text-tertiary text-center mt-3 tracking-wide">
+            tobe.fan
+          </p>
         </div>
       </aside>
 

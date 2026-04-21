@@ -1,28 +1,27 @@
-import type { LucideIcon } from "lucide-react";
-
 interface StatCardProps {
   label: string;
   value: string | number;
   helper?: string;
-  icon: LucideIcon;
+  accentColor: string;
 }
 
-export function StatCard({ label, value, helper, icon: Icon }: StatCardProps) {
+export function StatCard({ label, value, helper, accentColor }: StatCardProps) {
   return (
     <div
-      className="rounded-2xl p-6 bg-white"
-      style={{ border: "0.5px solid hsl(var(--color-border))" }}
+      className="rounded-xl bg-white p-5 relative overflow-hidden"
+      style={{ border: "0.5px solid #E5E5E5" }}
     >
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-[12px] font-medium uppercase tracking-wider text-ds-text-tertiary">
-          {label}
-        </span>
-        <Icon size={18} strokeWidth={1.5} className="text-ds-text-tertiary" />
-      </div>
-      <p className="text-[32px] font-semibold leading-none text-[#0A1628] tracking-[-0.5px]">
+      <div
+        className="absolute top-0 left-0 right-0 h-[3px]"
+        style={{ backgroundColor: accentColor }}
+      />
+      <p className="text-[40px] font-semibold leading-none text-[#0A1628] tracking-[-0.5px] mt-1">
         {value}
       </p>
-      {helper && <p className="text-[12px] text-ds-text-tertiary mt-2">{helper}</p>}
+      <p className="text-[12px] text-ds-text-tertiary mt-3 uppercase tracking-wider font-medium">
+        {label}
+      </p>
+      {helper && <p className="text-[11px] text-ds-text-tertiary mt-1.5">{helper}</p>}
     </div>
   );
 }

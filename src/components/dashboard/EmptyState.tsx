@@ -6,9 +6,31 @@ interface EmptyStateProps {
   title: string;
   description: string;
   action?: ReactNode;
+  compact?: boolean;
 }
 
-export function EmptyState({ icon: Icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon: Icon, title, description, action, compact = false }: EmptyStateProps) {
+  if (compact) {
+    return (
+      <div
+        className="rounded-xl bg-white px-5 py-4 flex items-center gap-4"
+        style={{ border: "0.5px solid #E5E5E5", maxHeight: 160 }}
+      >
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+          style={{ backgroundColor: "#F5F5F7" }}
+        >
+          <Icon size={18} strokeWidth={1.5} className="text-ds-text-secondary" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[14px] font-medium text-[#0A1628] truncate">{title}</p>
+          <p className="text-[12px] text-ds-text-tertiary truncate">{description}</p>
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
+      </div>
+    );
+  }
+
   return (
     <div
       className="rounded-2xl p-12 flex flex-col items-center text-center bg-white"
