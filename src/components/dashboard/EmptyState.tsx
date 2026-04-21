@@ -13,8 +13,8 @@ export function EmptyState({ icon: Icon, title, description, action, compact = f
   if (compact) {
     return (
       <div
-        className="rounded-xl bg-white px-5 py-4 flex items-center gap-4"
-        style={{ border: "0.5px solid #E5E5E5", maxHeight: 160 }}
+        className="rounded-xl bg-white px-5 py-3 flex items-center gap-4"
+        style={{ border: "0.5px solid #E5E5E5", maxHeight: 150 }}
       >
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
