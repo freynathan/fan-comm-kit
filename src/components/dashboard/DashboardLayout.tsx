@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutGrid, Users, Sparkles, Wallet, BarChart3, Settings, LogOut } from "lucide-react";
+import { LayoutGrid, Users, Sparkles, Wallet, BarChart3, Settings, LogOut, Newspaper } from "lucide-react";
 import { useSupabaseAuth, type AuthUser } from "@/hooks/useSupabaseAuth";
 import { SharedHeader } from "@/components/shared/SharedHeader";
 
@@ -14,6 +14,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Overview", icon: LayoutGrid, path: "/dashboard" },
   { label: "Clubs", icon: Users, path: "/dashboard/clubs" },
   { label: "My connections", icon: Sparkles, path: "/dashboard/fans" },
+  { label: "Content", icon: Newspaper, path: "/dashboard/content" },
   { label: "Earnings", icon: Wallet, path: "/dashboard/earnings" },
   { label: "Fan Trust Score", icon: BarChart3, path: "/dashboard/analytics" },
   { label: "Settings", icon: Settings, path: "/dashboard/settings" },

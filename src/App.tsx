@@ -12,8 +12,10 @@ import Dashboard from "./pages/Dashboard.tsx";
 import DashboardClubs from "./pages/DashboardClubs.tsx";
 import DashboardClubNew from "./pages/DashboardClubNew.tsx";
 import DashboardFans from "./pages/DashboardFans.tsx";
+import DashboardContent from "./pages/DashboardContent.tsx";
 import PublicClub from "./pages/PublicClub.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { ArticleDrawerProvider } from "@/components/article";
 
 const queryClient = new QueryClient();
 
@@ -24,19 +26,22 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/of/:username" element={<ProfilePage />} />
-            <Route path="/c/:slug" element={<PublicClub />} />
-            <Route path="/profile/edit" element={<ProfileEdit />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/clubs" element={<DashboardClubs />} />
-            <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
-            <Route path="/dashboard/fans" element={<DashboardFans />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <ArticleDrawerProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/of/:username" element={<ProfilePage />} />
+              <Route path="/c/:slug" element={<PublicClub />} />
+              <Route path="/profile/edit" element={<ProfileEdit />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/clubs" element={<DashboardClubs />} />
+              <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
+              <Route path="/dashboard/fans" element={<DashboardFans />} />
+              <Route path="/dashboard/content" element={<DashboardContent />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ArticleDrawerProvider>
         </BrowserRouter>
       </TooltipProvider>
     </HelmetProvider>

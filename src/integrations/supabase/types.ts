@@ -71,6 +71,65 @@ export type Database = {
           },
         ]
       }
+      content_dispatches: {
+        Row: {
+          article_id: string | null
+          dispatch_reason: string | null
+          dispatched_at: string
+          dispatched_to_site_id: string | null
+          id: string
+          source_site_id: string | null
+          synopsis_id: string | null
+        }
+        Insert: {
+          article_id?: string | null
+          dispatch_reason?: string | null
+          dispatched_at?: string
+          dispatched_to_site_id?: string | null
+          id?: string
+          source_site_id?: string | null
+          synopsis_id?: string | null
+        }
+        Update: {
+          article_id?: string | null
+          dispatch_reason?: string | null
+          dispatched_at?: string
+          dispatched_to_site_id?: string | null
+          id?: string
+          source_site_id?: string | null
+          synopsis_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_dispatches_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "news_articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_dispatches_dispatched_to_site_id_fkey"
+            columns: ["dispatched_to_site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_dispatches_source_site_id_fkey"
+            columns: ["source_site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_dispatches_synopsis_id_fkey"
+            columns: ["synopsis_id"]
+            isOneToOne: false
+            referencedRelation: "news_synopses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fan_club_invitations: {
         Row: {
           club_id: string
@@ -297,6 +356,177 @@ export type Database = {
           },
         ]
       }
+      news_articles: {
+        Row: {
+          created_at: string
+          id: string
+          is_duplicate: boolean
+          original_author: string | null
+          original_content: string | null
+          original_published_at: string | null
+          original_title: string
+          original_url: string
+          quality_score: number
+          relevance_score: number
+          site_id: string | null
+          source_id: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_duplicate?: boolean
+          original_author?: string | null
+          original_content?: string | null
+          original_published_at?: string | null
+          original_title: string
+          original_url: string
+          quality_score?: number
+          relevance_score?: number
+          site_id?: string | null
+          source_id?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_duplicate?: boolean
+          original_author?: string | null
+          original_content?: string | null
+          original_published_at?: string | null
+          original_title?: string
+          original_url?: string
+          quality_score?: number
+          relevance_score?: number
+          site_id?: string | null
+          source_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_articles_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "news_articles_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "news_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      news_sources: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          last_scanned_at: string | null
+          reliability_score: number
+          site_id: string | null
+          source_name: string
+          source_type: string
+          source_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_scanned_at?: string | null
+          reliability_score?: number
+          site_id?: string | null
+          source_name: string
+          source_type?: string
+          source_url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_scanned_at?: string | null
+          reliability_score?: number
+          site_id?: string | null
+          source_name?: string
+          source_type?: string
+          source_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_sources_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      news_synopses: {
+        Row: {
+          article_id: string | null
+          created_at: string
+          entity_page_ids: string[] | null
+          fan_angle: string | null
+          id: string
+          key_points: Json | null
+          post_id: string | null
+          reading_time_seconds: number
+          site_id: string | null
+          synopsis_content: string
+          title: string
+        }
+        Insert: {
+          article_id?: string | null
+          created_at?: string
+          entity_page_ids?: string[] | null
+          fan_angle?: string | null
+          id?: string
+          key_points?: Json | null
+          post_id?: string | null
+          reading_time_seconds?: number
+          site_id?: string | null
+          synopsis_content: string
+          title: string
+        }
+        Update: {
+          article_id?: string | null
+          created_at?: string
+          entity_page_ids?: string[] | null
+          fan_angle?: string | null
+          id?: string
+          key_points?: Json | null
+          post_id?: string | null
+          reading_time_seconds?: number
+          site_id?: string | null
+          synopsis_content?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_synopses_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "news_articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "news_synopses_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "news_synopses_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       passion_points: {
         Row: {
           created_at: string
@@ -338,6 +568,65 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          ai_analysis: Json | null
+          author_id: string | null
+          comment_count: number
+          content: string | null
+          content_type: string
+          created_at: string
+          embed_platform: string | null
+          embed_thumbnail: string | null
+          embed_url: string | null
+          entity_page_id: string | null
+          id: string
+          love_count: number
+          media_urls: string[] | null
+          site_id: string | null
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          author_id?: string | null
+          comment_count?: number
+          content?: string | null
+          content_type?: string
+          created_at?: string
+          embed_platform?: string | null
+          embed_thumbnail?: string | null
+          embed_url?: string | null
+          entity_page_id?: string | null
+          id?: string
+          love_count?: number
+          media_urls?: string[] | null
+          site_id?: string | null
+        }
+        Update: {
+          ai_analysis?: Json | null
+          author_id?: string | null
+          comment_count?: number
+          content?: string | null
+          content_type?: string
+          created_at?: string
+          embed_platform?: string | null
+          embed_thumbnail?: string | null
+          embed_url?: string | null
+          entity_page_id?: string | null
+          id?: string
+          love_count?: number
+          media_urls?: string[] | null
+          site_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
             referencedColumns: ["id"]
           },
         ]
