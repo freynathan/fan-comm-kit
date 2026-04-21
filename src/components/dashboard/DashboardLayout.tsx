@@ -36,19 +36,18 @@ export function DashboardLayout({ user, children }: { user: AuthUser; children: 
 
   return (
     <div className="min-h-screen bg-white">
+      <SharedHeader
+        siteName="tobe"
+        siteEmoji="⭐"
+        accentColor="hsl(var(--color-accent))"
+        aiFeatureLabel="AI Relate"
+      />
+
       {/* Desktop sidebar */}
       <aside
-        className="hidden md:flex fixed left-0 top-0 bottom-0 w-[240px] flex-col bg-white"
+        className="hidden md:flex fixed left-0 top-20 bottom-0 w-[240px] flex-col bg-white"
         style={{ borderRight: "0.5px solid hsl(var(--color-border))" }}
       >
-        <button
-          onClick={() => navigate("/")}
-          className="flex items-center px-6 h-20"
-          style={{ borderBottom: "0.5px solid hsl(var(--color-border))" }}
-        >
-          <img src={tobeLogo} alt="ToBe.fan" style={{ height: 36, width: "auto" }} />
-        </button>
-
         <nav className="flex-1 px-3 py-6 space-y-1">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
