@@ -44,6 +44,19 @@ const Dashboard = () => {
   const { data, isLoading } = useDashboardData(user?.dbUserId);
   const { data: joinedClubs = [], isLoading: joinedLoading } = useJoinedClubs(user?.dbUserId);
 
+  const { data: userRow } = useQuery({
+    queryKey: ["dashboard-user-displayname", user?.dbUserId],
+    enabled: !!user?.dbUserId,
+    queryFn: async () => {
+      const { data: row } = await supabase
+        .from("users")
+        .select("display_name")
+        .eq("id", user!.dbUserId!)
+        .maybeSingle();
+      return row;
+    },
+  });
+
   if (loading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -55,7 +68,7 @@ const Dashboard = () => {
   const stats = data?.stats;
   const clubs = data?.clubs ?? [];
   const hasClubs = (stats?.totalClubs ?? 0) > 0;
-  const firstName = getFirstName(user.username);
+  const firstName = deriveFirstName(userRow?.display_name, user.username);
 
   return (
     <>
@@ -80,7 +93,7 @@ const Dashboard = () => {
         </div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-12">
           <StatCard
             label="Fan clubs"
             value={isLoading ? "—" : stats?.totalClubs ?? 0}
