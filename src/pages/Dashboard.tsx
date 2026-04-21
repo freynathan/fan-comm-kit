@@ -7,7 +7,23 @@ import { useJoinedClubs } from "@/hooks/useJoinedClubs";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { EmptyState } from "@/components/dashboard/EmptyState";
-import { Users, Sparkles, Wallet, TrendingUp, Plus, Heart, ArrowUpRight } from "lucide-react";
+import { Users, Plus, Heart, ArrowRight } from "lucide-react";
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+function getFirstName(username: string) {
+  // Strip trailing digits, then take leading letters and capitalize first
+  const letters = username.replace(/[0-9_]+$/g, "");
+  // Try to extract a "first name" portion: leading letter run before any number/separator inside
+  const match = letters.match(/^[a-z]+/i);
+  const base = match ? match[0] : letters || username;
+  return base.charAt(0).toUpperCase() + base.slice(1).toLowerCase();
+}
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -32,6 +48,8 @@ const Dashboard = () => {
 
   const stats = data?.stats;
   const clubs = data?.clubs ?? [];
+  const hasClubs = (stats?.totalClubs ?? 0) > 0;
+  const firstName = getFirstName(user.username);
 
   return (
     <>
@@ -41,14 +59,17 @@ const Dashboard = () => {
       <DashboardLayout user={user}>
         {/* Header */}
         <div className="mb-10">
-          <p className="text-[13px] font-medium uppercase tracking-wider text-ds-text-tertiary mb-2">
-            Welcome back
+          <p
+            className="text-[11px] font-semibold uppercase tracking-wider mb-2"
+            style={{ color: "#0C447C" }}
+          >
+            Your dashboard
           </p>
           <h1 className="text-[36px] md:text-[44px] font-semibold tracking-[-1px] text-[#0A1628] leading-[1.1]">
-            Hi, @{user.username}
+            {getGreeting()}, {firstName}.
           </h1>
-          <p className="text-[15px] text-ds-text-secondary mt-3 max-w-[520px]">
-            Your central hub for everything you create, manage, and earn across ToBe.fan.
+          <p className="text-[15px] text-ds-text-secondary mt-3 max-w-[560px]">
+            Your central hub for everything you own, manage, and earn across 28 passion communities.
           </p>
         </div>
 
@@ -58,25 +79,25 @@ const Dashboard = () => {
             label="Fan clubs"
             value={isLoading ? "—" : stats?.totalClubs ?? 0}
             helper="Active clubs you own"
-            icon={Users}
+            accentColor="#0C447C"
           />
           <StatCard
             label="Total members"
             value={isLoading ? "—" : stats?.totalMembers ?? 0}
             helper={`${stats?.paidMembers ?? 0} paying`}
-            icon={Sparkles}
+            accentColor="#0D9488"
           />
           <StatCard
             label="Monthly revenue"
             value={isLoading ? "—" : `€${(stats?.monthlyRevenue ?? 0).toFixed(0)}`}
             helper="From all paid clubs"
-            icon={Wallet}
+            accentColor="#10B981"
           />
           <StatCard
             label="Fan trust score"
-            value={isLoading ? "—" : stats?.trustScore ?? 0}
-            helper="Across all your clubs"
-            icon={TrendingUp}
+            value={isLoading ? "—" : hasClubs ? stats?.trustScore ?? 0 : "—"}
+            helper={hasClubs ? "Across all your clubs" : "Create a club to start building your score"}
+            accentColor="#DAA520"
           />
         </div>
 
@@ -87,8 +108,8 @@ const Dashboard = () => {
           </h2>
           <button
             onClick={() => navigate("/dashboard/clubs/new")}
-            className="hidden sm:flex items-center gap-2 h-9 px-4 rounded-lg text-[13px] font-medium text-white transition-all active:scale-[0.98]"
-            style={{ backgroundColor: "#0C447C" }}
+            className="hidden sm:flex items-center gap-2 h-9 px-4 rounded-lg text-[13px] font-medium bg-transparent transition-colors hover:bg-[#0C447C]/[0.06]"
+            style={{ border: "1px solid #0C447C", color: "#0C447C" }}
           >
             <Plus size={15} strokeWidth={2} />
             New club
@@ -97,17 +118,18 @@ const Dashboard = () => {
 
         {clubs.length === 0 ? (
           <EmptyState
+            compact
             icon={Users}
             title="No fan clubs yet"
-            description="Create your first fan club and start building a community of fans who pay to be closer to you."
+            description="Create your first fan club and start building a community."
             action={
               <button
                 onClick={() => navigate("/dashboard/clubs/new")}
-                className="flex items-center gap-2 h-10 px-5 rounded-lg text-[14px] font-medium text-white transition-all active:scale-[0.98]"
+                className="flex items-center gap-2 h-9 px-4 rounded-lg text-[13px] font-medium text-white transition-all active:scale-[0.98]"
                 style={{ backgroundColor: "#0C447C" }}
               >
-                <Plus size={16} strokeWidth={2} />
-                Create your first club
+                <Plus size={15} strokeWidth={2} />
+                Create club
               </button>
             }
           />
@@ -169,9 +191,10 @@ const Dashboard = () => {
           <div className="text-[13px] text-ds-text-tertiary">Loading…</div>
         ) : joinedClubs.length === 0 ? (
           <EmptyState
+            compact
             icon={Heart}
-            title="You haven't joined any clubs yet"
-            description="Browse fan clubs and join the ones that match your passions. Memberships you join as a fan will appear here."
+            title="No memberships yet"
+            description="Join clubs that match your passions to see them here."
           />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,10 +202,9 @@ const Dashboard = () => {
               const accent = club.accent_color ?? "#0C447C";
               const price = Number(club.price_monthly ?? club.price ?? 0);
               return (
-                <button
+                <div
                   key={club.membershipId}
-                  onClick={() => club.slug && navigate(`/c/${club.slug}`)}
-                  className="text-left rounded-2xl p-5 bg-white transition-colors hover:bg-[#FAFAFB] group"
+                  className="rounded-2xl p-5 bg-white transition-colors hover:bg-[#FAFAFB]"
                   style={{ border: "0.5px solid hsl(var(--color-border))" }}
                 >
                   <div className="flex items-start gap-4">
@@ -197,23 +219,26 @@ const Dashboard = () => {
                         <p className="text-[15px] font-semibold text-[#0A1628] truncate">
                           {club.name}
                         </p>
-                        <ArrowUpRight
-                          size={15}
-                          strokeWidth={1.75}
-                          className="text-ds-text-tertiary opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
-                        />
+                        <button
+                          onClick={() => club.slug && navigate(`/c/${club.slug}`)}
+                          className="text-[12px] font-medium flex items-center gap-1 shrink-0 hover:underline"
+                          style={{ color: accent }}
+                        >
+                          View club
+                          <ArrowRight size={12} strokeWidth={2} />
+                        </button>
                       </div>
                       {club.ownerUsername && (
                         <p className="text-[12px] text-ds-text-tertiary mt-0.5 truncate">
                           by @{club.ownerUsername}
                         </p>
                       )}
-                      <div className="flex items-center gap-3 mt-3 flex-wrap">
+                      <div className="flex items-center gap-2 mt-3 flex-wrap">
                         <span
                           className="text-[11px] font-medium px-2 py-0.5 rounded-full"
                           style={{
-                            backgroundColor: club.is_free ? "#F5F5F7" : "#E8F3EC",
-                            color: club.is_free ? "#6B7280" : "#226B40",
+                            backgroundColor: `${accent}1A`,
+                            color: accent,
                           }}
                         >
                           {club.is_free ? "Free" : `€${price.toFixed(0)}/mo`}
@@ -227,7 +252,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
