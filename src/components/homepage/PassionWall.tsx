@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useArticleDrawer } from "@/components/article";
 
 interface PassionCard {
   id: string;
@@ -128,20 +128,34 @@ interface CardProps {
   card: PassionCard;
   height: number;
   width: number;
-  slug: string;
   onNavigateGuard: () => boolean;
 }
 
-function WallCard({ card, height, width, slug, onNavigateGuard }: CardProps) {
+function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
+  const { open } = useArticleDrawer();
   return (
-    <Link
-      to={`/feed/${slug}`}
+    <button
+      type="button"
       onClick={(e) => {
         if (!onNavigateGuard()) {
           e.preventDefault();
+          return;
         }
+        open({
+          kind: "inline",
+          data: {
+            title: card.title,
+            siteName: card.site,
+            siteAccent: card.accent,
+            siteEmoji: "⭐",
+            image: card.image,
+            excerpt: card.excerpt,
+            content: card.excerpt,
+            tags: card.tags,
+          },
+        });
       }}
-      className="relative cursor-pointer select-none block group"
+      className="relative cursor-pointer select-none block group text-left p-0 bg-transparent border-0"
       style={{ width, height }}
       draggable={false}
     >
@@ -215,7 +229,7 @@ function WallCard({ card, height, width, slug, onNavigateGuard }: CardProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </button>
   );
 }
 
