@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { LayoutGrid, Users, Sparkles, Wallet, BarChart3, Settings, LogOut } from "lucide-react";
 import { useSupabaseAuth, type AuthUser } from "@/hooks/useSupabaseAuth";
-import tobeLogo from "@/assets/tobe-logo.png";
+import { SharedHeader } from "@/components/shared/SharedHeader";
 
 interface NavItem {
   label: string;
