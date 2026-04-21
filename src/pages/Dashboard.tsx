@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { useJoinedClubs } from "@/hooks/useJoinedClubs";
@@ -12,16 +14,20 @@ import { Users, Plus, Heart, ArrowRight } from "lucide-react";
 function getGreeting() {
   const h = new Date().getHours();
   if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
+  if (h < 17) return "Good afternoon";
   return "Good evening";
 }
 
-function getFirstName(username: string) {
-  // Strip trailing digits, then take leading letters and capitalize first
-  const letters = username.replace(/[0-9_]+$/g, "");
-  // Try to extract a "first name" portion: leading letter run before any number/separator inside
+function deriveFirstName(displayName: string | null | undefined, fallbackUsername: string) {
+  const source = (displayName ?? "").trim();
+  if (source.length > 0) {
+    const first = source.split(/\s+/)[0];
+    return first.charAt(0).toUpperCase() + first.slice(1);
+  }
+  // Fallback: strip trailing digits from username and capitalize
+  const letters = fallbackUsername.replace(/[0-9_]+$/g, "");
   const match = letters.match(/^[a-z]+/i);
-  const base = match ? match[0] : letters || username;
+  const base = match ? match[0] : letters || fallbackUsername;
   return base.charAt(0).toUpperCase() + base.slice(1).toLowerCase();
 }
 
