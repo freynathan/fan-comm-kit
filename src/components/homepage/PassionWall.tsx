@@ -399,7 +399,6 @@ export function PassionWall() {
                       card={card}
                       height={slot.height}
                       width={slot.width}
-                      slug={slugify(card.title)}
                       onNavigateGuard={() => !dragRef.current.moved}
                     />
                   </div>
@@ -421,7 +420,6 @@ export function PassionWall() {
                 card={card}
                 height={slot.height}
                 width={slot.width}
-                slug={slugify(card.title)}
                 onNavigateGuard={() => !dragRef.current.moved}
               />
             </div>
