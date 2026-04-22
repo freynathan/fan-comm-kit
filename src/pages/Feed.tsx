@@ -25,6 +25,16 @@ interface SynopsisRow {
   site: SiteLite | null;
 }
 
+interface SynopsisRecord {
+  id: string;
+  title: string;
+  synopsis_content: string;
+  fan_angle: string | null;
+  reading_time_seconds: number;
+  created_at: string;
+  site_id: string | null;
+}
+
 function timeAgo(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const m = Math.floor(diff / 60000);
@@ -52,15 +62,26 @@ export default function Feed() {
   const fetchPage = async (cursor: string | null) => {
     let q = supabase
       .from("news_synopses")
-      .select(`
-        id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id,
-        site:sites!news_synopses_site_id_fkey ( id, name, slug, emoji, accent_color )
-      `)
+      .select("id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id")
       .order("created_at", { ascending: false })
       .limit(PAGE_SIZE);
     if (cursor) q = q.lt("created_at", cursor);
     const { data } = await q;
-    return (data ?? []) as unknown as SynopsisRow[];
+    const synopses = (data ?? []) as SynopsisRecord[];
+
+    const siteIds = Array.from(new Set(synopses.map((row) => row.site_id).filter(Boolean))) as string[];
+    const { data: siteRows } = siteIds.length
+      ? await supabase
+          .from("sites")
+          .select("id, name, slug, emoji, accent_color")
+          .in("id", siteIds)
+      : { data: [] as SiteLite[] };
+
+    const siteById = new Map((siteRows ?? []).map((site) => [site.id, site]));
+    return synopses.map((row) => ({
+      ...row,
+      site: row.site_id ? siteById.get(row.site_id) ?? null : null,
+    }));
   };
 
   useEffect(() => {
