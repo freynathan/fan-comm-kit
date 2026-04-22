@@ -135,7 +135,6 @@ interface CardProps {
 
 function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
   const { open } = useArticleDrawer();
-  const downRef = useRef<{ x: number; y: number; t: number } | null>(null);
 
   const fire = () => {
     if (card.synopsisId) {
@@ -161,21 +160,13 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
     <div
       role="button"
       tabIndex={0}
-      onPointerDown={(e) => {
-        downRef.current = { x: e.clientX, y: e.clientY, t: performance.now() };
-      }}
-      onPointerUp={(e) => {
-        const down = downRef.current;
-        downRef.current = null;
-        if (!down) return;
+      onClick={(e) => {
         // Reject if the track was being dragged
-        if (!onNavigateGuard()) return;
-        // Reject if pointer moved meaningfully (drag, not click)
-        const dx = Math.abs(e.clientX - down.x);
-        const dy = Math.abs(e.clientY - down.y);
-        if (dx > 4 || dy > 4) return;
-        // Reject very long presses (likely a held drag)
-        if (performance.now() - down.t > 600) return;
+        if (!onNavigateGuard()) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
         fire();
       }}
       onKeyDown={(e) => {
