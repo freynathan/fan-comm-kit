@@ -135,7 +135,6 @@ interface CardProps {
 
 function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
   const { open } = useArticleDrawer();
-  const downRef = useRef<{ x: number; y: number; t: number } | null>(null);
 
   const fire = () => {
     if (card.synopsisId) {
@@ -161,21 +160,13 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
     <div
       role="button"
       tabIndex={0}
-      onPointerDown={(e) => {
-        downRef.current = { x: e.clientX, y: e.clientY, t: performance.now() };
-      }}
-      onPointerUp={(e) => {
-        const down = downRef.current;
-        downRef.current = null;
-        if (!down) return;
+      onClick={(e) => {
         // Reject if the track was being dragged
-        if (!onNavigateGuard()) return;
-        // Reject if pointer moved meaningfully (drag, not click)
-        const dx = Math.abs(e.clientX - down.x);
-        const dy = Math.abs(e.clientY - down.y);
-        if (dx > 4 || dy > 4) return;
-        // Reject very long presses (likely a held drag)
-        if (performance.now() - down.t > 600) return;
+        if (!onNavigateGuard()) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
         fire();
       }}
       onKeyDown={(e) => {
@@ -414,20 +405,38 @@ export function PassionWall() {
       startOffset: offsetRef.current,
       moved: false,
     };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    // Do NOT capture on pointerdown — only after movement, so child clicks still fire
   };
   const onPointerMove = (e: React.PointerEvent) => {
     if (!dragRef.current.active) return;
     const dx = e.clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 4) dragRef.current.moved = true;
-    offsetRef.current = dragRef.current.startOffset + dx;
-    setOffset(offsetRef.current);
+    if (Math.abs(dx) > 4 && !dragRef.current.moved) {
+      dragRef.current.moved = true;
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {}
+    }
+    if (dragRef.current.moved) {
+      offsetRef.current = dragRef.current.startOffset + dx;
+      setOffset(offsetRef.current);
+    }
   };
   const onPointerUp = (e: React.PointerEvent) => {
+    const wasMoved = dragRef.current.moved;
     dragRef.current.active = false;
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {}
+    // Reset moved flag shortly after so child onClick can read it during the click
+    if (!wasMoved) {
+      // immediate reset is fine — no drag occurred
+      dragRef.current.moved = false;
+    } else {
+      // Delay reset until after the synthetic click would fire
+      setTimeout(() => {
+        dragRef.current.moved = false;
+      }, 50);
+    }
   };
 
 
