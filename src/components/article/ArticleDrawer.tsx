@@ -240,7 +240,7 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
       >
         {/* Header */}
         <header
-          className="flex items-center justify-between px-5 h-14 shrink-0"
+          className="flex items-center justify-between px-5 md:px-8 h-14 shrink-0"
           style={{ borderBottom: "0.5px solid hsl(var(--color-border))" }}
         >
           <button
