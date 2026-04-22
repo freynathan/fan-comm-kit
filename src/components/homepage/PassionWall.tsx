@@ -405,20 +405,38 @@ export function PassionWall() {
       startOffset: offsetRef.current,
       moved: false,
     };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    // Do NOT capture on pointerdown — only after movement, so child clicks still fire
   };
   const onPointerMove = (e: React.PointerEvent) => {
     if (!dragRef.current.active) return;
     const dx = e.clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 4) dragRef.current.moved = true;
-    offsetRef.current = dragRef.current.startOffset + dx;
-    setOffset(offsetRef.current);
+    if (Math.abs(dx) > 4 && !dragRef.current.moved) {
+      dragRef.current.moved = true;
+      try {
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      } catch {}
+    }
+    if (dragRef.current.moved) {
+      offsetRef.current = dragRef.current.startOffset + dx;
+      setOffset(offsetRef.current);
+    }
   };
   const onPointerUp = (e: React.PointerEvent) => {
+    const wasMoved = dragRef.current.moved;
     dragRef.current.active = false;
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {}
+    // Reset moved flag shortly after so child onClick can read it during the click
+    if (!wasMoved) {
+      // immediate reset is fine — no drag occurred
+      dragRef.current.moved = false;
+    } else {
+      // Delay reset until after the synthetic click would fire
+      setTimeout(() => {
+        dragRef.current.moved = false;
+      }, 50);
+    }
   };
 
 
