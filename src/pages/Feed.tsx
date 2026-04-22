@@ -56,41 +56,50 @@ export default function Feed() {
   const [rows, setRows] = useState<SynopsisRow[]>([]);
   const [sites, setSites] = useState<SiteLite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [debug, setDebug] = useState<{
+    table: string;
+    select: string;
+    filters: string;
+    order: string;
+    limit: string;
+    returnedCount: number;
+    error: string | null;
+    elapsedMs: number;
+  } | null>(null);
+
+  const SELECT_FIELDS =
+    "id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id, site:sites!news_synopses_site_id_fkey(id, name, slug, emoji, accent_color)";
 
   useEffect(() => {
     let cancelled = false;
 
     const loadFeed = async () => {
       setLoading(true);
+      const startedAt = performance.now();
 
       const { data, error } = await supabase
         .from("news_synopses")
-        .select(
-          `
-            id,
-            title,
-            synopsis_content,
-            fan_angle,
-            reading_time_seconds,
-            created_at,
-            site_id,
-            site:sites!news_synopses_site_id_fkey (
-              id,
-              name,
-              slug,
-              emoji,
-              accent_color
-            )
-          `
-        )
+        .select(SELECT_FIELDS)
         .order("created_at", { ascending: false });
 
       if (cancelled) return;
+
+      const elapsedMs = Math.round(performance.now() - startedAt);
 
       if (error) {
         console.error("Failed to load feed", error);
         setRows([]);
         setSites([]);
+        setDebug({
+          table: "news_synopses",
+          select: SELECT_FIELDS,
+          filters: "(none)",
+          order: "created_at desc",
+          limit: "(none — default 1000)",
+          returnedCount: 0,
+          error: error.message,
+          elapsedMs,
+        });
         setLoading(false);
         return;
       }
@@ -107,6 +116,16 @@ export default function Feed() {
 
       setRows(list);
       setSites(Array.from(siteMap.values()));
+      setDebug({
+        table: "news_synopses",
+        select: SELECT_FIELDS,
+        filters: "(none)",
+        order: "created_at desc",
+        limit: "(none — default 1000)",
+        returnedCount: list.length,
+        error: null,
+        elapsedMs,
+      });
       setLoading(false);
     };
 
@@ -158,6 +177,58 @@ export default function Feed() {
                 : "Latest stories across every passion."}
             </p>
           </header>
+
+          {/* Debug panel */}
+          {debug && (
+            <div
+              className="mb-6 rounded-xl px-4 py-3 text-[11px] font-mono leading-[1.55] text-ds-text-secondary"
+              style={{ border: "0.5px solid hsl(var(--color-border))", backgroundColor: "#FAFAFA" }}
+            >
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-ds-text-tertiary">
+                  Feed query debug
+                </span>
+                <span
+                  className={`text-[11px] font-semibold ${
+                    debug.error ? "text-[#B91C1C]" : "text-[#047857]"
+                  }`}
+                >
+                  {debug.error ? "ERROR" : `${debug.returnedCount} rows · ${debug.elapsedMs}ms`}
+                </span>
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">table:</span> {debug.table}
+              </div>
+              <div className="break-all">
+                <span className="text-ds-text-tertiary">select:</span> {debug.select}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">filters:</span> {debug.filters}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">order:</span> {debug.order}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">limit:</span> {debug.limit}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">returned rows:</span> {debug.returnedCount}
+                {activeSlug && (
+                  <>
+                    {" "}
+                    <span className="text-ds-text-tertiary">| client filter site=</span>
+                    {activeSlug}{" "}
+                    <span className="text-ds-text-tertiary">→</span> {filtered.length} shown
+                  </>
+                )}
+              </div>
+              {debug.error && (
+                <div className="mt-1 text-[#B91C1C]">
+                  <span className="text-ds-text-tertiary">error:</span> {debug.error}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Filter chips */}
           {sites.length > 0 && (
