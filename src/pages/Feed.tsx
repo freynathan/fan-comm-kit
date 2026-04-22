@@ -56,41 +56,50 @@ export default function Feed() {
   const [rows, setRows] = useState<SynopsisRow[]>([]);
   const [sites, setSites] = useState<SiteLite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [debug, setDebug] = useState<{
+    table: string;
+    select: string;
+    filters: string;
+    order: string;
+    limit: string;
+    returnedCount: number;
+    error: string | null;
+    elapsedMs: number;
+  } | null>(null);
+
+  const SELECT_FIELDS =
+    "id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id, site:sites!news_synopses_site_id_fkey(id, name, slug, emoji, accent_color)";
 
   useEffect(() => {
     let cancelled = false;
 
     const loadFeed = async () => {
       setLoading(true);
+      const startedAt = performance.now();
 
       const { data, error } = await supabase
         .from("news_synopses")
-        .select(
-          `
-            id,
-            title,
-            synopsis_content,
-            fan_angle,
-            reading_time_seconds,
-            created_at,
-            site_id,
-            site:sites!news_synopses_site_id_fkey (
-              id,
-              name,
-              slug,
-              emoji,
-              accent_color
-            )
-          `
-        )
+        .select(SELECT_FIELDS)
         .order("created_at", { ascending: false });
 
       if (cancelled) return;
+
+      const elapsedMs = Math.round(performance.now() - startedAt);
 
       if (error) {
         console.error("Failed to load feed", error);
         setRows([]);
         setSites([]);
+        setDebug({
+          table: "news_synopses",
+          select: SELECT_FIELDS,
+          filters: "(none)",
+          order: "created_at desc",
+          limit: "(none — default 1000)",
+          returnedCount: 0,
+          error: error.message,
+          elapsedMs,
+        });
         setLoading(false);
         return;
       }
@@ -107,6 +116,16 @@ export default function Feed() {
 
       setRows(list);
       setSites(Array.from(siteMap.values()));
+      setDebug({
+        table: "news_synopses",
+        select: SELECT_FIELDS,
+        filters: "(none)",
+        order: "created_at desc",
+        limit: "(none — default 1000)",
+        returnedCount: list.length,
+        error: null,
+        elapsedMs,
+      });
       setLoading(false);
     };
 
