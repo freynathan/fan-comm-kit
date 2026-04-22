@@ -239,16 +239,24 @@ export default function Feed() {
                 const minutes = Math.max(1, Math.round((r.reading_time_seconds || 0) / 60));
                 return (
                   <li key={r.id}>
-                    <button
-                      type="button"
+                    <div
+                      role="button"
+                      tabIndex={0}
                       onClick={() => open({ kind: "synopsis", synopsisId: r.id })}
-                      className="w-full text-left rounded-xl px-5 py-5 transition-colors hover:bg-[#F5F5F7] group"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          open({ kind: "synopsis", synopsisId: r.id });
+                        }
+                      }}
+                      className="w-full text-left rounded-xl px-5 py-5 transition-colors hover:bg-[#F5F5F7] group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0C447C]"
                       style={{ border: "0.5px solid hsl(var(--color-border))" }}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         {r.site?.slug && (
-                          <span
-                            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-white"
+                          <button
+                            type="button"
+                            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-white hover:opacity-90 transition-opacity"
                             style={{ backgroundColor: accent }}
                             onClick={(e) => {
                               e.stopPropagation();
@@ -257,7 +265,7 @@ export default function Feed() {
                           >
                             <span>{r.site.emoji}</span>
                             <span>{r.site.slug}</span>
-                          </span>
+                          </button>
                         )}
                         <span className="text-[11px] text-ds-text-tertiary">
                           {timeAgo(r.created_at)} · {minutes} min read
@@ -271,7 +279,7 @@ export default function Feed() {
                           {r.synopsis_content}
                         </p>
                       )}
-                    </button>
+                    </div>
                   </li>
                 );
               })}

@@ -135,33 +135,55 @@ interface CardProps {
 
 function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
   const { open } = useArticleDrawer();
+  const downRef = useRef<{ x: number; y: number; t: number } | null>(null);
+
+  const fire = () => {
+    if (card.synopsisId) {
+      open({ kind: "synopsis", synopsisId: card.synopsisId });
+      return;
+    }
+    open({
+      kind: "inline",
+      data: {
+        title: card.title,
+        siteName: card.site,
+        siteAccent: card.accent,
+        siteEmoji: "⭐",
+        image: card.image,
+        excerpt: card.excerpt,
+        content: card.excerpt,
+        tags: card.tags,
+      },
+    });
+  };
+
   return (
-    <button
-      type="button"
-      onClick={(e) => {
-        if (!onNavigateGuard()) {
-          e.preventDefault();
-          return;
-        }
-        if (card.synopsisId) {
-          open({ kind: "synopsis", synopsisId: card.synopsisId });
-          return;
-        }
-        open({
-          kind: "inline",
-          data: {
-            title: card.title,
-            siteName: card.site,
-            siteAccent: card.accent,
-            siteEmoji: "⭐",
-            image: card.image,
-            excerpt: card.excerpt,
-            content: card.excerpt,
-            tags: card.tags,
-          },
-        });
+    <div
+      role="button"
+      tabIndex={0}
+      onPointerDown={(e) => {
+        downRef.current = { x: e.clientX, y: e.clientY, t: performance.now() };
       }}
-      className="relative cursor-pointer select-none block group text-left p-0 bg-transparent border-0"
+      onPointerUp={(e) => {
+        const down = downRef.current;
+        downRef.current = null;
+        if (!down) return;
+        // Reject if the track was being dragged
+        if (!onNavigateGuard()) return;
+        // Reject if pointer moved meaningfully (drag, not click)
+        const dx = Math.abs(e.clientX - down.x);
+        const dy = Math.abs(e.clientY - down.y);
+        if (dx > 4 || dy > 4) return;
+        // Reject very long presses (likely a held drag)
+        if (performance.now() - down.t > 600) return;
+        fire();
+      }}
+      onKeyDown={(e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        fire();
+      }}
+      className="relative cursor-pointer select-none block group text-left p-0 bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
       style={{ width, height }}
       draggable={false}
     >
@@ -171,12 +193,12 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
           alt={card.title}
           loading="lazy"
           draggable={false}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover pointer-events-none"
         />
 
         {/* dot → pill */}
         <div
-          className="absolute top-3 right-3 z-20 flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ease-out"
+          className="absolute top-3 right-3 z-20 flex items-center justify-center overflow-hidden rounded-full transition-all duration-200 ease-out pointer-events-none"
           style={{
             backgroundColor: card.accent,
             height: 18,
@@ -196,7 +218,7 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
 
         {/* Hover overlay — curtain rising from bottom */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"
           style={{
             background:
               "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0) 100%)",
@@ -235,7 +257,7 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
           </div>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 

@@ -228,6 +228,7 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
       <aside
         role="dialog"
         aria-modal="true"
+        aria-hidden={!open}
         aria-label={data?.title || "Article reader"}
         className={`fixed z-[81] bg-white flex flex-col
           transition-transform duration-300 ease-out
@@ -235,8 +236,8 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
           md:left-auto md:top-0 md:bottom-0 md:right-0 md:rounded-none md:rounded-l-2xl md:h-full md:max-h-none md:w-[480px]
           ${
             open
-              ? "translate-y-0 md:translate-x-0"
-              : "translate-y-full md:translate-x-full md:translate-y-0"
+              ? "translate-y-0 md:translate-x-0 pointer-events-auto"
+              : "translate-y-full md:translate-x-full md:translate-y-0 pointer-events-none"
           }`}
       >
         {/* Header */}
