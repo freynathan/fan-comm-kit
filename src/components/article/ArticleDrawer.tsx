@@ -224,25 +224,23 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
         }`}
         aria-hidden={!open}
       />
-      {/* Drawer */}
+      {/* Full-screen modal */}
       <aside
         role="dialog"
         aria-modal="true"
         aria-hidden={!open}
         aria-label={data?.title || "Article reader"}
-        className={`fixed z-[81] bg-white flex flex-col
-          transition-transform duration-300 ease-out
-          left-0 right-0 bottom-0 max-h-[75vh] h-[75vh] rounded-t-2xl
-          md:left-auto md:top-0 md:bottom-0 md:right-0 md:rounded-none md:rounded-l-2xl md:h-full md:max-h-none md:w-[480px]
+        className={`fixed inset-0 z-[81] bg-white flex flex-col
+          transition-all duration-300 ease-out
           ${
             open
-              ? "translate-y-0 md:translate-x-0 pointer-events-auto"
-              : "translate-y-full md:translate-x-full md:translate-y-0 pointer-events-none"
+              ? "opacity-100 scale-100 pointer-events-auto"
+              : "opacity-0 scale-[0.98] pointer-events-none"
           }`}
       >
         {/* Header */}
         <header
-          className="flex items-center justify-between px-5 h-14 shrink-0"
+          className="flex items-center justify-between px-5 md:px-8 h-14 shrink-0"
           style={{ borderBottom: "0.5px solid hsl(var(--color-border))" }}
         >
           <button
@@ -287,7 +285,7 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
         {/* Body */}
         <div className="flex-1 overflow-y-auto">
           {loading && (
-            <div className="p-6 space-y-3">
+            <div className="max-w-[720px] mx-auto px-5 md:px-8 py-8 md:py-12 space-y-3">
               <div className="h-5 w-2/3 bg-[#F5F5F7] rounded animate-pulse" />
               <div className="h-4 w-full bg-[#F5F5F7] rounded animate-pulse" />
               <div className="h-4 w-5/6 bg-[#F5F5F7] rounded animate-pulse" />
@@ -296,7 +294,7 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
           )}
 
           {!loading && data && (
-            <article className="px-5 md:px-6 py-6">
+            <article className="max-w-[720px] mx-auto px-5 md:px-8 py-8 md:py-12">
               {data.image && (
                 <img
                   src={data.image}
@@ -426,18 +424,20 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
         {/* Footer engagement bar */}
         {data && (
           <footer
-            className="shrink-0 flex items-center gap-4 px-5 h-14"
+            className="shrink-0"
             style={{ borderTop: "0.5px solid hsl(var(--color-border))" }}
           >
-            <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#CF3B12] transition-colors">
-              <Heart size={16} strokeWidth={1.75} />
-              {data.loveCount ?? 0}
-            </button>
-            <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#0C447C] transition-colors">
-              <MessageCircle size={16} strokeWidth={1.75} />
-              {data.commentCount ?? 0}
-            </button>
-            <span className="ml-auto text-[11px] text-ds-text-tertiary">tobe.fan</span>
+            <div className="max-w-[720px] mx-auto flex items-center gap-4 px-5 md:px-8 h-14">
+              <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#CF3B12] transition-colors">
+                <Heart size={16} strokeWidth={1.75} />
+                {data.loveCount ?? 0}
+              </button>
+              <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#0C447C] transition-colors">
+                <MessageCircle size={16} strokeWidth={1.75} />
+                {data.commentCount ?? 0}
+              </button>
+              <span className="ml-auto text-[11px] text-ds-text-tertiary">tobe.fan</span>
+            </div>
           </footer>
         )}
       </aside>
