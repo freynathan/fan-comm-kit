@@ -424,18 +424,20 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
         {/* Footer engagement bar */}
         {data && (
           <footer
-            className="shrink-0 flex items-center gap-4 px-5 h-14"
+            className="shrink-0"
             style={{ borderTop: "0.5px solid hsl(var(--color-border))" }}
           >
-            <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#CF3B12] transition-colors">
-              <Heart size={16} strokeWidth={1.75} />
-              {data.loveCount ?? 0}
-            </button>
-            <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#0C447C] transition-colors">
-              <MessageCircle size={16} strokeWidth={1.75} />
-              {data.commentCount ?? 0}
-            </button>
-            <span className="ml-auto text-[11px] text-ds-text-tertiary">tobe.fan</span>
+            <div className="max-w-[720px] mx-auto flex items-center gap-4 px-5 md:px-8 h-14">
+              <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#CF3B12] transition-colors">
+                <Heart size={16} strokeWidth={1.75} />
+                {data.loveCount ?? 0}
+              </button>
+              <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#0C447C] transition-colors">
+                <MessageCircle size={16} strokeWidth={1.75} />
+                {data.commentCount ?? 0}
+              </button>
+              <span className="ml-auto text-[11px] text-ds-text-tertiary">tobe.fan</span>
+            </div>
           </footer>
         )}
       </aside>
