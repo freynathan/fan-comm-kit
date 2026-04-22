@@ -276,25 +276,6 @@ export default function Feed() {
             </ul>
           )}
 
-          {!loading && filtered.length > 0 && hasMore && (
-            <div className="mt-8 flex justify-center">
-              <button
-                type="button"
-                onClick={loadMore}
-                disabled={loadingMore}
-                className="inline-flex items-center rounded-full px-5 py-2 text-[13px] font-medium text-ds-text-primary transition-colors hover:bg-[#F5F5F7] disabled:opacity-50"
-                style={{ border: "0.5px solid hsl(var(--color-border))" }}
-              >
-                {loadingMore ? "Loading…" : "Load more"}
-              </button>
-            </div>
-          )}
-
-          {!loading && filtered.length > 0 && !hasMore && (
-            <p className="mt-8 text-center text-[12px] text-ds-text-tertiary">
-              You're all caught up.
-            </p>
-          )}
         </div>
       </main>
 
