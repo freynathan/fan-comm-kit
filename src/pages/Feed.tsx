@@ -42,28 +42,37 @@ export default function Feed() {
   const activeSlug = searchParams.get("site");
   const { open } = useArticleDrawer();
 
+  const PAGE_SIZE = 30;
   const [rows, setRows] = useState<SynopsisRow[]>([]);
   const [sites, setSites] = useState<SiteLite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchPage = async (cursor: string | null) => {
+    let q = supabase
+      .from("news_synopses")
+      .select(`
+        id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id,
+        site:sites!news_synopses_site_id_fkey ( id, name, slug, emoji, accent_color )
+      `)
+      .order("created_at", { ascending: false })
+      .limit(PAGE_SIZE);
+    if (cursor) q = q.lt("created_at", cursor);
+    const { data } = await q;
+    return (data ?? []) as unknown as SynopsisRow[];
+  };
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    setHasMore(true);
     (async () => {
-      const { data } = await supabase
-        .from("news_synopses")
-        .select(`
-          id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id,
-          site:sites!news_synopses_site_id_fkey ( id, name, slug, emoji, accent_color )
-        `)
-        .order("created_at", { ascending: false })
-        .limit(60);
-
+      const list = await fetchPage(null);
       if (cancelled) return;
-      const list = (data ?? []) as unknown as SynopsisRow[];
       setRows(list);
+      setHasMore(list.length === PAGE_SIZE);
 
-      // Build unique site list from rows for filter chips
       const map = new Map<string, SiteLite>();
       list.forEach((r) => {
         if (r.site && r.site.slug) map.set(r.site.slug, r.site);
@@ -75,6 +84,27 @@ export default function Feed() {
       cancelled = true;
     };
   }, []);
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore || rows.length === 0) return;
+    setLoadingMore(true);
+    const cursor = rows[rows.length - 1].created_at;
+    const more = await fetchPage(cursor);
+    setRows((prev) => {
+      const seen = new Set(prev.map((r) => r.id));
+      const dedup = more.filter((r) => !seen.has(r.id));
+      return [...prev, ...dedup];
+    });
+    setHasMore(more.length === PAGE_SIZE);
+    setSites((prev) => {
+      const map = new Map(prev.map((s) => [s.slug!, s]));
+      more.forEach((r) => {
+        if (r.site && r.site.slug && !map.has(r.site.slug)) map.set(r.site.slug, r.site);
+      });
+      return Array.from(map.values());
+    });
+    setLoadingMore(false);
+  };
 
   const filtered = useMemo(() => {
     if (!activeSlug) return rows;
@@ -225,6 +255,26 @@ export default function Feed() {
                 );
               })}
             </ul>
+          )}
+
+          {!loading && filtered.length > 0 && hasMore && (
+            <div className="mt-8 flex justify-center">
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="inline-flex items-center rounded-full px-5 py-2 text-[13px] font-medium text-ds-text-primary transition-colors hover:bg-[#F5F5F7] disabled:opacity-50"
+                style={{ border: "0.5px solid hsl(var(--color-border))" }}
+              >
+                {loadingMore ? "Loading…" : "Load more"}
+              </button>
+            </div>
+          )}
+
+          {!loading && filtered.length > 0 && !hasMore && (
+            <p className="mt-8 text-center text-[12px] text-ds-text-tertiary">
+              You're all caught up.
+            </p>
           )}
         </div>
       </main>
