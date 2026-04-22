@@ -13,6 +13,7 @@ import DashboardClubs from "./pages/DashboardClubs.tsx";
 import DashboardClubNew from "./pages/DashboardClubNew.tsx";
 import DashboardFans from "./pages/DashboardFans.tsx";
 import DashboardContent from "./pages/DashboardContent.tsx";
+import Feed from "./pages/Feed.tsx";
 import PublicClub from "./pages/PublicClub.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
@@ -29,6 +30,7 @@ const App = () => (
           <ArticleDrawerProvider>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/feed" element={<Feed />} />
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/of/:username" element={<ProfilePage />} />
               <Route path="/c/:slug" element={<PublicClub />} />
