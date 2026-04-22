@@ -294,7 +294,7 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
           )}
 
           {!loading && data && (
-            <article className="px-5 md:px-6 py-6">
+            <article className="max-w-[720px] mx-auto px-5 md:px-8 py-8 md:py-12">
               {data.image && (
                 <img
                   src={data.image}
