@@ -25,7 +25,7 @@ interface SynopsisRow {
   site: SiteLite | null;
 }
 
-interface SynopsisRecord {
+interface SynopsisQueryRow {
   id: string;
   title: string;
   synopsis_content: string;
@@ -33,6 +33,7 @@ interface SynopsisRecord {
   reading_time_seconds: number;
   created_at: string;
   site_id: string | null;
+  site: SiteLite | null;
 }
 
 function timeAgo(iso: string) {
@@ -52,80 +53,69 @@ export default function Feed() {
   const activeSlug = searchParams.get("site");
   const { open } = useArticleDrawer();
 
-  const PAGE_SIZE = 30;
   const [rows, setRows] = useState<SynopsisRow[]>([]);
   const [sites, setSites] = useState<SiteLite[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
-  const fetchPage = async (cursor: string | null) => {
-    let q = supabase
-      .from("news_synopses")
-      .select("id, title, synopsis_content, fan_angle, reading_time_seconds, created_at, site_id")
-      .order("created_at", { ascending: false })
-      .limit(PAGE_SIZE);
-    if (cursor) q = q.lt("created_at", cursor);
-    const { data } = await q;
-    const synopses = (data ?? []) as SynopsisRecord[];
-
-    const siteIds = Array.from(new Set(synopses.map((row) => row.site_id).filter(Boolean))) as string[];
-    const { data: siteRows } = siteIds.length
-      ? await supabase
-          .from("sites")
-          .select("id, name, slug, emoji, accent_color")
-          .in("id", siteIds)
-      : { data: [] as SiteLite[] };
-
-    const siteById = new Map((siteRows ?? []).map((site) => [site.id, site]));
-    return synopses.map((row) => ({
-      ...row,
-      site: row.site_id ? siteById.get(row.site_id) ?? null : null,
-    }));
-  };
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setHasMore(true);
-    (async () => {
-      const list = await fetchPage(null);
-      if (cancelled) return;
-      setRows(list);
-      setHasMore(list.length === PAGE_SIZE);
 
-      const map = new Map<string, SiteLite>();
-      list.forEach((r) => {
-        if (r.site && r.site.slug) map.set(r.site.slug, r.site);
+    const loadFeed = async () => {
+      setLoading(true);
+
+      const { data, error } = await supabase
+        .from("news_synopses")
+        .select(
+          `
+            id,
+            title,
+            synopsis_content,
+            fan_angle,
+            reading_time_seconds,
+            created_at,
+            site_id,
+            site:sites!news_synopses_site_id_fkey (
+              id,
+              name,
+              slug,
+              emoji,
+              accent_color
+            )
+          `
+        )
+        .order("created_at", { ascending: false });
+
+      if (cancelled) return;
+
+      if (error) {
+        console.error("Failed to load feed", error);
+        setRows([]);
+        setSites([]);
+        setLoading(false);
+        return;
+      }
+
+      const list = ((data ?? []) as SynopsisQueryRow[]).map((row) => ({
+        ...row,
+        site: row.site ?? null,
+      }));
+
+      const siteMap = new Map<string, SiteLite>();
+      list.forEach((row) => {
+        if (row.site?.slug) siteMap.set(row.site.slug, row.site);
       });
-      setSites(Array.from(map.values()));
+
+      setRows(list);
+      setSites(Array.from(siteMap.values()));
       setLoading(false);
-    })();
+    };
+
+    void loadFeed();
+
     return () => {
       cancelled = true;
     };
   }, []);
-
-  const loadMore = async () => {
-    if (loadingMore || !hasMore || rows.length === 0) return;
-    setLoadingMore(true);
-    const cursor = rows[rows.length - 1].created_at;
-    const more = await fetchPage(cursor);
-    setRows((prev) => {
-      const seen = new Set(prev.map((r) => r.id));
-      const dedup = more.filter((r) => !seen.has(r.id));
-      return [...prev, ...dedup];
-    });
-    setHasMore(more.length === PAGE_SIZE);
-    setSites((prev) => {
-      const map = new Map(prev.map((s) => [s.slug!, s]));
-      more.forEach((r) => {
-        if (r.site && r.site.slug && !map.has(r.site.slug)) map.set(r.site.slug, r.site);
-      });
-      return Array.from(map.values());
-    });
-    setLoadingMore(false);
-  };
 
   const filtered = useMemo(() => {
     if (!activeSlug) return rows;
@@ -286,25 +276,6 @@ export default function Feed() {
             </ul>
           )}
 
-          {!loading && filtered.length > 0 && hasMore && (
-            <div className="mt-8 flex justify-center">
-              <button
-                type="button"
-                onClick={loadMore}
-                disabled={loadingMore}
-                className="inline-flex items-center rounded-full px-5 py-2 text-[13px] font-medium text-ds-text-primary transition-colors hover:bg-[#F5F5F7] disabled:opacity-50"
-                style={{ border: "0.5px solid hsl(var(--color-border))" }}
-              >
-                {loadingMore ? "Loading…" : "Load more"}
-              </button>
-            </div>
-          )}
-
-          {!loading && filtered.length > 0 && !hasMore && (
-            <p className="mt-8 text-center text-[12px] text-ds-text-tertiary">
-              You're all caught up.
-            </p>
-          )}
         </div>
       </main>
 
