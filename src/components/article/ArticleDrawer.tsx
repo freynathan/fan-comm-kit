@@ -31,6 +31,14 @@ export interface InlineArticleData {
   fanAngle?: string;
 }
 
+interface SiteRecord {
+  id: string;
+  name: string;
+  slug: string | null;
+  emoji: string;
+  accent_color: string;
+}
+
 interface DrawerProps {
   open: boolean;
   source: ArticleDrawerSource | null;
@@ -87,53 +95,59 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
         if (source.kind === "synopsis") {
           const { data: syn } = await supabase
             .from("news_synopses")
-            .select(`
-              id, title, synopsis_content, key_points, fan_angle, reading_time_seconds, post_id,
-              article_id, site_id,
-              article:news_articles!news_synopses_article_id_fkey (
-                id, original_url, original_title, original_author, original_published_at, original_content
-              ),
-              site:sites!news_synopses_site_id_fkey ( id, name, slug, emoji, accent_color )
-            `)
+            .select(
+              "id, title, synopsis_content, key_points, fan_angle, reading_time_seconds, post_id, article_id, site_id"
+            )
             .eq("id", source.synopsisId)
             .maybeSingle();
 
           if (cancelled || !syn) return;
 
-          const article = (syn as any).article;
-          const site = (syn as any).site;
+          const [{ data: article }, { data: site }, { data: post }, { data: dispatches }] = await Promise.all([
+            syn.article_id
+              ? supabase
+                  .from("news_articles")
+                  .select("id, original_url, original_title, original_author, original_published_at, original_content")
+                  .eq("id", syn.article_id)
+                  .maybeSingle()
+              : Promise.resolve({ data: null }),
+            syn.site_id
+              ? supabase
+                  .from("sites")
+                  .select("id, name, slug, emoji, accent_color")
+                  .eq("id", syn.site_id)
+                  .maybeSingle()
+              : Promise.resolve({ data: null }),
+            syn.post_id
+              ? supabase
+                  .from("posts")
+                  .select("love_count, comment_count")
+                  .eq("id", syn.post_id)
+                  .maybeSingle()
+              : Promise.resolve({ data: null }),
+            supabase
+              .from("content_dispatches")
+              .select("dispatched_to_site_id")
+              .eq("synopsis_id", syn.id),
+          ]);
 
-          // Get post engagement if linked
-          let loveCount = 0;
-          let commentCount = 0;
-          if (syn.post_id) {
-            const { data: post } = await supabase
-              .from("posts")
-              .select("love_count, comment_count")
-              .eq("id", syn.post_id)
-              .maybeSingle();
-            if (post) {
-              loveCount = post.love_count ?? 0;
-              commentCount = post.comment_count ?? 0;
-            }
-          }
+          const dispatchSiteIds = Array.from(
+            new Set((dispatches ?? []).map((dispatch) => dispatch.dispatched_to_site_id).filter(Boolean))
+          ) as string[];
 
-          // Dispatched-to sites
-          const { data: dispatches } = await supabase
-            .from("content_dispatches")
-            .select(`site:sites!content_dispatches_dispatched_to_site_id_fkey ( name, slug, emoji, accent_color )`)
-            .eq("synopsis_id", syn.id);
+          const { data: dispatchSites } = dispatchSiteIds.length
+            ? await supabase
+                .from("sites")
+                .select("id, name, slug, emoji, accent_color")
+                .in("id", dispatchSiteIds)
+            : { data: [] as SiteRecord[] };
 
-          const dispatchedTo =
-            (dispatches ?? [])
-              .map((d: any) => d.site)
-              .filter(Boolean)
-              .map((s: any) => ({
-                name: s.name,
-                slug: s.slug,
-                emoji: s.emoji,
-                accent: s.accent_color || "#0C447C",
-              }));
+          const dispatchedTo = (dispatchSites ?? []).map((s) => ({
+            name: s.name,
+            slug: s.slug,
+            emoji: s.emoji,
+            accent: s.accent_color || "#0C447C",
+          }));
 
           const keyPoints = Array.isArray(syn.key_points)
             ? (syn.key_points as string[])
@@ -156,22 +170,25 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
             siteAccent: site?.accent_color || "#0C447C",
             siteEmoji: site?.emoji || "⭐",
             postId: syn.post_id,
-            loveCount,
-            commentCount,
+            loveCount: post?.love_count ?? 0,
+            commentCount: post?.comment_count ?? 0,
             dispatchedTo,
           });
         } else if (source.kind === "article") {
           const { data: art } = await supabase
             .from("news_articles")
-            .select(`
-              id, original_url, original_title, original_author, original_published_at, original_content,
-              site:sites!news_articles_site_id_fkey ( id, name, slug, emoji, accent_color )
-            `)
+            .select("id, original_url, original_title, original_author, original_published_at, original_content, site_id")
             .eq("id", source.articleId)
             .maybeSingle();
 
           if (cancelled || !art) return;
-          const site = (art as any).site;
+          const { data: site } = art.site_id
+            ? await supabase
+                .from("sites")
+                .select("id, name, slug, emoji, accent_color")
+                .eq("id", art.site_id)
+                .maybeSingle()
+            : { data: null };
 
           setData({
             title: art.original_title,
