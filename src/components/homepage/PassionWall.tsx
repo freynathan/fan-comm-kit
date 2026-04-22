@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useArticleDrawer } from "@/components/article";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PassionCard {
   id: string;
+  synopsisId?: string;
   site: string;
   accent: string;
   image: string;
@@ -141,6 +143,10 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
           e.preventDefault();
           return;
         }
+        if (card.synopsisId) {
+          open({ kind: "synopsis", synopsisId: card.synopsisId });
+          return;
+        }
         open({
           kind: "inline",
           data: {
@@ -259,6 +265,7 @@ interface BuiltColumn {
 }
 
 export function PassionWall() {
+  const [cards, setCards] = useState<PassionCard[]>(SAMPLE_CARDS);
   const [paused, setPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -271,24 +278,73 @@ export function PassionWall() {
     moved: false,
   });
 
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      const { data: synopses, error } = await supabase
+        .from("news_synopses")
+        .select("id, title, synopsis_content, site_id")
+        .order("created_at", { ascending: false })
+        .limit(SAMPLE_CARDS.length);
+
+      if (cancelled || error || !synopses?.length) return;
+
+      const siteIds = Array.from(new Set(synopses.map((synopsis) => synopsis.site_id).filter(Boolean))) as string[];
+      const { data: sites } = siteIds.length
+        ? await supabase
+            .from("sites")
+            .select("id, name, slug, emoji, accent_color")
+            .in("id", siteIds)
+        : { data: [] };
+
+      if (cancelled) return;
+
+      const siteById = new Map((sites ?? []).map((site) => [site.id, site]));
+      const mapped = synopses.map((synopsis, index) => {
+        const fallback = SAMPLE_CARDS[index % SAMPLE_CARDS.length];
+        const site = synopsis.site_id ? siteById.get(synopsis.site_id) : null;
+        const siteLabel = site?.slug || site?.name || fallback.site;
+
+        return {
+          ...fallback,
+          id: synopsis.id,
+          synopsisId: synopsis.id,
+          site: siteLabel,
+          accent: site?.accent_color || fallback.accent,
+          title: synopsis.title,
+          excerpt: synopsis.synopsis_content,
+          tags: [siteLabel],
+        };
+      });
+
+      setCards(mapped);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // Build one full pass of columns by walking template + cards in order
   const buildBase = (): BuiltColumn[] => {
     const cols: BuiltColumn[] = [];
     let cardIdx = 0;
+    const cardPool = cards.length ? cards : SAMPLE_CARDS;
     // Repeat template enough times to consume all cards at least once
-    const passes = Math.ceil((SAMPLE_CARDS.length * 2) / COLUMN_TEMPLATE.length);
+    const passes = Math.max(1, Math.ceil((cardPool.length * 2) / COLUMN_TEMPLATE.length));
     for (let p = 0; p < passes; p++) {
       for (let s = 0; s < COLUMN_TEMPLATE.length; s++) {
         const slot = COLUMN_TEMPLATE[s];
         const need = slot.kind === "stack" ? 2 : 1;
-        const cards: PassionCard[] = [];
+        const columnCards: PassionCard[] = [];
         for (let i = 0; i < need; i++) {
-          cards.push(SAMPLE_CARDS[cardIdx % SAMPLE_CARDS.length]);
+          columnCards.push(cardPool[cardIdx % cardPool.length]);
           cardIdx++;
         }
         cols.push({
           slot,
-          cards,
+          cards: columnCards,
           key: `p${p}-s${s}`,
         });
       }
