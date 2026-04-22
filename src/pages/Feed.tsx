@@ -178,6 +178,58 @@ export default function Feed() {
             </p>
           </header>
 
+          {/* Debug panel */}
+          {debug && (
+            <div
+              className="mb-6 rounded-xl px-4 py-3 text-[11px] font-mono leading-[1.55] text-ds-text-secondary"
+              style={{ border: "0.5px solid hsl(var(--color-border))", backgroundColor: "#FAFAFA" }}
+            >
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-ds-text-tertiary">
+                  Feed query debug
+                </span>
+                <span
+                  className={`text-[11px] font-semibold ${
+                    debug.error ? "text-[#B91C1C]" : "text-[#047857]"
+                  }`}
+                >
+                  {debug.error ? "ERROR" : `${debug.returnedCount} rows · ${debug.elapsedMs}ms`}
+                </span>
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">table:</span> {debug.table}
+              </div>
+              <div className="break-all">
+                <span className="text-ds-text-tertiary">select:</span> {debug.select}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">filters:</span> {debug.filters}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">order:</span> {debug.order}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">limit:</span> {debug.limit}
+              </div>
+              <div>
+                <span className="text-ds-text-tertiary">returned rows:</span> {debug.returnedCount}
+                {activeSlug && (
+                  <>
+                    {" "}
+                    <span className="text-ds-text-tertiary">| client filter site=</span>
+                    {activeSlug}{" "}
+                    <span className="text-ds-text-tertiary">→</span> {filtered.length} shown
+                  </>
+                )}
+              </div>
+              {debug.error && (
+                <div className="mt-1 text-[#B91C1C]">
+                  <span className="text-ds-text-tertiary">error:</span> {debug.error}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Filter chips */}
           {sites.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-8">
