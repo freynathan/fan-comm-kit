@@ -285,7 +285,7 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
         {/* Body */}
         <div className="flex-1 overflow-y-auto">
           {loading && (
-            <div className="p-6 space-y-3">
+            <div className="max-w-[720px] mx-auto px-5 md:px-8 py-8 md:py-12 space-y-3">
               <div className="h-5 w-2/3 bg-[#F5F5F7] rounded animate-pulse" />
               <div className="h-4 w-full bg-[#F5F5F7] rounded animate-pulse" />
               <div className="h-4 w-5/6 bg-[#F5F5F7] rounded animate-pulse" />
