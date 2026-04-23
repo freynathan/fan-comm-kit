@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { X, ExternalLink, Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
+import { X, ExternalLink, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { DrawerEngagementBar } from "./DrawerEngagementBar";
+import { RelatedSynopses } from "./RelatedSynopses";
 
 /**
  * Source types accepted by the drawer:
@@ -50,6 +52,9 @@ interface LoadedArticle extends InlineArticleData {
   loveCount?: number;
   commentCount?: number;
   postId?: string | null;
+  synopsisId?: string | null;
+  articleId?: string | null;
+  siteId?: string | null;
   dispatchedTo?: { name: string; slug: string | null; emoji: string; accent: string }[];
 }
 
