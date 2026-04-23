@@ -11,6 +11,7 @@ interface PassionCard {
   title: string;
   excerpt: string;
   tags: string[];
+  readMinutes?: number;
 }
 
 const SAMPLE_CARDS: PassionCard[] = [
@@ -178,7 +179,11 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
       style={{ width, height }}
       draggable={false}
     >
-      <div className="relative w-full h-full overflow-hidden" style={{ borderRadius: 14 }}>
+      <div
+        className="relative w-full h-full overflow-hidden transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+        style={{ borderRadius: 14 }}
+        data-card-shell
+      >
         <img
           src={card.image}
           alt={card.title}
@@ -207,12 +212,12 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
           </span>
         </div>
 
-        {/* Hover overlay — curtain rising from bottom */}
+        {/* Hover overlay — full dark veil */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"
           style={{
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0) 100%)",
+              "linear-gradient(to top, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.78) 55%, rgba(10,22,40,0.35) 100%)",
           }}
         />
 
@@ -230,21 +235,19 @@ function WallCard({ card, height, width, onNavigateGuard }: CardProps) {
           >
             {card.site}
           </div>
-          <h3 className="text-[14px] font-medium leading-[1.35] text-white mb-2 line-clamp-2">
+          <h3 className="text-[15px] font-semibold leading-[1.3] text-white mb-2 line-clamp-3" style={{ letterSpacing: "-0.005em" }}>
             {card.title}
           </h3>
-          <div className="flex flex-wrap gap-1">
-            {card.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium text-white"
-                style={{
-                  border: "0.5px solid rgba(255,255,255,0.3)",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
+          <div className="flex items-center justify-between gap-2 mt-1">
+            <span className="text-[11px] text-white/70">
+              {card.readMinutes ? `${card.readMinutes} min read` : card.tags[0]}
+            </span>
+            <span
+              className="inline-flex items-center gap-1 text-[12px] font-medium text-white"
+            >
+              Read more
+              <span aria-hidden>→</span>
+            </span>
           </div>
         </div>
       </div>
@@ -297,7 +300,7 @@ export function PassionWall() {
     (async () => {
       const { data: synopses, error } = await supabase
         .from("news_synopses")
-        .select("id, title, synopsis_content, site_id")
+        .select("id, title, synopsis_content, site_id, reading_time_seconds")
         .order("created_at", { ascending: false })
         .limit(SAMPLE_CARDS.length);
 
@@ -328,6 +331,9 @@ export function PassionWall() {
           title: synopsis.title,
           excerpt: synopsis.synopsis_content,
           tags: [siteLabel],
+          readMinutes: synopsis.reading_time_seconds
+            ? Math.max(1, Math.round(synopsis.reading_time_seconds / 60))
+            : undefined,
         };
       });
 
