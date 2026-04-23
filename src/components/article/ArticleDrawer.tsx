@@ -175,6 +175,9 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
             siteAccent: site?.accent_color || "#0C447C",
             siteEmoji: site?.emoji || "⭐",
             postId: syn.post_id,
+            synopsisId: syn.id,
+            articleId: syn.article_id,
+            siteId: syn.site_id,
             loveCount: post?.love_count ?? 0,
             commentCount: post?.comment_count ?? 0,
             dispatchedTo,
@@ -205,6 +208,8 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
             siteSlug: site?.slug,
             siteAccent: site?.accent_color || "#0C447C",
             siteEmoji: site?.emoji || "⭐",
+            articleId: art.id,
+            siteId: art.site_id,
           });
         }
       } finally {
