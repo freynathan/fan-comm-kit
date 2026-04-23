@@ -273,12 +273,6 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
           )}
           <div className="flex items-center gap-1">
             <button
-              aria-label="Bookmark"
-              className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#F5F5F7] transition-colors"
-            >
-              <Bookmark size={16} strokeWidth={1.75} className="text-[#3D3D3D]" />
-            </button>
-            <button
               aria-label="Share"
               className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#F5F5F7] transition-colors"
               onClick={() => {
@@ -427,28 +421,29 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
                   <ExternalLink size={12} strokeWidth={1.75} />
                 </a>
               )}
+
+              <RelatedSynopses
+                siteId={data.siteId}
+                excludeId={data.synopsisId}
+                siteAccent={data.siteAccent || "#0C447C"}
+                siteEmoji={data.siteEmoji || "⭐"}
+                siteName={data.siteName}
+              />
             </article>
           )}
         </div>
 
-        {/* Footer engagement bar */}
+        {/* Engagement bar (Love, Comment, Bookmark + comment composer) */}
         {data && (
-          <footer
-            className="shrink-0"
-            style={{ borderTop: "0.5px solid hsl(var(--color-border))" }}
-          >
-            <div className="max-w-[720px] mx-auto flex items-center gap-4 px-5 md:px-8 h-14">
-              <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#CF3B12] transition-colors">
-                <Heart size={16} strokeWidth={1.75} />
-                {data.loveCount ?? 0}
-              </button>
-              <button className="flex items-center gap-1.5 text-[13px] text-ds-text-secondary hover:text-[#0C447C] transition-colors">
-                <MessageCircle size={16} strokeWidth={1.75} />
-                {data.commentCount ?? 0}
-              </button>
-              <span className="ml-auto text-[11px] text-ds-text-tertiary">tobe.fan</span>
-            </div>
-          </footer>
+          <DrawerEngagementBar
+            postId={data.postId}
+            synopsisId={data.synopsisId}
+            articleId={data.articleId}
+            initialLoveCount={data.loveCount ?? 0}
+            initialCommentCount={data.commentCount ?? 0}
+            accent={data.siteAccent || "#0C447C"}
+          />
+        )}
         )}
       </aside>
     </>
