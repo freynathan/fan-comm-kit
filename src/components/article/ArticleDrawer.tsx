@@ -444,7 +444,6 @@ export function ArticleDrawer({ open, source, onClose, onAnimationEnd }: DrawerP
             accent={data.siteAccent || "#0C447C"}
           />
         )}
-        )}
       </aside>
     </>
   );
