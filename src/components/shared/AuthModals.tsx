@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -41,16 +41,10 @@ export function AuthModal({ isOpen, onClose, accentColor, mode, onLogin, onSignu
     setError("");
     setSubmitting(true);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-      });
-      if (result.error) {
-        setError(result.error instanceof Error ? result.error.message : "Google sign-in failed");
-        setSubmitting(false);
-        return;
-      }
-      if (result.redirected) return;
-      onClose();
+      const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: {
+  redirectTo: window.location.origin,
+}});
+if (error) { setError(error.message); setSubmitting(false); return; }
     } catch (err: any) {
       setError(err.message || "Google sign-in failed");
       setSubmitting(false);
