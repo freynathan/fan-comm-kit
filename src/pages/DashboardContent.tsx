@@ -92,8 +92,8 @@ function ContentPanel() {
     const [scanned, pending, approved, published, failed] = await Promise.all([
       supabase.from("news_articles").select("id", { count: "exact", head: true }).gte("created_at", since),
       supabase.from("news_articles").select("id", { count: "exact", head: true }).eq("status", "pending"),
-      supabase.from("news_articles").select("id", { count: "exact", head: true }).eq("status", "approved"),
-      supabase.from("news_articles").select("id", { count: "exact", head: true }).eq("status", "published"),
+      supabase.from("news_articles").select("id", { count: "exact", head: true }).in("status", ["approved", "published"]),
+      supabase.from("news_articles").select("id", { count: "exact", head: true }).in("status", ["approved", "published"]),
       supabase.from("news_articles").select("id", { count: "exact", head: true }).eq("status", "rejected"),
     ]);
     setStats({
