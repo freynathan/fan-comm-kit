@@ -340,7 +340,7 @@ const AdminFanClubForm = () => {
                 </Field>
 
                 {/* Slug */}
-                <Field label="URL slug" hint={`tobe.fan/c/${slug || "your-slug"}`}>
+                <Field label="URL slug" hint={selectedSite ? `tobe.fan/of/${slug || "your-slug"}?site=${selectedSite.slug}` : `tobe.fan/of/${slug || "your-slug"}`}>
                   <input
                     type="text"
                     value={slug}
