@@ -127,34 +127,19 @@ visibility, brand_url, brand_ai_summary, site_slug, created_at
 
 ### Phase 1 build order
 1. Fan Club Builder in admin (/admin/fan-clubs)
-   - List page matching Sites list UI pattern
-   - Create/Edit with feature toggles matching site builder pattern
-   - Brand URL field with AI summary generation
 2. Fan Club public page (fashion.fan/of/lvmh)
-   - Hero with cover image, name, member count, Fan Trust Score
-   - Join CTA (Google auth)
-   - Ask the Fanbase AI chat bar
-   - Community feed
-   - FAQ blocks in JSON-LD schema markup
 3. fashion.fan logged-out homepage
-   - Premium editorial magazine feel
-   - LVMH fan club spotlight section
 
 ### LVMH demo requirements (Vivatech mid-June)
 - fashion.fan/of/lvmh must be live and beautiful
 - AI bar must work
 - Fan count must show
-- JSON-LD FAQ blocks must be present for AI search pitch
+- JSON-LD FAQ blocks for AI search pitch
 - Mobile must look good
 
 ### Design philosophy for fan clubs
 - Emotional connection over transactional
-- "Belonging" not just "membership"  
-- Identity-first: "I am a car.fan of Porsche"
-- Contextual + conversational over scroll-and-consume
-- Notification control is a trust feature, not an afterthought
-
-### Marketing GTM (automated, AI-driven)
-- Brands: AI scans websites → builds landing page → sends "Are you AI searchable?" email
-- Influencers: Auto-build FanPassport → DM with preview link
-- Fans: Brands + influencers bring them via invite loops
+- Belonging not just membership
+- Identity-first: I am a car.fan of Porsche
+- Contextual and conversational over scroll-and-consume
+- Notification control is a trust feature not an afterthought
