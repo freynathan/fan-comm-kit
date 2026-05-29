@@ -41,9 +41,10 @@ export function AuthModal({ isOpen, onClose, accentColor, mode, onLogin, onSignu
     setError("");
     setSubmitting(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: {
-  redirectTo: window.location.origin,
-}});
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/auth/callback` },
+      });
 if (error) { setError(error.message); setSubmitting(false); return; }
     } catch (err: any) {
       setError(err.message || "Google sign-in failed");

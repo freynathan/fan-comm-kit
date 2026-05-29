@@ -15,6 +15,7 @@ import DashboardFans from "./pages/DashboardFans.tsx";
 import DashboardContent from "./pages/DashboardContent.tsx";
 import Feed from "./pages/Feed.tsx";
 import PublicClub from "./pages/PublicClub.tsx";
+import AuthCallback from "./pages/AuthCallback.tsx";
 import AdminFanClubs from "./pages/AdminFanClubs.tsx";
 import AdminFanClubForm from "./pages/AdminFanClubForm.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/feed" element={<Feed />} />
               <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/of/:username" element={<ProfilePage />} />
               <Route path="/c/:slug" element={<PublicClub />} />
               <Route path="/profile/edit" element={<ProfileEdit />} />
