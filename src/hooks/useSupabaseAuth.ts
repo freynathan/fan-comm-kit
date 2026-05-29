@@ -175,16 +175,6 @@ async function resolveAuthUser(supaUser: User): Promise<AuthUser> {
           initials: data.initials || fallbackUser.initials,
         };
       }
-
-      const createdUser = await ensureUserRecord(supaUser);
-      if (createdUser) {
-        return {
-          ...fallbackUser,
-          dbUserId: createdUser.dbUserId,
-          username: createdUser.username,
-          initials: createdUser.username.slice(0, 2).toUpperCase(),
-        };
-      }
     } catch (err) {
       console.error("resolveAuthUser error:", err);
     }
