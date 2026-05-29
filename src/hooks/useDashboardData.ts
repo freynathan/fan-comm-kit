@@ -102,7 +102,6 @@ export function useSites() {
       const { data, error } = await supabase
         .from("sites")
         .select("id, name, emoji, slug, accent_color")
-        .eq("is_active", true)
         .order("name");
       if (error) throw error;
       return (data ?? []) as SiteOption[];
