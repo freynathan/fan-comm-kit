@@ -6,25 +6,11 @@ const AuthCallback = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // supabase-js detects ?code= and exchanges it automatically during initialize().
-    // We wait for the SIGNED_IN event, then redirect to dashboard.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN") {
-        subscription.unsubscribe();
-        navigate("/dashboard", { replace: true });
-      }
+    // getSession() awaits supabase-js initialize(), which handles the PKCE
+    // ?code= exchange automatically. Once it resolves, the session is set.
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      navigate(session ? "/dashboard" : "/", { replace: true });
     });
-
-    // Fallback: if no SIGNED_IN fires within 5s, go home.
-    const timeout = setTimeout(() => {
-      subscription.unsubscribe();
-      navigate("/", { replace: true });
-    }, 5000);
-
-    return () => {
-      subscription.unsubscribe();
-      clearTimeout(timeout);
-    };
   }, [navigate]);
 
   return (
