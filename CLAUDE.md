@@ -15,7 +15,7 @@ Key URLs:
 - Frontend: React + TanStack Router + Tailwind CSS
 - Build: Vite
 - Hosting: Vercel (project: fan-comm-kit, auto-deploys from main branch)
-- Database: Supabase (project ID: fqqhnbmpatnsdtptorbk)
+- Database: Supabase (project ID: irepzzaizekqzateddwf)
 - Auth: Google OAuth via Supabase PKCE flow
 - AI content: Anthropic API (key stored in Vercel as ANTHROPIC_API_KEY)
 - Repo: github.com/freynathan/fan-comm-kit
