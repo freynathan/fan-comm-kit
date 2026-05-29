@@ -15,6 +15,8 @@ import DashboardFans from "./pages/DashboardFans.tsx";
 import DashboardContent from "./pages/DashboardContent.tsx";
 import Feed from "./pages/Feed.tsx";
 import PublicClub from "./pages/PublicClub.tsx";
+import AdminFanClubs from "./pages/AdminFanClubs.tsx";
+import AdminFanClubForm from "./pages/AdminFanClubForm.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
 
@@ -40,6 +42,9 @@ const App = () => (
               <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
               <Route path="/dashboard/fans" element={<DashboardFans />} />
               <Route path="/dashboard/content" element={<DashboardContent />} />
+              <Route path="/admin/fan-clubs" element={<AdminFanClubs />} />
+              <Route path="/admin/fan-clubs/new" element={<AdminFanClubForm />} />
+              <Route path="/admin/fan-clubs/:id" element={<AdminFanClubForm />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
