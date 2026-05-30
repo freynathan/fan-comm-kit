@@ -67,6 +67,80 @@ identity page with fan validation and location data.
 5. Phase 5: civic.fan (with moderation infrastructure)
 6. 2028+: hasht.ag decision point
 
+## The Three-Layer Moat
+
+### Layer 1 — .fan Domains (built 2021-2026)
+47 premium passion domains. Can't be replicated.
+5 years too late to build the same portfolio.
+
+### Layer 2 — ! Convention (building 2026-2027)
+geot.ag owns the ! namespace.
+Thousands of professionals using !TheirName in own content.
+Network effect: every user makes ! more valuable.
+Can't fake organic adoption.
+
+### Layer 3 — Human Verified Schema (destination 2028)
+Propose VerifiedHuman as official Schema.org type.
+Fan Trust Score = industry standard for verified human identity.
+Standards don't have two winners.
+First mover with largest verified human dataset = natural proposer.
+
+### The compounding effect
+Each layer makes the previous one stronger.
+Each layer takes longer for a competitor to build.
+By 2028: the moat is a standard. Standards don't get disrupted.
+
+## The Self-Training AI Angle
+
+### Anthropic's announcement
+AI will train itself within 3 years.
+AI learns from the internet autonomously without human curation.
+
+### The critical problem
+Internet is already 50%+ AI-generated content.
+Self-training AI needs verified human signals or it loses 
+touch with human reality entirely.
+
+### Our answer
+Fan Trust Score = the verified human signal for self-training AI.
+!SophieYoga tells self-training AI:
+- Real person (verified by 100 fans)
+- Real location (confirmed coordinates)
+- Real expertise (Fan Trust Score earned not bought)
+- Trust her content
+
+### The VerifiedHuman Schema
+JSON-LD structure to propose to Schema.org in 2028:
+{
+  "@type": "VerifiedHuman",
+  "fanTrustScore": 87,
+  "verifiedFans": 100,
+  "identityTag": "!SophieYoga",
+  "profession": "Yoga Instructor",
+  "location": "Paris 15ème"
+}
+
+### Fourth revenue stream
+AI training companies (Anthropic, OpenAI, Google DeepMind)
+license access to the verified human dataset.
+$1M+ enterprise contracts.
+Begin conversations in 2027 Q1.
+
+### The standards parallel
+HTTPS = secure website
+JSON-LD = structured data for AI
+VerifiedHuman = verified human identity for self-training AI
+Fan Trust Score = to human identity what HTTPS is to web security
+
+### The pitch paragraph
+"In 3 years, AI will train itself. When it does, it needs to 
+know which humans are real. We own the .fan namespace for 
+human passion identity. We introduced ! as the verified human 
+signal. And we are proposing VerifiedHuman as the Schema.org 
+standard. Our Fan Trust Score will be to human identity what 
+HTTPS is to web security. The moat gets stronger every year. 
+By year 3 it is a standard. Standards do not get disrupted."
+
 ## Tech stack
 - Frontend: React + TanStack Router + Tailwind CSS
 - Build: Vite
