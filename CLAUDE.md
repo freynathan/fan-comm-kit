@@ -68,11 +68,71 @@ Key URLs:
 3. AI Style feature — custom AI feature for fashion.fan
 4. Mobile polish
 
-## Fan club strategy
-- Fans: identity, access, community, status
-- Brands: zero-party data, AI search moat, direct channel, loyalty metrics
-- Monetisation: free fan / verified fan (paid) / brand ambassador tiers
-- AI visibility angle: fan club membership signals brand authority to AI search
+## The Core Thesis
+
+ToBe.fan is NOT a social network. It is the human passion identity 
+layer for the AI era.
+
+In a world where AI answers every question, professionals, influencers 
+and brands need verified human signals to be discovered. Follower counts 
+are gameable. Fan Trust Scores are not.
+
+The one-liner: "ToBe.fan is the human identity layer for the AI era — 
+where real fan validation makes professionals, influencers and brands 
+discoverable by AI search."
+
+The moat: We own the .fan domain namespace — the internet's address 
+for human passion identity.
+
+## The Three Identity Pages (core product)
+
+1. Professional — yoga.fan/of/sophie-relaxing-yoga
+   - 90 verified yogis = more credible than 90,000 Instagram followers
+   - AI search asks "best yoga instructor in Paris?" → Sophie ranks
+   - Pays $19-49/month for her AI identity page
+   - Volume play — hundreds of millions of professionals globally
+
+2. Influencer — trek.fan/of/wild-adventures
+   - 1M fans = strongest AI authority signal on trekking
+   - FanPassport replaces Linktree + media kit + portfolio
+   - Pays $49-299/month
+   - Viral growth engine — influencers bring their audiences
+
+3. Brand — running.fan/of/nike
+   - 100K verified running fans = proof Nike owns the running conversation
+   - AI search for "best running shoes" surfaces Nike because humans said so
+   - Pays $500-5,000/month for dashboard + loyalty tools + CRM export
+   - Enterprise revenue
+
+## The Pricing Pyramid
+- Brands: $500-5,000/month (hundreds of brands)
+- Influencers: $49-299/month (thousands of influencers)
+- Professionals: $19-49/month (millions of professionals)
+- Fans: FREE forever — they ARE the product. Their validation = trust signals
+
+## The Network Effect
+More fans joining → stronger trust signals → better AI search ranking 
+→ more professionals/brands want pages → more fan clubs → more fans
+
+## Fan Trust Score
+This is the core product — not the community feed. Every feature must 
+ask: does this generate verifiable human validation signals?
+- A fan joining = a trust signal
+- A fan posting = a deeper signal
+- A fan attending an event = the deepest signal
+- All structured for AI engines via JSON-LD schema
+
+## Go-To-Market (AI-automated)
+- Brands: AI scans brand URLs → builds their page → sends 
+  "Are you AI searchable?" email
+- Influencers: Auto-build FanPassport → DM with preview link already live
+- Professionals: AI cold email at scale by category 
+  (yoga instructors, dentists, coaches)
+- Fans: Brands + influencers bring them via invite loops
+
+## civic.fan
+Buy the domain now. Build later (Phase 5) — requires robust moderation 
+infrastructure first. Political content needs 24/7 moderation at scale.
 
 ## Current bugs / known issues
 - Shared content block bug: two Content blocks in page builder share same 
