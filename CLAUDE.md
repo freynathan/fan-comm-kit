@@ -2,7 +2,7 @@
 
 ## What this project is
 ToBe.fan is a network of passion community fan sites (car.fan, fashion.fan, 
-vegetarian.fan, and 33+ others). The platform centers on fan identity and 
+vegetarian.fan, and 44+ others). The platform centers on fan identity and 
 community trust.
 
 Key URLs:
@@ -148,6 +148,39 @@ infrastructure first. Political content needs 24/7 moderation at scale.
 ## Supabase MCP
 - Connected via ~/.claude.json
 - Can query DB directly without copy-pasting SQL
+
+## Domain Portfolio (47 domains)
+
+### Active
+- fashion.fan (primary demo site — LVMH demo mid-June)
+- yoga.fan
+
+### Professional Tier (key revenue play)
+- medical.fan — doctors, dentists, specialists, therapists
+- massage.fan — massage therapists, bodyworkers, physiotherapists
+- legal.fan — lawyers, notaries, legal consultants
+- coaching.fan — business, life, executive, sports coaches
+- beauty.fan — aestheticians, stylists, makeup artists
+- gym.fan — personal trainers, fitness coaches
+
+### Passion/Community Sites
+- car.fan, ball.fan, barbecue.fan, bike.fan, biz.fan, boat.fan
+- burger.fan, capital.fan, church.fan, cocktail.fan, coffee.fan
+- collector.fan, dance.fan, discount.fan, diy.fan, events.fan
+- foody.fan, gourmet.fan, healthy.fan, lifestyle.fan, luxury.fan
+- martial-arts.fan, mosque.fan, museum.fan, par.fan, racket.fan
+- robotic.fan, running.fan, synagogue.fan, temples.fan, tobe.fan
+- trek.fan, tunes.fan, vegetarian.fan, walking-tour.fan, wine.fan
+- wintersports.fan, singlelife.fan
+
+### Future / Strategic
+- civic.fan — buy now, build Phase 5 (requires moderation infrastructure)
+
+### Domain Strategy
+- Professional tier domains = highest revenue per user ($19-49/month)
+- Each domain = both a passion community AND a professional identity namespace
+- Pattern: medical.fan (industry hub) + medical.fan/of/dr-sophie (AI identity page)
+- Target: any professional who relies on local reputation + word of mouth
 
 ## Fan Club Architecture (Phase 1 priority)
 
