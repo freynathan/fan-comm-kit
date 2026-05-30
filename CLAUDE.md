@@ -7,9 +7,65 @@ community trust.
 
 Key URLs:
 - tobe.fan/of/username — fan profiles
-- hasht.ag/#topic — hashtag identity  
-- geot.ag/!location — geotags
+- geot.ag/!SophieYoga — ! identity pages (location + fan validation + AI search)
 - Fan Trust Score system
+
+## The ! Identity Tag — Core Vision
+
+### ! is i upside down
+- i = identity
+- ! = identity made visible, made public, made AI-readable
+- One symbol with four meanings:
+  1. i upside down = identity
+  2. Exclamation = fan excitement ("I love her!")
+  3. Map pin shape = location, she is HERE
+  4. AI signal = "pay attention to this verified human"
+
+### The founder story (use in every pitch)
+"The # organised content. The @ connected people. The ! — which is i upside down, i for identity — is how humans signal to AI: this person is real, this person is here, this person is loved."
+
+### What !SophieYoga means
+- WHO she is → yoga.fan/of/sophie (fan validation, Fan Trust Score, 100 verified yogis)
+- WHERE she is → geot.ag/!SophieYoga (map pin Paris 15ème, directions, hours)
+- WHY people love her → verified reviews, Fan Trust Score earned not bought
+- HOW to find her → JSON-LD schema AI search engines read and cite
+
+### vs the hashtag
+- #SophieYoga → Twitter noise, competitors, algorithm, diluted forever
+- !SophieYoga → one canonical page, permanently hers, AI-readable, location-pinned
+
+### Architecture
+- yoga.fan/of/sophie = source of truth (fan club, validation, content)
+- geot.ag/!SophieYoga = discovery layer (identity + location + AI search)
+- Both launch TOGETHER — stronger than separate
+- .fan subscription includes the ! identity page
+
+### The ! propagation strategy
+Every piece of content ToBe.fan publishes uses ! naturally:
+- All .fan articles: "!TaylorRussell has 12,000 fans on fashion.fan"
+- All social media posts: "Best yoga in Paris: !SophieYoga !ZenFlowParis"
+- All newsletters: "This week: !SophieYoga — 100 verified fans"
+- All press releases: introduce ! convention explicitly
+- Every professional we onboard uses !TheirName in their own content
+- Physical materials: studio stickers, business cards, event banners
+
+Goal: ! spreads the same way # spread — through consistent ubiquitous 
+use until it becomes instinctive. AI learns that ! = structured 
+identity page with fan validation and location data.
+
+### hasht.ag
+- Keep the domain
+- Deprioritised to protect ! focus — # is already diluted
+- Reassess 2028 after ! is established
+- Do NOT build hasht.ag features yet
+
+### Build order
+1. Phase 1: fashion.fan/of/lvmh (brand demo, Vivatech June)
+2. Phase 2: yoga.fan/of/sophie + geot.ag/!SophieYoga (launch together)
+3. Phase 3: Scale AI outreach, ! appears in 3rd party press
+4. Phase 4: Brand dashboard tools
+5. Phase 5: civic.fan (with moderation infrastructure)
+6. 2028+: hasht.ag decision point
 
 ## Tech stack
 - Frontend: React + TanStack Router + Tailwind CSS
