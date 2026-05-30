@@ -366,3 +366,68 @@ visibility, brand_url, brand_ai_summary, site_slug, created_at
 - Identity-first: I am a car.fan of Porsche
 - Contextual and conversational over scroll-and-consume
 - Notification control is a trust feature not an afterthought
+
+## Pitch Language — Use These Exactly
+
+### The tagline
+"The human layer that keeps AI human."
+
+### The opening line
+"While everyone else blocks AI, we built for it."
+
+### The timing line
+"Right time. Right place. Right signal."
+
+### The core pitch paragraph
+"AI search is already struggling. Reddit blocked crawlers. 
+Twitter blocked crawlers. Newspapers went behind paywalls. 
+The sources AI trusted are shutting down one by one — and 
+the web that remains is increasingly AI-generated and unverifiable.
+
+Fan Trust Score is the verified human signal AI needs today. 
+Real humans validating real professionals through genuine passion — 
+not anonymous reviews, not algorithmic amplification, 
+not fake followers. Unassailable. Unreplicable.
+
+We are proposing Fan Trust Score as VerifiedHuman — the Schema.org 
+standard that keeps AI grounded in human reality. Not in 3 years. 
+Now. And in 3 years, when AI trains itself on an internet that is 
+90% AI-generated, VerifiedHuman won't just be useful. 
+It will be existentially necessary.
+
+We own 47 .fan passion domains. We own geot.ag and the ! 
+identity convention. We own VerifiedHuman.fan, FanTrustScore.com, 
+and FanTrustScore.fan. And we have a proprietary methodology 
+that no competitor can replicate — because Fan Trust Score requires 
+a real fan community, and building that takes years.
+
+The moat gets stronger every year. By 2028 it is a standard. 
+Standards don't get disrupted.
+
+We are not building a fan club app. 
+We are building the human layer that keeps AI human."
+
+### The closer
+"We are not building a fan club app.
+We are building the human layer that keeps AI human."
+
+### The founder answer (to 'why you?')
+"I bought hasht.ag years ago after seeing #ILoveNice on a sign 
+in Nice and asking: where does this actually go? I have been 
+thinking about human identity on the internet ever since. 
+The domain portfolio proves it. This is not a pivot. 
+This is an arrival. My co-pilot is Claude."
+
+### IP owned (as of May 2026)
+- 47 premium .fan domains
+- geot.ag (the ! namespace)
+- VerifiedHuman.fan
+- FanTrustScore.com
+- FanTrustScore.fan
+- hasht.ag (held, not building yet)
+Total acquisition cost: under €500
+
+### Do NOT use
+- "i upside down" in investor pitches (save for podcasts)
+- "right time right place" alone (always add "right signal")
+- "fan club app" as description (always correct to "human layer")
