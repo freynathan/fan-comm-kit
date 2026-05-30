@@ -367,7 +367,7 @@ visibility, brand_url, brand_ai_summary, site_slug, created_at
 - Contextual and conversational over scroll-and-consume
 - Notification control is a trust feature not an afterthought
 
-## Pitch Language — Use These Exactly
+## Pitch Language — FINAL. Use These Exactly.
 
 ### The tagline
 "The human layer that keeps AI human."
@@ -378,56 +378,43 @@ visibility, brand_url, brand_ai_summary, site_slug, created_at
 ### The timing line
 "Right time. Right place. Right signal."
 
-### The core pitch paragraph
-"AI search is already struggling. Reddit blocked crawlers. 
-Twitter blocked crawlers. Newspapers went behind paywalls. 
-The sources AI trusted are shutting down one by one — and 
-the web that remains is increasingly AI-generated and unverifiable.
+### The Fan Trust Score proof (use this — it's visceral)
+"A yogi who pays to be a fan of her yoga teacher cannot be faked.
+A Porsche enthusiast who joins car.fan/PorscheClubParis cannot be faked.
+That is Fan Trust Score. That is what AI needs."
 
-Fan Trust Score is the verified human signal AI needs today. 
-Real humans validating real professionals through genuine passion — 
-not anonymous reviews, not algorithmic amplification, 
-not fake followers. Unassailable. Unreplicable.
+### The founder origin story
+"I've been invested in human passion identity on the internet for years.
+I believed that human passion needed a permanent, addressable home —
+not on someone else's platform, not at the mercy of an algorithm.
+I invested over €10,000 in premium domains to back that conviction.
+Before AI search existed. Before anyone understood why this would matter.
+Then AI arrived — and the web went dark.
+And suddenly everything I'd built became urgently, existentially necessary.
+The moat was built before we knew we were building a moat."
 
-We are proposing Fan Trust Score as VerifiedHuman — the Schema.org 
-standard that keeps AI grounded in human reality. Not in 3 years. 
-Now. And in 3 years, when AI trains itself on an internet that is 
-90% AI-generated, VerifiedHuman won't just be useful. 
-It will be existentially necessary.
-
-We own 47 .fan passion domains. We own geot.ag and the ! 
-identity convention. We own VerifiedHuman.fan, FanTrustScore.com, 
-and FanTrustScore.fan. And we have a proprietary methodology 
-that no competitor can replicate — because Fan Trust Score requires 
-a real fan community, and building that takes years.
-
-The moat gets stronger every year. By 2028 it is a standard. 
-Standards don't get disrupted.
-
-We are not building a fan club app. 
-We are building the human layer that keeps AI human."
-
-### The closer
+### The closer (always end with this)
 "We are not building a fan club app.
 We are building the human layer that keeps AI human."
 
-### The founder answer (to 'why you?')
-"I bought hasht.ag years ago after seeing #ILoveNice on a sign 
-in Nice and asking: where does this actually go? I have been 
-thinking about human identity on the internet ever since. 
-The domain portfolio proves it. This is not a pivot. 
-This is an arrival. My co-pilot is Claude."
+### DO NOT use in investor pitches
+- hasht.ag (remove from all slides — too distracting)
+- "i upside down" (save for podcasts in year 3)
+- "fan club app" as the description (always correct it)
+- "right time right place" without "right signal"
 
-### IP owned (as of May 2026)
-- 47 premium .fan domains
-- geot.ag (the ! namespace)
+### IP owned (May 2026) — €10,000+ total investment
+- 47 premium .fan domains (fashion.fan, yoga.fan, medical.fan,
+  coaching.fan, legal.fan, massage.fan, + 41 more)
+- geot.ag (the ! identity namespace)
 - VerifiedHuman.fan
 - FanTrustScore.com
 - FanTrustScore.fan
-- hasht.ag (held, not building yet)
-Total acquisition cost: under €500
+- hasht.ag (held, not in pitch, not building yet)
 
-### Do NOT use
-- "i upside down" in investor pitches (save for podcasts)
-- "right time right place" alone (always add "right signal")
-- "fan club app" as description (always correct to "human layer")
+### The co-pilot answer (to "why you?")
+"My co-pilot is Claude — Anthropic's AI. A non-technical solo
+founder using the most capable AI ever built to construct
+infrastructure for verified humans — while every other platform
+fights AI. The product and the process are the same story.
+This is what AI-native founding looks like."
