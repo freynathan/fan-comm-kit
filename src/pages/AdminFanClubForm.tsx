@@ -209,30 +209,36 @@ const AdminFanClubForm = () => {
   // ── Save ─────────────────────────────────────────────────────────────────
   const handleSave = async () => {
     if (!name.trim() || !slug.trim()) return;
-    if (!user?.dbUserId) return;
     setSubmitting(true);
 
-    const payload = {
-      owner_id: user.dbUserId,
-      name: name.trim(),
-      slug: slug.trim(),
-      tagline: tagline.trim() || null,
-      description: description.trim() || null,
-      type,
-      site_id: siteId || null,
-      site_slug: selectedSite?.slug ?? null,
-      cover_image_url: coverImageUrl.trim() || null,
-      accent_color: accentColor,
-      welcome_message: welcomeMessage.trim() || null,
-      features,
-      brand_url: type === "brand" ? brandUrl.trim() || null : null,
-      brand_ai_summary: type === "brand" ? brandAiSummary.trim() || null : null,
-      is_free: isFree,
-      price_monthly: isFree ? 0 : parseFloat(priceMonthly) || 0,
-      visibility,
-    };
-
     try {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (!authUser) {
+        toast({ title: "Not signed in", description: "Please log in and try again.", variant: "destructive" });
+        setSubmitting(false);
+        return;
+      }
+
+      const payload = {
+        owner_id: authUser.id,
+        name: name.trim(),
+        slug: slug.trim(),
+        tagline: tagline.trim() || null,
+        description: description.trim() || null,
+        type,
+        site_id: siteId || null,
+        site_slug: selectedSite?.slug ?? null,
+        cover_image_url: coverImageUrl.trim() || null,
+        accent_color: accentColor,
+        welcome_message: welcomeMessage.trim() || null,
+        features,
+        brand_url: type === "brand" ? brandUrl.trim() || null : null,
+        brand_ai_summary: type === "brand" ? brandAiSummary.trim() || null : null,
+        is_free: isFree,
+        price_monthly: isFree ? 0 : parseFloat(priceMonthly) || 0,
+        visibility,
+      };
+
       if (isEdit) {
         const { error } = await supabase.from("fan_clubs").update(payload).eq("id", id!);
         if (error) throw error;
@@ -240,11 +246,12 @@ const AdminFanClubForm = () => {
       } else {
         const { error } = await supabase.from("fan_clubs").insert(payload);
         if (error) throw error;
-        toast({ title: "Club created", description: `${name} is live.` });
+        toast({ title: "Fan club created!" });
       }
       await queryClient.invalidateQueries({ queryKey: ["admin-fan-clubs"] });
       navigate("/admin/fan-clubs");
     } catch (err: any) {
+      console.log("Fan club save error:", JSON.stringify(err));
       toast({
         title: isEdit ? "Could not update club" : "Could not create club",
         description: err.message || "Please try again.",

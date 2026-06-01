@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { SharedHeader } from "@/components/shared/SharedHeader";
 import { SharedFooter } from "@/components/shared/SharedFooter";
 import { useHomepageStats } from "@/hooks/useHomepageStats";
-import { HeroClaim } from "@/components/homepage/HeroClaim";
-
 import { DomainTicker } from "@/components/homepage/DomainTicker";
 import { ContentHubSection } from "@/components/homepage/ContentHubSection";
 import { FeaturedProfilesSection } from "@/components/homepage/FeaturedProfilesSection";
@@ -12,9 +12,126 @@ import { CommunitiesSection } from "@/components/homepage/CommunitiesSection";
 import { ForBrandsSection } from "@/components/homepage/ForBrandsSection";
 import { ClosingCTA } from "@/components/homepage/ClosingCTA";
 import { AIAdvantageStrip } from "@/components/homepage/AIAdvantageStrip";
+import { supabase } from "@/integrations/supabase/client";
+
+interface SiteData {
+  id: string;
+  name: string;
+  slug: string;
+  emoji: string;
+  accent_color: string;
+}
+
+function SiteHomepage({ site }: { site: SiteData }) {
+  const [posts, setPosts] = useState<{ id: string; title: string; excerpt: string | null; created_at: string }[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("posts")
+      .select("id, title, excerpt, created_at")
+      .eq("site_id", site.id)
+      .in("status", ["approved", "published"])
+      .order("created_at", { ascending: false })
+      .limit(12)
+      .then(({ data }) => setPosts(data ?? []));
+  }, [site.id]);
+
+  return (
+    <div className="min-h-screen bg-ds-bg">
+      <Helmet>
+        <title>{site.name}.fan — {site.name} community on ToBe.fan</title>
+        <meta name="description" content={`Join the ${site.name} fan community on ToBe.fan.`} />
+      </Helmet>
+
+      <SharedHeader
+        siteName={site.slug}
+        siteEmoji={site.emoji}
+        accentColor={site.accent_color}
+        aiFeatureLabel={`AI ${site.name}`}
+      />
+
+      <section className="w-full bg-ds-bg px-6" style={{ paddingTop: 80, paddingBottom: 40 }}>
+        <div className="max-w-[960px] mx-auto text-center">
+          <div className="text-[56px] mb-4">{site.emoji}</div>
+          <h1 className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] text-ds-text-primary" style={{ marginBottom: 16 }}>
+            {site.name}.fan
+          </h1>
+          <p className="text-[16px] text-ds-text-tertiary max-w-[480px] mx-auto leading-[1.6]">
+            The home of {site.name.toLowerCase()} fans. Discover, connect, and join fan clubs.
+          </p>
+        </div>
+      </section>
+
+      {posts.length > 0 && (
+        <section className="w-full px-6 pb-16" style={{ backgroundColor: "#F8F8F8" }}>
+          <div className="max-w-[960px] mx-auto pt-12">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-ds-text-tertiary mb-6">
+              Latest from {site.name}.fan
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {posts.map((post) => (
+                <div
+                  key={post.id}
+                  className="bg-white rounded-xl p-5"
+                  style={{ border: "0.5px solid hsl(var(--color-border))" }}
+                >
+                  <h3 className="text-[15px] font-medium text-ds-text-primary leading-[1.4] line-clamp-2">
+                    {post.title}
+                  </h3>
+                  {post.excerpt && (
+                    <p className="mt-2 text-[13px] text-ds-text-secondary leading-[1.5] line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <SharedFooter />
+    </div>
+  );
+}
 
 const Index = () => {
   const { data: stats } = useHomepageStats();
+  const [searchParams] = useSearchParams();
+  const siteSlug = searchParams.get("site");
+
+  const [siteData, setSiteData] = useState<SiteData | null>(null);
+  const [siteLoading, setSiteLoading] = useState(!!siteSlug);
+
+  useEffect(() => {
+    if (!siteSlug) {
+      setSiteData(null);
+      setSiteLoading(false);
+      return;
+    }
+    setSiteLoading(true);
+    supabase
+      .from("sites")
+      .select("id, name, slug, emoji, accent_color")
+      .eq("slug", siteSlug)
+      .maybeSingle()
+      .then(({ data }) => {
+        setSiteData(data ?? null);
+        setSiteLoading(false);
+      });
+  }, [siteSlug]);
+
+  if (siteSlug && siteLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-ds-bg">
+        <div className="text-[14px] text-ds-text-tertiary">Loading…</div>
+      </div>
+    );
+  }
+
+  if (siteSlug && siteData) {
+    return <SiteHomepage site={siteData} />;
+  }
 
   return (
     <div className="min-h-screen bg-ds-bg">
