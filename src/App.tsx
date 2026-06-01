@@ -21,6 +21,7 @@ import AdminFanClubs from "./pages/AdminFanClubs.tsx";
 import AdminFanClubForm from "./pages/AdminFanClubForm.tsx";
 import AdminSiteBuilder from "./pages/AdminSiteBuilder.tsx";
 import NetworkAdmin from "./pages/NetworkAdmin.tsx";
+import SiteFeeds from "./pages/SiteFeeds.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
 
@@ -53,6 +54,8 @@ const App = () => (
               <Route path="/admin/fan-clubs/:id" element={<AdminFanClubForm />} />
               <Route path="/admin/content" element={<DashboardContent />} />
               <Route path="/admin/network" element={<NetworkAdmin />} />
+              <Route path="/admin/network/sites/:slug" element={<AdminSiteBuilder />} />
+              <Route path="/admin/network/sites/:slug/feeds" element={<SiteFeeds />} />
               <Route path="/admin/site-builder" element={<AdminSiteBuilder />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

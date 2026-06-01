@@ -5,8 +5,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { AdminLayout } from "@/components/admin/AdminLayout";
-import { Image, Rss, Search, Settings } from "lucide-react";
+import { Image, Loader2, Rss, Search, Settings, X } from "lucide-react";
 import { toast } from "sonner";
+import { useRef } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -46,6 +47,122 @@ function statusStyle(status: SiteStatus | null) {
   return STATUS_COLORS[status] ?? { bg: "#F5F5F7", fg: "#6B7280" };
 }
 
+// ─── Logo upload modal ────────────────────────────────────────────────────────
+
+function LogoUploadModal({
+  site,
+  onClose,
+}: {
+  site: SiteRow;
+  onClose: () => void;
+}) {
+  const queryClient = useQueryClient();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
+  };
+
+  const handleUpload = async () => {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() ?? "png";
+      const path = `${site.id}/logo.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("site-logos")
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("site-logos")
+        .getPublicUrl(path);
+
+      const { error: updateError } = await supabase
+        .from("sites")
+        .update({ logo_url: publicUrl } as any)
+        .eq("id", site.id);
+      if (updateError) throw updateError;
+
+      queryClient.invalidateQueries({ queryKey: ["admin-network-sites"] });
+      toast.success(`Logo saved for ${site.name}`);
+      onClose();
+    } catch (err: any) {
+      toast.error(err.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/20" onClick={onClose} />
+      <div
+        className="relative bg-white rounded-2xl w-full max-w-[400px] p-6 shadow-xl"
+        style={{ border: "0.5px solid hsl(var(--color-border))" }}
+      >
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-[18px] font-semibold text-[#0A1628] tracking-[-0.3px]">
+            {site.emoji} Upload logo — {site.name}
+          </h2>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-ds-text-tertiary hover:bg-[#F5F5F7]"
+          >
+            <X size={15} strokeWidth={2} />
+          </button>
+        </div>
+
+        {/* Drop zone / preview */}
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          className="w-full rounded-xl flex flex-col items-center justify-center py-8 transition-colors hover:bg-[#F5F8FC]"
+          style={{ border: "1px dashed hsl(var(--color-border-strong))" }}
+        >
+          {preview ? (
+            <img src={preview} alt="preview" className="max-h-24 max-w-full rounded-lg object-contain" />
+          ) : (
+            <>
+              <Image size={28} strokeWidth={1.25} className="text-ds-text-tertiary mb-2" />
+              <p className="text-[13px] text-ds-text-secondary">Click to choose an image</p>
+              <p className="text-[11px] text-ds-text-tertiary mt-1">PNG, JPG, SVG, WebP</p>
+            </>
+          )}
+        </button>
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+
+        {file && (
+          <p className="mt-2 text-[12px] text-ds-text-tertiary truncate">{file.name}</p>
+        )}
+
+        <div className="flex gap-3 mt-5">
+          <button
+            onClick={onClose}
+            className="flex-1 h-10 rounded-lg text-[13px] font-medium text-ds-text-secondary border border-ds-border-strong hover:border-ds-accent hover:text-ds-accent transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleUpload}
+            disabled={!file || uploading}
+            className="flex-1 h-10 rounded-lg text-[13px] font-medium text-white flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
+            style={{ backgroundColor: "#0C447C" }}
+          >
+            {uploading ? <><Loader2 size={14} className="animate-spin" /> Uploading…</> : "Save logo"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Sites tab ────────────────────────────────────────────────────────────────
 
 function SitesTab() {
@@ -53,6 +170,7 @@ function SitesTab() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [logoSite, setLogoSite] = useState<SiteRow | null>(null);
 
   const { data: sites = [], isLoading } = useQuery({
     queryKey: ["admin-network-sites"],
@@ -96,6 +214,10 @@ function SitesTab() {
 
   return (
     <div>
+      {logoSite && (
+        <LogoUploadModal site={logoSite} onClose={() => setLogoSite(null)} />
+      )}
+
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-3 mb-5">
         {/* Search */}
@@ -266,13 +388,15 @@ function SitesTab() {
                           <Settings size={13} strokeWidth={1.75} />
                         </button>
                         <button
-                          className="w-7 h-7 flex items-center justify-center rounded-md text-ds-text-tertiary hover:bg-[#F0F0F0] transition-colors"
+                          onClick={() => setLogoSite(site)}
+                          className="w-7 h-7 flex items-center justify-center rounded-md text-ds-text-tertiary hover:bg-[#F0F0F0] hover:text-[#0C447C] transition-colors"
                           title="Upload logo"
                         >
                           <Image size={13} strokeWidth={1.75} />
                         </button>
                         <button
-                          className="w-7 h-7 flex items-center justify-center rounded-md text-ds-text-tertiary hover:bg-[#F0F0F0] transition-colors"
+                          onClick={() => navigate(`/admin/network/sites/${site.slug}/feeds`)}
+                          className="w-7 h-7 flex items-center justify-center rounded-md text-ds-text-tertiary hover:bg-[#F0F0F0] hover:text-[#0C447C] transition-colors"
                           title="Feeds"
                         >
                           <Rss size={13} strokeWidth={1.75} />

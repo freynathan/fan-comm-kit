@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -297,6 +297,7 @@ function AddSectionModal({
 
 const AdminSiteBuilder = () => {
   const navigate = useNavigate();
+  const { slug: slugParam } = useParams<{ slug?: string }>();
   const { user, loading } = useSupabaseAuth();
   const { data: sites = [] } = useSites();
 
@@ -324,6 +325,13 @@ const AdminSiteBuilder = () => {
   const [selectedSiteId, setSelectedSiteId] = useState("");
   const [blocks, setBlocks] = useState<LayoutBlock[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Pre-select site when arriving from /admin/network/sites/:slug
+  useEffect(() => {
+    if (!slugParam || !sites.length || selectedSiteId) return;
+    const match = sites.find((s) => s.slug === slugParam);
+    if (match) setSelectedSiteId(match.id);
+  }, [slugParam, sites, selectedSiteId]);
 
   const addBlock = (type: SectionType) => {
     setBlocks((prev) => [
