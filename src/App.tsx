@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -45,9 +45,12 @@ const App = () => (
               <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
               <Route path="/dashboard/fans" element={<DashboardFans />} />
               <Route path="/dashboard/content" element={<DashboardContent />} />
+              <Route path="/admin" element={<Navigate to="/admin/fan-clubs" replace />} />
               <Route path="/admin/fan-clubs" element={<AdminFanClubs />} />
               <Route path="/admin/fan-clubs/new" element={<AdminFanClubForm />} />
               <Route path="/admin/fan-clubs/:id" element={<AdminFanClubForm />} />
+              <Route path="/admin/content" element={<DashboardContent />} />
+              <Route path="/admin/network" element={<AdminFanClubs />} />
               <Route path="/admin/site-builder" element={<AdminSiteBuilder />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
