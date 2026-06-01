@@ -12,11 +12,11 @@ interface SiteRow {
   id: string;
   name: string;
   slug: string | null;
+  domain: string | null;
   emoji: string;
   accent_color: string;
-  is_active: boolean | null;
+  is_active: boolean;
   description: string | null;
-  member_count: number | null;
 }
 
 const AdminNetwork = () => {
@@ -51,7 +51,7 @@ const AdminNetwork = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("sites")
-        .select("id, name, slug, emoji, accent_color, is_active, description, member_count")
+        .select("id, name, slug, domain, emoji, accent_color, is_active, description")
         .order("name");
       if (error) throw error;
       return (data ?? []) as SiteRow[];
@@ -134,9 +134,6 @@ const AdminNetwork = () => {
                     </th>
                     <th className="text-left px-4 py-3 font-medium text-ds-text-secondary hidden md:table-cell">
                       Accent color
-                    </th>
-                    <th className="text-right px-4 py-3 font-medium text-ds-text-secondary hidden md:table-cell">
-                      Members
                     </th>
                     <th className="text-right px-5 py-3 font-medium text-ds-text-secondary">
                       Active
@@ -222,11 +219,6 @@ const AdminNetwork = () => {
                             </span>
                           </button>
                         )}
-                      </td>
-
-                      {/* Member count */}
-                      <td className="px-4 py-3 hidden md:table-cell text-right text-ds-text-secondary">
-                        {site.member_count ?? 0}
                       </td>
 
                       {/* Active toggle */}

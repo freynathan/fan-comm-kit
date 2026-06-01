@@ -40,14 +40,17 @@ export function SharedHeader(props: HeaderInternalProps) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (!user?.dbUserId) { setIsAdmin(false); return; }
-    supabase
-      .from("admins")
-      .select("id")
-      .eq("user_id", user.dbUserId)
-      .maybeSingle()
-      .then(({ data }) => setIsAdmin(!!data));
-  }, [user?.dbUserId]);
+    if (!user) { setIsAdmin(false); return; }
+    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      if (!authUser) return;
+      supabase
+        .from("admins")
+        .select("id")
+        .eq("user_id", authUser.id)
+        .maybeSingle()
+        .then(({ data }) => setIsAdmin(!!data));
+    });
+  }, [user?.id]);
 
   // Auto-open auth modal when redirected here with ?auth=signup or ?auth=login
   useEffect(() => {
