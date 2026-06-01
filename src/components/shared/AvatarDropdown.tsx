@@ -52,7 +52,7 @@ export function AvatarDropdown({
               Admin
             </span>
           </div>
-          <a href="/admin/network/sites" className={menuItemClass} style={{ color: "#8B6914" }}>
+          <a href="/admin/network" className={menuItemClass} style={{ color: "#8B6914" }}>
             <Settings size={16} strokeWidth={1.75} /> Super Admin
           </a>
           <div className="mx-3 my-1 border-t border-gray-100" />
