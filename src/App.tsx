@@ -21,6 +21,11 @@ import AdminFanClubs from "./pages/AdminFanClubs.tsx";
 import AdminFanClubForm from "./pages/AdminFanClubForm.tsx";
 import NetworkAdmin from "./pages/NetworkAdmin.tsx";
 import SiteFeeds from "./pages/SiteFeeds.tsx";
+import AdminNetworkIndex from "./pages/AdminNetworkIndex.tsx";
+import AdminNetworkSite from "./pages/AdminNetworkSite.tsx";
+import AdminNetworkSitePage from "./pages/AdminNetworkSitePage.tsx";
+import AdminNetworkFeeds from "./pages/AdminNetworkFeeds.tsx";
+import AdminNetworkStrategy from "./pages/AdminNetworkStrategy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
 
@@ -52,7 +57,11 @@ const App = () => (
               <Route path="/admin/fan-clubs/new" element={<AdminFanClubForm />} />
               <Route path="/admin/fan-clubs/:id" element={<AdminFanClubForm />} />
               <Route path="/admin/content" element={<DashboardContent />} />
-              <Route path="/admin/network" element={<NetworkAdmin />} />
+              <Route path="/admin/network" element={<AdminNetworkIndex />} />
+              <Route path="/admin/network/sites/:slug" element={<AdminNetworkSite />} />
+              <Route path="/admin/network/sites/:slug/pages/:pageSlug" element={<AdminNetworkSitePage />} />
+              <Route path="/admin/network/feeds" element={<AdminNetworkFeeds />} />
+              <Route path="/admin/network/strategy" element={<AdminNetworkStrategy />} />
               <Route path="/admin/network/sites/:slug/feeds" element={<SiteFeeds />} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
