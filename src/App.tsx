@@ -19,7 +19,6 @@ import PublicClub from "./pages/PublicClub.tsx";
 import AuthCallback from "./pages/AuthCallback.tsx";
 import AdminFanClubs from "./pages/AdminFanClubs.tsx";
 import AdminFanClubForm from "./pages/AdminFanClubForm.tsx";
-import NetworkAdmin from "./pages/NetworkAdmin.tsx";
 import SiteFeeds from "./pages/SiteFeeds.tsx";
 import AdminNetworkIndex from "./pages/AdminNetworkIndex.tsx";
 import AdminNetworkSite from "./pages/AdminNetworkSite.tsx";
