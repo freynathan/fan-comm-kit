@@ -6,6 +6,7 @@ import { AllSitesDropdown } from "./AllSitesDropdown";
 import { AuthModal } from "./AuthModals";
 import type { SharedHeaderProps } from "./types";
 import tobeLogo from "@/assets/tobe-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 
 const navLinks = (aiLabel: string) => [
   { label: "Feed", path: "/feed" },
@@ -36,6 +37,17 @@ export function SharedHeader(props: HeaderInternalProps) {
   const [avatarOpen, setAvatarOpen] = useState(demoAvatarOpen ?? false);
   const [sitesOpen, setSitesOpen] = useState(false);
   const [authModal, setAuthModal] = useState<"login" | "signup" | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!user?.dbUserId) { setIsAdmin(false); return; }
+    supabase
+      .from("admins")
+      .select("id")
+      .eq("user_id", user.dbUserId)
+      .maybeSingle()
+      .then(({ data }) => setIsAdmin(!!data));
+  }, [user?.dbUserId]);
 
   // Auto-open auth modal when redirected here with ?auth=signup or ?auth=login
   useEffect(() => {
@@ -106,6 +118,7 @@ export function SharedHeader(props: HeaderInternalProps) {
                   accentColor={accentColor}
                   siteMenuFeatures={siteMenuFeatures}
                   onLogout={logout}
+                  isAdmin={isAdmin}
                 />
               </div>
             </>

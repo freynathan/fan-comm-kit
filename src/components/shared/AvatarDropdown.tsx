@@ -10,6 +10,7 @@ export interface AvatarDropdownProps {
   accentColor: string;
   siteMenuFeatures?: SiteMenuFeature[];
   onLogout: () => void;
+  isAdmin?: boolean;
 }
 
 const menuItemClass =
@@ -23,6 +24,7 @@ export function AvatarDropdown({
   accentColor,
   siteMenuFeatures = [],
   onLogout,
+  isAdmin = false,
 }: AvatarDropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -42,6 +44,21 @@ export function AvatarDropdown({
       ref={ref}
       className="absolute right-0 top-full mt-2 min-w-[240px] bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
     >
+      {/* Super Admin — only for admin users */}
+      {isAdmin && (
+        <>
+          <div className="px-3 pt-2 pb-1">
+            <span className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "#8B6914" }}>
+              Admin
+            </span>
+          </div>
+          <a href="/admin/network/sites" className={menuItemClass} style={{ color: "#8B6914" }}>
+            <Settings size={16} strokeWidth={1.75} /> Super Admin
+          </a>
+          <div className="mx-3 my-1 border-t border-gray-100" />
+        </>
+      )}
+
       {/* Section 1 */}
       <div className="px-3 pt-1 pb-1">
         <span className="text-[10px] uppercase tracking-widest text-gray-400 font-medium">
