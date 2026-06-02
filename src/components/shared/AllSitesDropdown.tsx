@@ -50,6 +50,7 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
                     domain={`${s}.fan`}
                     size="medium"
                     isLive={liveSites.has(s)}
+                    isSoon={!liveSites.has(s)}
                     isSelected={s === currentSite}
                     onClick={() => window.open(`https://${s}.fan`, "_blank")}
                   />

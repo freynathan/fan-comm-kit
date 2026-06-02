@@ -93,6 +93,7 @@ export interface DomainButtonProps {
   domain: string;
   size?: "large" | "medium" | "small";
   isLive?: boolean;
+  isSoon?: boolean;
   isSelected?: boolean;
   onClick?: () => void;
   className?: string;
@@ -107,6 +108,7 @@ export function DomainButton({
   domain,
   size = "medium",
   isLive = false,
+  isSoon = false,
   isSelected = false,
   onClick,
   className = "",
@@ -185,6 +187,21 @@ export function DomainButton({
             right: -dotSize / 2 + 1,
           }}
         />
+      )}
+      {isSoon && !isLive && (
+        <span
+          className="absolute rounded-full px-1 font-semibold text-white leading-none flex items-center"
+          style={{
+            backgroundColor: palette?.accent ?? "#555",
+            fontSize: 8,
+            height: 13,
+            top: -6,
+            right: -4,
+            letterSpacing: "0.04em",
+          }}
+        >
+          SOON
+        </span>
       )}
     </button>
   );
