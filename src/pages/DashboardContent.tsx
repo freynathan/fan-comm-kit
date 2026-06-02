@@ -85,7 +85,7 @@ export default function DashboardContent() {
   );
 }
 
-function ContentPanel() {
+export function ContentPanel() {
   const [tab, setTab] = useState<Tab>("queue");
   const [stats, setStats] = useState<PipelineStats>({ scanned24h: 0, pending: 0, approved: 0, published: 0, failed: 0 });
   const [editingPostId, setEditingPostId] = useState<string | null>(null);

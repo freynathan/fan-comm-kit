@@ -26,6 +26,7 @@ import AdminNetworkSite from "./pages/AdminNetworkSite.tsx";
 import AdminNetworkSitePage from "./pages/AdminNetworkSitePage.tsx";
 import AdminNetworkFeeds from "./pages/AdminNetworkFeeds.tsx";
 import AdminNetworkStrategy from "./pages/AdminNetworkStrategy.tsx";
+import AdminContentPage from "./pages/AdminContentPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
 import { CommunitiesModal } from "@/components/shared/CommunitiesModal";
@@ -58,7 +59,7 @@ const App = () => (
               <Route path="/admin/fan-clubs" element={<AdminFanClubs />} />
               <Route path="/admin/fan-clubs/new" element={<AdminFanClubForm />} />
               <Route path="/admin/fan-clubs/:id" element={<AdminFanClubForm />} />
-              <Route path="/admin/content" element={<DashboardContent />} />
+              <Route path="/admin/content" element={<AdminContentPage />} />
               <Route path="/admin/network" element={<AdminNetworkIndex />} />
               <Route path="/admin/network/sites/:slug" element={
                 <Suspense fallback={<div>Loading site builder...</div>}>
