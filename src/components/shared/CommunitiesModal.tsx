@@ -13,6 +13,7 @@ interface SiteRow {
   status: "active" | "coming_soon" | "inactive" | null;
   category: string | null;
   description: string | null;
+  icon_url: string | null;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -55,10 +56,14 @@ function SiteCard({ site }: { site: SiteRow }) {
   const inner = (
     <>
       <div
-        className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-lg"
-        style={{ backgroundColor: `${accent}18`, border: `1.5px solid ${accent}30` }}
+        className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-lg overflow-hidden"
+        style={site.icon_url ? undefined : { backgroundColor: `${accent}18`, border: `1.5px solid ${accent}30` }}
       >
-        {site.emoji ?? site.slug[0]?.toUpperCase()}
+        {site.icon_url ? (
+          <img src={site.icon_url} className="h-9 w-9 object-cover" alt="" />
+        ) : (
+          site.emoji ?? site.slug[0]?.toUpperCase()
+        )}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
@@ -121,7 +126,7 @@ export function CommunitiesModal() {
     setLoading(true);
     supabase
       .from("sites" as never)
-      .select("id, slug, name, domain, emoji, color, accent_color, status, category, description")
+      .select("id, slug, name, domain, emoji, color, accent_color, status, category, description, icon_url")
       .neq("slug", "tobe")
       .order("name", { ascending: true })
       .then(({ data }) => {

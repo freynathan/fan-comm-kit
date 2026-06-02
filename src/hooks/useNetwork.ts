@@ -56,6 +56,7 @@ export type NetworkSite = {
   layout?: SiteLayout | null;
   custom_ai_brief?: string | null;
   logo_url?: string | null;
+  icon_url?: string | null;
 };
 
 export function useNetworkSites() {
@@ -67,7 +68,7 @@ export function useNetworkSites() {
     setLoading(true);
     const { data, error } = await supabase
       .from("sites" as never)
-      .select("id,slug,name,domain,emoji,accent_color,status,color,category,priority,font,description,llms_txt,layout,custom_ai_brief,logo_url")
+      .select("id,slug,name,domain,emoji,accent_color,status,color,category,priority,font,description,llms_txt,layout,custom_ai_brief,logo_url,icon_url")
 
       .order("name", { ascending: true });
     if (error) setError(error.message);

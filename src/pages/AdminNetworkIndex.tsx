@@ -53,11 +53,34 @@ function SitesTable() {
   const [descSite, setDescSite] = useState<NetworkSite | null>(null);
   const [descContent, setDescContent] = useState("");
   const [descGenerating, setDescGenerating] = useState(false);
+  const [descIconUrl, setDescIconUrl] = useState<string | null>(null);
+  const [descIconUploading, setDescIconUploading] = useState(false);
+  const iconInputRef = useRef<HTMLInputElement>(null);
 
   const openDescEditor = (site: NetworkSite) => {
     setDescSite(site);
     setDescContent(site.description ?? "");
+    setDescIconUrl(site.icon_url ?? null);
     setDescEditorOpen(true);
+  };
+
+  const handleIconUpload = async (file: File) => {
+    if (!descSite) return;
+    setDescIconUploading(true);
+    try {
+      const ext = (file.name.split(".").pop() || "png").toLowerCase();
+      const path = `icons/${descSite.slug}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("site-logos")
+        .upload(path, file, { upsert: true, contentType: file.type || `image/${ext}`, cacheControl: "60" });
+      if (upErr) throw upErr;
+      const { data } = supabase.storage.from("site-logos").getPublicUrl(path);
+      setDescIconUrl(`${data.publicUrl}?v=${Date.now()}`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setDescIconUploading(false);
+    }
   };
 
   const generateDesc = async (site: NetworkSite) => {
@@ -82,19 +105,20 @@ function SitesTable() {
 
   const saveDesc = async () => {
     if (!descSite) return;
+    const patch: Record<string, unknown> = { description: descContent, icon_url: descIconUrl };
     const { error } = await supabase
       .from("sites" as never)
-      .update({ description: descContent } as never)
+      .update(patch as never)
       .eq("id", descSite.id);
     if (error) {
       toast.error(`Save failed: ${error.message}`);
       return;
     }
     setSites((prev) =>
-      prev.map((s) => (s.id === descSite.id ? { ...s, description: descContent } : s)),
+      prev.map((s) => (s.id === descSite.id ? { ...s, description: descContent, icon_url: descIconUrl } : s)),
     );
     setDescEditorOpen(false);
-    toast.success(`Description saved for ${descSite.name}`);
+    toast.success(`Saved for ${descSite.name}`);
   };
 
   const openLlmsEditor = (site: NetworkSite) => {
@@ -402,27 +426,74 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
       {descEditorOpen && descSite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-xl rounded-2xl bg-white shadow-xl">
+            {/* Header */}
             <div className="flex items-start justify-between border-b px-6 py-4">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Pencil className="h-5 w-5 text-gray-500" /> Description — {descSite.name}
+                  <Pencil className="h-5 w-5 text-gray-500" /> {descSite.name}
                 </h2>
-                <p className="mt-1 text-xs text-gray-500">
-                  Shown on the /communities modal and site cards
-                </p>
+                <p className="mt-1 text-xs text-gray-500">Icon · description · shown on site cards and /communities</p>
               </div>
               <button
-                onClick={() => setDescEditorOpen(false)}
+                onClick={() => { setDescEditorOpen(false); setDescIconUrl(descSite.icon_url ?? null); }}
                 className="text-2xl leading-none text-gray-400 hover:text-gray-600"
                 aria-label="Close"
               >
                 ×
               </button>
             </div>
+
+            {/* Icon upload */}
+            <div className="border-b px-6 py-4">
+              <p className="mb-3 text-xs font-medium text-gray-700">Icon</p>
+              <div className="flex items-center gap-4">
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg overflow-hidden text-xl"
+                  style={descIconUrl ? undefined : {
+                    backgroundColor: descSite.color ?? descSite.accent_color ?? "#888",
+                    color: "#fff",
+                  }}
+                >
+                  {descIconUrl ? (
+                    <img src={descIconUrl} className="h-10 w-10 object-cover" alt="" />
+                  ) : (
+                    descSite.emoji ?? descSite.slug[0]?.toUpperCase()
+                  )}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <button
+                    onClick={() => iconInputRef.current?.click()}
+                    disabled={descIconUploading}
+                    className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50"
+                  >
+                    {descIconUploading ? (
+                      <><Loader2 className="h-4 w-4 animate-spin" /> Uploading…</>
+                    ) : (
+                      <><Upload className="h-4 w-4" /> Upload icon</>
+                    )}
+                  </button>
+                  {descIconUrl && descIconUrl !== (descSite.icon_url ?? null) && (
+                    <span className="text-[11px] text-green-600">New icon ready — save to apply</span>
+                  )}
+                  <span className="text-[11px] text-gray-400">PNG, JPG, WebP, SVG · 40×40px recommended</span>
+                </div>
+              </div>
+              <input
+                ref={iconInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) handleIconUpload(f);
+                  e.target.value = "";
+                }}
+              />
+            </div>
+
+            {/* Description */}
             <div className="flex items-center justify-between border-b px-6 py-3">
-              <span className="text-xs text-gray-500">
-                2 sentences · warm · specific
-              </span>
+              <span className="text-xs text-gray-500">Description — 2 sentences · warm · specific</span>
               <button
                 onClick={() => generateDesc(descSite)}
                 disabled={descGenerating}
@@ -446,7 +517,7 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
             </div>
             <div className="flex justify-end gap-3 border-t px-6 py-4">
               <button
-                onClick={() => setDescEditorOpen(false)}
+                onClick={() => { setDescEditorOpen(false); setDescIconUrl(descSite.icon_url ?? null); }}
                 className="rounded-lg border px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
               >
                 Cancel
@@ -680,10 +751,14 @@ function SiteRow({
       <td className="px-4 py-2">
         <div className="flex items-center gap-2">
           <span
-            className="inline-flex h-6 w-6 items-center justify-center rounded text-xs"
-            style={{ backgroundColor: color, color: "#fff" }}
+            className="inline-flex h-6 w-6 items-center justify-center rounded text-xs overflow-hidden"
+            style={site.icon_url ? undefined : { backgroundColor: color, color: "#fff" }}
           >
-            {site.emoji ?? site.slug[0]?.toUpperCase()}
+            {site.icon_url ? (
+              <img src={site.icon_url} className="h-6 w-6 object-cover" alt="" />
+            ) : (
+              site.emoji ?? site.slug[0]?.toUpperCase()
+            )}
           </span>
           <span className="font-medium">{site.slug}.fan</span>
           {site.logo_url && (

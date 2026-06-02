@@ -304,7 +304,7 @@ export default function SiteCompositionPage() {
       const { data, error } = await supabase
         .from("sites" as never)
         .select(
-          "id,slug,name,domain,emoji,accent_color,status,color,category,priority,font,description,llms_txt,layout,custom_ai_brief,logo_url",
+          "id,slug,name,domain,emoji,accent_color,status,color,category,priority,font,description,llms_txt,layout,custom_ai_brief,logo_url,icon_url",
         )
         .eq("slug", slug)
         .maybeSingle();
@@ -343,7 +343,7 @@ export default function SiteCompositionPage() {
       const { data, error: reloadError } = await supabase
         .from("sites" as never)
         .select(
-          "id,slug,name,domain,emoji,accent_color,status,color,category,priority,font,description,llms_txt,layout,custom_ai_brief,logo_url",
+          "id,slug,name,domain,emoji,accent_color,status,color,category,priority,font,description,llms_txt,layout,custom_ai_brief,logo_url,icon_url",
         )
         .eq("id", site.id)
         .maybeSingle();
@@ -541,10 +541,14 @@ export default function SiteCompositionPage() {
               </Link>
             </Button>
             <span
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-base text-white"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-base text-white overflow-hidden"
               style={{ backgroundColor: accent }}
             >
-              {site.emoji ?? site.slug[0]?.toUpperCase()}
+              {site.icon_url ? (
+                <img src={site.icon_url} className="h-9 w-9 object-cover" alt="" />
+              ) : (
+                site.emoji ?? site.slug[0]?.toUpperCase()
+              )}
             </span>
             <div>
               <h2 className="text-lg font-semibold leading-tight">{site.name}</h2>
