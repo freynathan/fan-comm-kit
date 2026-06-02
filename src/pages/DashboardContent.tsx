@@ -6,9 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { useArticleDrawer } from "@/components/article";
+import { ArticleEditor } from "@/components/admin/ArticleEditor";
 import { toast } from "sonner";
 
-type Tab = "queue" | "dispatch" | "sources";
+type Tab = "queue" | "dispatch" | "sources" | "posts";
 
 interface PipelineStats {
   scanned24h: number;
@@ -86,6 +87,7 @@ export default function DashboardContent() {
 function ContentPanel() {
   const [tab, setTab] = useState<Tab>("queue");
   const [stats, setStats] = useState<PipelineStats>({ scanned24h: 0, pending: 0, approved: 0, published: 0, failed: 0 });
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
 
   const loadStats = async () => {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -142,6 +144,7 @@ function ContentPanel() {
           { id: "queue", label: "Article queue" },
           { id: "dispatch", label: "Dispatch log" },
           { id: "sources", label: "Active sources" },
+          { id: "posts", label: "Posts" },
         ] as { id: Tab; label: string }[]).map((t) => (
           <button
             key={t.id}
@@ -160,7 +163,12 @@ function ContentPanel() {
         {tab === "queue" && <QueueTab onChange={loadStats} />}
         {tab === "dispatch" && <DispatchTab />}
         {tab === "sources" && <SourcesTab />}
+        {tab === "posts" && <PostsTab onEdit={setEditingPostId} />}
       </div>
+
+      {editingPostId && (
+        <ArticleEditor postId={editingPostId} onClose={() => setEditingPostId(null)} />
+      )}
     </div>
   );
 }
@@ -608,6 +616,98 @@ function EmptyBlock({ label }: { label: string }) {
       style={{ border: "0.5px dashed hsl(var(--color-border))" }}
     >
       {label}
+    </div>
+  );
+}
+
+/* === Posts tab === */
+interface PostListItem {
+  id: string;
+  title: string | null;
+  status: string;
+  created_at: string;
+  excerpt: string | null;
+  hero_image: string | null;
+  site: { name: string; emoji: string | null; accent_color: string | null } | null;
+}
+
+function PostsTab({ onEdit }: { onEdit: (id: string) => void }) {
+  const [posts, setPosts] = useState<PostListItem[] | null>(null);
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  const load = async () => {
+    let q = supabase
+      .from("posts" as never)
+      .select("id, title, status, created_at, excerpt, hero_image, site:sites(name, emoji, accent_color)")
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (statusFilter !== "all") q = (q as any).eq("status", statusFilter);
+    const { data, error } = await q;
+    if (error) { toast.error("Couldn't load posts"); return; }
+    setPosts((data ?? []) as unknown as PostListItem[]);
+  };
+
+  useEffect(() => { void load(); }, [statusFilter]);
+
+  if (posts === null) return <SkeletonRows />;
+  if (posts.length === 0) return <EmptyBlock label="No posts." />;
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-4 overflow-x-auto">
+        {["all", "pending", "approved", "published", "rejected"].map((s) => (
+          <button
+            key={s}
+            onClick={() => setStatusFilter(s)}
+            className={`px-3 h-7 rounded-full text-[11px] font-medium capitalize transition-colors whitespace-nowrap ${
+              statusFilter === s ? "text-white" : "text-ds-text-secondary hover:text-[#0A1628]"
+            }`}
+            style={
+              statusFilter === s
+                ? { backgroundColor: "#0C447C" }
+                : { border: "0.5px solid hsl(var(--color-border))" }
+            }
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+      <div className="rounded-lg overflow-hidden" style={{ border: "0.5px solid hsl(var(--color-border))" }}>
+        {posts.map((p, i) => (
+          <div
+            key={p.id}
+            className="flex items-start gap-3 px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition-colors"
+            style={i > 0 ? { borderTop: "0.5px solid hsl(var(--color-border))" } : undefined}
+            onClick={() => onEdit(p.id)}
+          >
+            {p.hero_image && (
+              <img src={p.hero_image} alt="" className="w-14 h-10 shrink-0 rounded-md object-cover" />
+            )}
+            {p.site && (
+              <div
+                className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[12px]"
+                style={{ backgroundColor: `${p.site.accent_color}15` }}
+              >
+                {p.site.emoji}
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] font-medium text-[#0A1628] line-clamp-1 leading-[1.4]">
+                {p.title ?? "(untitled)"}
+              </p>
+              {p.excerpt && (
+                <p className="mt-0.5 text-[12px] text-ds-text-tertiary line-clamp-1">{p.excerpt}</p>
+              )}
+              <div className="mt-1 flex items-center gap-2 text-[11px] text-ds-text-tertiary">
+                {p.site && <span>{p.site.name}.fan</span>}
+                <span>·</span>
+                <span>{relativeTime(p.created_at)}</span>
+                <StatusBadge status={p.status} />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
