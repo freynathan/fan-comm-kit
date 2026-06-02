@@ -42,6 +42,8 @@ function SitesTable() {
   const [savedId, setSavedId] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const [pendingGoLive, setPendingGoLive] = useState<NetworkSite | null>(null);
+
   const [llmsEditorOpen, setLlmsEditorOpen] = useState(false);
   const [editingSite, setEditingSite] = useState<NetworkSite | null>(null);
   const [llmsContent, setLlmsContent] = useState("");
@@ -342,6 +344,7 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
                 key={s.id}
                 site={s}
                 onChange={(patch) => update(s.id, patch)}
+                onGoLive={() => setPendingGoLive(s)}
                 saved={savedId === s.id}
                 error={errorId?.id === s.id ? errorId.msg : null}
                 onJump={(target) =>
@@ -356,6 +359,53 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
           </tbody>
         </table>
       </div>
+
+      {/* Go-live confirmation modal */}
+      {pendingGoLive && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md rounded-2xl bg-white shadow-xl">
+            <div className="px-6 py-5 border-b">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Push {pendingGoLive.domain ?? `${pendingGoLive.slug}.fan`} to Production?
+              </h2>
+            </div>
+            <div className="px-6 py-5">
+              <ul className="space-y-2.5 text-sm text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-green-500 shrink-0 mt-2" />
+                  This site will go live at{" "}
+                  <span className="font-medium">{pendingGoLive.domain ?? `${pendingGoLive.slug}.fan`}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-green-500 shrink-0 mt-2" />
+                  AI content generation will start immediately
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 h-1.5 w-1.5 rounded-full bg-green-500 shrink-0 mt-2" />
+                  Trending agents will include this site on next run
+                </li>
+              </ul>
+            </div>
+            <div className="flex justify-end gap-3 border-t px-6 py-4">
+              <button
+                onClick={() => setPendingGoLive(null)}
+                className="rounded-lg border px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  update(pendingGoLive.id, { status: "active" });
+                  setPendingGoLive(null);
+                }}
+                className="rounded-lg bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"
+              >
+                Go Live 🚀
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {llmsEditorOpen && editingSite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -714,6 +764,7 @@ function Th({
 function SiteRow({
   site,
   onChange,
+  onGoLive,
   saved,
   error,
   onJump,
@@ -723,6 +774,7 @@ function SiteRow({
 }: {
   site: NetworkSite;
   onChange: (patch: Partial<NetworkSite>) => void;
+  onGoLive: () => void;
   saved: boolean;
   error: string | null;
   onJump: (target: "/admin/network/feeds" | "/admin/network/strategy") => void;
@@ -761,6 +813,16 @@ function SiteRow({
             )}
           </span>
           <span className="font-medium">{site.slug}.fan</span>
+          {status === "active" && (
+            <span className="rounded-full bg-green-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-green-700">
+              LIVE
+            </span>
+          )}
+          {status === "coming_soon" && (
+            <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
+              DEV
+            </span>
+          )}
           {site.logo_url && (
             <img
               src={site.logo_url}
@@ -784,7 +846,13 @@ function SiteRow({
       <td className="px-4 py-2">
         <Select
           value={status}
-          onValueChange={(v) => onChange({ status: v as NetworkSite["status"] })}
+          onValueChange={(v) => {
+            if (v === "active" && status !== "active") {
+              onGoLive();
+            } else {
+              onChange({ status: v as NetworkSite["status"] });
+            }
+          }}
         >
           <SelectTrigger className="h-8 w-[150px]">
             <SelectValue>
