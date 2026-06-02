@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Star } from "lucide-react";
 import { categories, getCategoryIcon } from "./communities.tsx";
 import { DomainButton } from "@/components/shared/DomainButton";
 
@@ -83,7 +84,7 @@ export function CommunitiesSection() {
           </div>
 
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[14px] font-medium text-ds-accent-text bg-ds-accent">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <Star className="h-4 w-4" strokeWidth={2} />
             tobe.fan — connecting all 28 communities under one login
           </div>
         </div>
