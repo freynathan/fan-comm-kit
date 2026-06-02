@@ -30,17 +30,16 @@ interface SiteData {
 
 function getSections(layout: SiteLayout | null, preview: string | null): SiteSection[] {
   if (!layout) return [];
-  if (preview === "loggedin" && layout.loggedIn?.sections?.length) {
+  // Default to logged-out view unless explicitly requested as logged-in
+  const viewMode = preview === "loggedin" ? "loggedin" : "loggedout";
+  if (viewMode === "loggedin" && layout.loggedIn?.sections?.length) {
     return layout.loggedIn.sections;
   }
   if (layout.loggedOut?.sections?.length) {
     return layout.loggedOut.sections;
   }
-  // legacy flat sections
-  if (layout.sections?.length) {
-    return layout.sections;
-  }
-  return [];
+  // fallback for legacy flat layout
+  return layout.sections ?? [];
 }
 
 function SiteHomepage({ site, preview }: { site: SiteData; preview: string | null }) {
