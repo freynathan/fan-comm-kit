@@ -251,6 +251,7 @@ function buildSiteLayout(
 
 export default function SiteCompositionPage() {
   const { slug = "" } = useParams<{ slug: string }>();
+  console.log("AdminNetworkSite rendering, slug:", slug);
   const [site, setSite] = useState<NetworkSite | null>(null);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<ViewKey>("loggedOut");

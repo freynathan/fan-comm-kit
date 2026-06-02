@@ -1,6 +1,7 @@
 // Router — all app routes including /admin redirect and site builder
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -57,7 +58,11 @@ const App = () => (
               <Route path="/admin/fan-clubs/:id" element={<AdminFanClubForm />} />
               <Route path="/admin/content" element={<DashboardContent />} />
               <Route path="/admin/network" element={<AdminNetworkIndex />} />
-              <Route path="/admin/network/sites/:slug" element={<AdminNetworkSite />} />
+              <Route path="/admin/network/sites/:slug" element={
+                <Suspense fallback={<div>Loading site builder...</div>}>
+                  <AdminNetworkSite />
+                </Suspense>
+              } />
               <Route path="/admin/network/sites/:slug/pages/:pageSlug" element={<AdminNetworkSitePage />} />
               <Route path="/admin/network/feeds" element={<AdminNetworkFeeds />} />
               <Route path="/admin/network/strategy" element={<AdminNetworkStrategy />} />
