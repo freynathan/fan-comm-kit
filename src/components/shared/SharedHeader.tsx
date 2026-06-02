@@ -35,6 +35,7 @@ export function SharedHeader(props: HeaderInternalProps) {
 
   const isSiteMode = !!customNavLinks;
   const navItems = customNavLinks ?? defaultNavLinks(aiFeatureLabel);
+  const [openDropdownIdx, setOpenDropdownIdx] = useState<number | null>(null);
 
   const { user: realUser, login, signup, logout } = useSupabaseAuth();
   const user = demoUser !== undefined ? demoUser : realUser;
@@ -56,6 +57,13 @@ export function SharedHeader(props: HeaderInternalProps) {
         .then(({ data }) => setIsAdmin(!!data));
     });
   }, [user?.id]);
+
+  useEffect(() => {
+    if (openDropdownIdx === null) return;
+    const close = () => setOpenDropdownIdx(null);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [openDropdownIdx]);
 
   // Auto-open auth modal when redirected here with ?auth=signup or ?auth=login
   useEffect(() => {
@@ -92,23 +100,63 @@ export function SharedHeader(props: HeaderInternalProps) {
 
         {/* CENTER — Nav */}
         <nav className="hidden md:flex items-center gap-6">
-          {navItems.map((l) => (
+          {navItems.map((l, idx) => {
+            const hasDropdown = isSiteMode && (l.dropdown?.length ?? 0) > 0;
+            if (hasDropdown) {
+              return (
+                <div key={l.label} className="relative">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setOpenDropdownIdx(openDropdownIdx === idx ? null : idx); }}
+                    className="flex items-center gap-1 text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
+                  >
+                    {l.label}
+                    <ChevronDown size={14} className={`transition-transform ${openDropdownIdx === idx ? "rotate-180" : ""}`} />
+                  </button>
+                  {openDropdownIdx === idx && (
+                    <div
+                      className="absolute left-0 top-full mt-2 min-w-[160px] rounded-xl border bg-white py-1 shadow-lg z-50"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {l.dropdown!.map((sub) => (
+                        <a
+                          key={sub.label}
+                          href={sub.url || "#"}
+                          className="block px-4 py-2 text-[13px] text-ds-text-secondary hover:bg-muted hover:text-ds-text-primary"
+                        >
+                          {sub.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            return (
+              <a
+                key={l.label}
+                href={l.url}
+                className="text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
+              >
+                {l.label}
+              </a>
+            );
+          })}
+
+          {/* Network-wide fixed links — appended in site mode, part of default nav otherwise */}
+          {isSiteMode && (
             <a
-              key={l.label}
-              href={l.url}
+              href="/dashboard/clubs"
               className="text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
             >
-              {l.label}
+              Fan Clubs
             </a>
-          ))}
-          {!isSiteMode && (
-            <button
-              onClick={() => setSitesOpen(!sitesOpen)}
-              className="flex items-center gap-1 text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
-            >
-              All sites <ChevronDown size={14} />
-            </button>
           )}
+          <button
+            onClick={() => { setSitesOpen(!sitesOpen); setOpenDropdownIdx(null); }}
+            className="flex items-center gap-1 text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
+          >
+            All sites <ChevronDown size={14} />
+          </button>
         </nav>
 
         {/* RIGHT — Auth */}

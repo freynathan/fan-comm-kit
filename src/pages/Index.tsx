@@ -61,7 +61,7 @@ function SiteHomepage({ site, preview }: { site: SiteData; preview: string | nul
         siteEmoji={site.emoji ?? ""}
         accentColor={accent}
         aiFeatureLabel={`AI ${site.name}`}
-        customNavLinks={headerLinks ?? []}
+        customNavLinks={headerLinks?.length ? headerLinks : undefined}
         logoUrl={site.logo_url}
       />
 
