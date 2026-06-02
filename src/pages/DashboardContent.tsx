@@ -172,7 +172,7 @@ export function ContentPanel() {
       </div>
 
       <div className="mt-6">
-        {tab === "queue" && <QueueTab onChange={loadStats} />}
+        {tab === "queue" && <QueueTab onChange={loadStats} onEdit={setEditingPostId} />}
         {tab === "dispatch" && <DispatchTab />}
         {tab === "sources" && <SourcesTab />}
         {tab === "posts" && <PostsTab onEdit={setEditingPostId} />}
@@ -210,10 +210,28 @@ function StatTile({ label, value, accent = "#0A1628" }: { label: string; value: 
 }
 
 /* === Article queue === */
-function QueueTab({ onChange }: { onChange: () => void }) {
+function QueueTab({ onChange, onEdit }: { onChange: () => void; onEdit: (postId: string) => void }) {
   const [articles, setArticles] = useState<QueueArticle[] | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const { open } = useArticleDrawer();
+
+  const openArticleInEditor = async (article: QueueArticle) => {
+    // Look up the linked post via news_synopses.article_id → post_id
+    const { data } = await supabase
+      .from("news_synopses" as never)
+      .select("post_id")
+      .eq("article_id", article.id)
+      .not("post_id", "is", null)
+      .limit(1)
+      .maybeSingle();
+    const postId = (data as { post_id: string } | null)?.post_id;
+    if (postId) {
+      onEdit(postId);
+    } else {
+      // No post yet — fall back to the article drawer
+      open({ kind: "article", articleId: article.id });
+    }
+  };
 
   const load = async () => {
     let q = supabase
@@ -299,7 +317,7 @@ function QueueTab({ onChange }: { onChange: () => void }) {
                 )}
                 <div className="flex-1 min-w-0">
                   <button
-                    onClick={() => open({ kind: "article", articleId: a.id })}
+                    onClick={() => void openArticleInEditor(a)}
                     className="text-left text-[14px] font-medium text-[#0A1628] hover:text-[#0C447C] transition-colors line-clamp-2 leading-[1.4]"
                   >
                     {a.original_title}
