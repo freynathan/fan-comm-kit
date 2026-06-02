@@ -75,15 +75,15 @@ function ArticleFeedSection({ site, limit }: { site: SiteMeta; limit: number }) 
 
 function ContentSection({ section }: { section: SiteSection }) {
   const blocks = section.data?.blocks as string | undefined;
-  if (!blocks) return null;
+  // skip empty blocks (e.g. template-mode placeholders)
+  const stripped = blocks?.replace(/<[^>]+>/g, "").trim();
+  if (!blocks || !stripped) return null;
   const edgeToEdge = (section.config as { edgeToEdge?: boolean } | undefined)?.edgeToEdge;
   return (
     <section className={`w-full py-10 bg-ds-bg${edgeToEdge ? "" : " px-6"}`}>
       <div className={edgeToEdge ? "" : "max-w-[960px] mx-auto"}>
-        <div
-          className="prose prose-sm max-w-none"
-          dangerouslySetInnerHTML={{ __html: blocks }}
-        />
+        {/* inline styles from TipTap take precedence — no prose reset */}
+        <div dangerouslySetInnerHTML={{ __html: blocks }} />
       </div>
     </section>
   );
