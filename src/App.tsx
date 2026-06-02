@@ -28,6 +28,7 @@ import AdminNetworkFeeds from "./pages/AdminNetworkFeeds.tsx";
 import AdminNetworkStrategy from "./pages/AdminNetworkStrategy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
+import { CommunitiesModal } from "@/components/shared/CommunitiesModal";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <CommunitiesModal />
           <ArticleDrawerProvider>
             <Routes>
               <Route path="/" element={<Index />} />

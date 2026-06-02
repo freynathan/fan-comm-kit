@@ -1,3 +1,5 @@
+import { openCommunitiesModal } from "@/lib/communitiesModal";
+
 const columns = [
   {
     title: "Communities",
@@ -5,7 +7,6 @@ const columns = [
       { label: "cocktail.fan", href: "https://cocktail.fan" },
       { label: "car.fan", href: "https://car.fan" },
       { label: "yoga.fan", href: "https://yoga.fan" },
-      { label: "View all 28 →", href: "https://tobe.fan/communities" },
     ],
   },
   {
@@ -58,6 +59,16 @@ export function SharedFooter() {
                     </a>
                   </li>
                 ))}
+                {col.title === "Communities" && (
+                  <li>
+                    <button
+                      onClick={openCommunitiesModal}
+                      className="text-[13px] font-normal text-ds-accent transition-colors hover:text-ds-text-primary"
+                    >
+                      View all communities →
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           ))}

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { DomainButton } from "./DomainButton";
+import { openCommunitiesModal } from "@/lib/communitiesModal";
 
 const categories: { label: string; sites: string[] }[] = [
   { label: "Active lifestyle & fitness", sites: ["yoga", "gym", "running", "bike", "martialarts", "healthy"] },
@@ -63,9 +64,12 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
           <a href="https://tobe.fan" className="text-sm font-medium text-ds-accent">
             ← Back to tobe.fan
           </a>
-          <a href="https://tobe.fan/communities" className="text-sm font-medium text-ds-accent">
-            View all 28 communities →
-          </a>
+          <button
+            onClick={() => { onClose(); openCommunitiesModal(); }}
+            className="text-sm font-medium text-ds-accent hover:underline"
+          >
+            View all communities →
+          </button>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FONT_OPTIONS, loadGoogleFont } from "@/lib/fonts";
-import { Rss, Download, Check, ArrowUpDown, LayoutGrid, Image as ImageIcon, Upload, Trash2 } from "lucide-react";
+import { Rss, Download, Check, ArrowUpDown, LayoutGrid, Image as ImageIcon, Upload, Trash2, Pencil, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 type Filter = "all" | "active" | "coming_soon" | "inactive";
@@ -48,6 +48,54 @@ function SitesTable() {
   const [llmsGenerating, setLlmsGenerating] = useState(false);
 
   const [logoSite, setLogoSite] = useState<NetworkSite | null>(null);
+
+  const [descEditorOpen, setDescEditorOpen] = useState(false);
+  const [descSite, setDescSite] = useState<NetworkSite | null>(null);
+  const [descContent, setDescContent] = useState("");
+  const [descGenerating, setDescGenerating] = useState(false);
+
+  const openDescEditor = (site: NetworkSite) => {
+    setDescSite(site);
+    setDescContent(site.description ?? "");
+    setDescEditorOpen(true);
+  };
+
+  const generateDesc = async (site: NetworkSite) => {
+    setDescGenerating(true);
+    try {
+      const { data } = await supabase.functions.invoke("smart-service", {
+        body: {
+          systemPrompt: "You write short, warm, exciting community descriptions. Respond with only the description — no quotes, no preamble.",
+          userMessage: `Write a 2-sentence description of ${site.name} (${site.domain ?? `${site.slug}.fan`}) — a passion community fan site for people who love ${site.slug}. Be warm, specific, and exciting. No marketing fluff.`,
+          maxTokens: 120,
+        },
+      });
+      const text = (data as { text?: string } | null)?.text?.trim() ?? "";
+      setDescContent(text);
+    } catch (e) {
+      console.error("Description generation failed:", e);
+      toast.error("AI generation failed");
+    } finally {
+      setDescGenerating(false);
+    }
+  };
+
+  const saveDesc = async () => {
+    if (!descSite) return;
+    const { error } = await supabase
+      .from("sites" as never)
+      .update({ description: descContent } as never)
+      .eq("id", descSite.id);
+    if (error) {
+      toast.error(`Save failed: ${error.message}`);
+      return;
+    }
+    setSites((prev) =>
+      prev.map((s) => (s.id === descSite.id ? { ...s, description: descContent } : s)),
+    );
+    setDescEditorOpen(false);
+    toast.success(`Description saved for ${descSite.name}`);
+  };
 
   const openLlmsEditor = (site: NetworkSite) => {
     setEditingSite(site);
@@ -277,6 +325,7 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
                 }
                 onEditLlms={() => openLlmsEditor(s)}
                 onEditLogo={() => setLogoSite(s)}
+                onEditDescription={() => openDescEditor(s)}
               />
             ))}
 
@@ -337,6 +386,69 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
               </button>
               <button
                 onClick={() => saveLlmsTxt(editingSite.id)}
+                className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {descEditorOpen && descSite && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-xl rounded-2xl bg-white shadow-xl">
+            <div className="flex items-start justify-between border-b px-6 py-4">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  ✏️ Description — {descSite.name}
+                </h2>
+                <p className="mt-1 text-xs text-gray-500">
+                  Shown on the /communities modal and site cards
+                </p>
+              </div>
+              <button
+                onClick={() => setDescEditorOpen(false)}
+                className="text-2xl leading-none text-gray-400 hover:text-gray-600"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <div className="flex items-center justify-between border-b px-6 py-3">
+              <span className="text-xs text-gray-500">
+                2 sentences · warm · specific
+              </span>
+              <button
+                onClick={() => generateDesc(descSite)}
+                disabled={descGenerating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50 px-3 py-1.5 text-sm text-purple-700 hover:bg-purple-100 disabled:opacity-50"
+              >
+                {descGenerating ? (
+                  <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generating…</>
+                ) : (
+                  "✨ Generate with AI"
+                )}
+              </button>
+            </div>
+            <div className="px-6 py-4">
+              <textarea
+                value={descContent}
+                onChange={(e) => setDescContent(e.target.value)}
+                rows={4}
+                className="w-full resize-none rounded-xl border px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                placeholder={`A fan community for people who love ${descSite.slug}. Join thousands of enthusiasts…`}
+              />
+            </div>
+            <div className="flex justify-end gap-3 border-t px-6 py-4">
+              <button
+                onClick={() => setDescEditorOpen(false)}
+                className="rounded-lg border px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveDesc}
                 className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
               >
                 Save
@@ -532,6 +644,7 @@ function SiteRow({
   onJump,
   onEditLlms: _onEditLlms,
   onEditLogo,
+  onEditDescription,
 }: {
   site: NetworkSite;
   onChange: (patch: Partial<NetworkSite>) => void;
@@ -540,6 +653,7 @@ function SiteRow({
   onJump: (target: "/admin/network/feeds" | "/admin/network/strategy") => void;
   onEditLlms: () => void;
   onEditLogo: () => void;
+  onEditDescription: () => void;
 }) {
 
   const [color, setColor] = useState(site.color ?? site.accent_color ?? "#000000");
@@ -700,6 +814,14 @@ function SiteRow({
             onClick={() => onJump("/admin/network/feeds")}
           >
             <Rss className="h-4 w-4" />
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            title="Edit description"
+            onClick={onEditDescription}
+          >
+            <Pencil className="h-4 w-4" />
           </Button>
         </div>
       </td>
