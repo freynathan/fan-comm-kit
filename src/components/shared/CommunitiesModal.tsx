@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SiteRow {
@@ -48,14 +48,12 @@ function StatusBadge({ status }: { status: SiteRow["status"] }) {
 
 function SiteCard({ site }: { site: SiteRow }) {
   const accent = site.color ?? site.accent_color ?? "#888";
+  const isLive = site.status === "active";
   const isSoon = site.status === "coming_soon";
-  return (
-    <div
-      className={`flex items-start gap-3 rounded-xl border p-4 transition-colors ${
-        isSoon ? "opacity-60" : "hover:border-ds-border-strong"
-      }`}
-      style={{ borderColor: isSoon ? undefined : undefined }}
-    >
+  const href = isLive ? `https://${site.domain ?? `${site.slug}.fan`}` : undefined;
+
+  const inner = (
+    <>
       <div
         className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-lg"
         style={{ backgroundColor: `${accent}18`, border: `1.5px solid ${accent}30` }}
@@ -68,9 +66,12 @@ function SiteCard({ site }: { site: SiteRow }) {
             {site.name}.fan
           </span>
           <StatusBadge status={site.status} />
+          {isLive && (
+            <ExternalLink size={12} className="ml-auto text-ds-text-tertiary opacity-0 group-hover:opacity-100 transition-opacity" />
+          )}
         </div>
         {site.description ? (
-          <p className="mt-1 text-[12px] text-ds-text-secondary leading-[1.5] line-clamp-2">
+          <p className="mt-1 text-[12px] text-ds-text-secondary leading-[1.5]">
             {site.description}
           </p>
         ) : (
@@ -79,6 +80,27 @@ function SiteCard({ site }: { site: SiteRow }) {
           </p>
         )}
       </div>
+    </>
+  );
+
+  if (isLive) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex items-start gap-3 rounded-xl border p-4 transition-all hover:border-ds-border-strong hover:shadow-sm hover:bg-gray-50/60 cursor-pointer"
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <div
+      className={`flex items-start gap-3 rounded-xl border p-4 ${isSoon ? "opacity-55" : ""}`}
+    >
+      {inner}
     </div>
   );
 }

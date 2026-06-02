@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { User, Trophy, Wallet, Settings, LogOut, LayoutDashboard, Users } from "lucide-react";
+import { User, Users, UserCheck, TrendingUp, Settings, ShieldCheck, LogOut, LayoutDashboard } from "lucide-react";
 import type { SiteMenuFeature } from "./types";
 
 export interface AvatarDropdownProps {
@@ -53,7 +53,7 @@ export function AvatarDropdown({
             </span>
           </div>
           <a href="/admin/network" className={menuItemClass} style={{ color: "#8B6914" }}>
-            <Settings size={16} strokeWidth={1.75} /> Super Admin
+            <ShieldCheck size={16} strokeWidth={1.75} /> Super Admin
           </a>
           <div className="mx-3 my-1 border-t border-gray-100" />
         </>
@@ -72,13 +72,13 @@ export function AvatarDropdown({
         <LayoutDashboard size={16} strokeWidth={1.75} /> Dashboard
       </a>
       <a href="/dashboard/clubs" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <Trophy size={16} strokeWidth={1.75} /> My fan clubs
+        <Users size={16} strokeWidth={1.75} /> My fan clubs
       </a>
       <a href="/dashboard/fans" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <Users size={16} strokeWidth={1.75} /> My fans
+        <UserCheck size={16} strokeWidth={1.75} /> My fans
       </a>
       <a href="/my/earnings" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <Wallet size={16} strokeWidth={1.75} /> My earnings & referrals
+        <TrendingUp size={16} strokeWidth={1.75} /> My earnings & referrals
       </a>
       <a href="/my/settings" className={menuItemClass} style={{ color: "#0A1628" }}>
         <Settings size={16} strokeWidth={1.75} /> Settings

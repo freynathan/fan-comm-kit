@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FONT_OPTIONS, loadGoogleFont } from "@/lib/fonts";
-import { Rss, Download, Check, ArrowUpDown, LayoutGrid, Image as ImageIcon, Upload, Trash2, Pencil, Loader2 } from "lucide-react";
+import { Rss, Download, Check, ArrowUpDown, LayoutGrid, Image as ImageIcon, Upload, Trash2, Pencil, Loader2, Bot, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 type Filter = "all" | "active" | "coming_soon" | "inactive";
@@ -338,8 +338,8 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
           <div className="w-full max-w-3xl rounded-2xl bg-white shadow-xl">
             <div className="flex items-start justify-between border-b px-6 py-4">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">
-                  🤖 llms.txt — {editingSite.domain ?? `${editingSite.slug}.fan`}
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Bot className="h-5 w-5 text-gray-500" /> llms.txt — {editingSite.domain ?? `${editingSite.slug}.fan`}
                 </h2>
                 <p className="mt-1 text-xs text-gray-500">
                   Tells AI search engines (Perplexity, ChatGPT, Grok) what this site is about
@@ -363,7 +363,11 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
                 disabled={llmsGenerating}
                 className="inline-flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50 px-3 py-1.5 text-sm text-purple-700 hover:bg-purple-100 disabled:opacity-50"
               >
-                {llmsGenerating ? "⏳ Generating..." : "✨ Auto-generate with AI"}
+                {llmsGenerating ? (
+                  <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generating…</>
+                ) : (
+                  <><Sparkles className="h-3.5 w-3.5" /> Auto-generate with AI</>
+                )}
               </button>
             </div>
 
@@ -400,8 +404,8 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
           <div className="w-full max-w-xl rounded-2xl bg-white shadow-xl">
             <div className="flex items-start justify-between border-b px-6 py-4">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">
-                  ✏️ Description — {descSite.name}
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <Pencil className="h-5 w-5 text-gray-500" /> Description — {descSite.name}
                 </h2>
                 <p className="mt-1 text-xs text-gray-500">
                   Shown on the /communities modal and site cards
@@ -427,7 +431,7 @@ Generate a specific, useful llms.txt that helps AI search engines understand and
                 {descGenerating ? (
                   <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generating…</>
                 ) : (
-                  "✨ Generate with AI"
+                  <><Sparkles className="h-3.5 w-3.5" /> Generate with AI</>
                 )}
               </button>
             </div>
