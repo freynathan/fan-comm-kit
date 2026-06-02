@@ -25,6 +25,7 @@ interface SiteData {
   accent_color: string | null;
   color: string | null;
   font: string | null;
+  logo_url: string | null;
   layout: SiteLayout | null;
 }
 
@@ -46,6 +47,7 @@ function SiteHomepage({ site, preview }: { site: SiteData; preview: string | nul
   const accent = site.color ?? site.accent_color ?? "#111";
   const sections = getSections(site.layout, preview);
   const hasLayout = sections.length > 0;
+  const headerLinks = site.layout?.header?.links;
 
   return (
     <div className="min-h-screen bg-ds-bg">
@@ -59,22 +61,26 @@ function SiteHomepage({ site, preview }: { site: SiteData; preview: string | nul
         siteEmoji={site.emoji ?? ""}
         accentColor={accent}
         aiFeatureLabel={`AI ${site.name}`}
+        customNavLinks={headerLinks ?? []}
+        logoUrl={site.logo_url}
       />
 
-      <section className="w-full bg-ds-bg px-6" style={{ paddingTop: 80, paddingBottom: 40 }}>
-        <div className="max-w-[960px] mx-auto text-center">
-          <div className="text-[56px] mb-4">{site.emoji}</div>
-          <h1
-            className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] text-ds-text-primary"
-            style={{ marginBottom: 16 }}
-          >
-            {site.name}.fan
-          </h1>
-          <p className="text-[16px] text-ds-text-tertiary max-w-[480px] mx-auto leading-[1.6]">
-            The home of {site.name.toLowerCase()} fans. Discover, connect, and join fan clubs.
-          </p>
-        </div>
-      </section>
+      {!hasLayout && (
+        <section className="w-full bg-ds-bg px-6" style={{ paddingTop: 80, paddingBottom: 40 }}>
+          <div className="max-w-[960px] mx-auto text-center">
+            <div className="text-[56px] mb-4">{site.emoji}</div>
+            <h1
+              className="text-[40px] md:text-[56px] font-semibold leading-[1.1] tracking-[-1.5px] text-ds-text-primary"
+              style={{ marginBottom: 16 }}
+            >
+              {site.name}.fan
+            </h1>
+            <p className="text-[16px] text-ds-text-tertiary max-w-[480px] mx-auto leading-[1.6]">
+              The home of {site.name.toLowerCase()} fans. Discover, connect, and join fan clubs.
+            </p>
+          </div>
+        </section>
+      )}
 
       {hasLayout ? (
         <SiteLayoutRenderer site={site} sections={sections} />
@@ -150,7 +156,7 @@ const Index = () => {
     setSiteLoading(true);
     supabase
       .from("sites" as never)
-      .select("id, name, slug, domain, emoji, accent_color, color, font, layout")
+      .select("id, name, slug, domain, emoji, accent_color, color, font, logo_url, layout")
       .eq("slug", siteSlug)
       .maybeSingle()
       .then(({ data }) => {

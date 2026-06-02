@@ -8,11 +8,11 @@ import type { SharedHeaderProps } from "./types";
 import tobeLogo from "@/assets/tobe-logo.png";
 import { supabase } from "@/integrations/supabase/client";
 
-const navLinks = (aiLabel: string) => [
-  { label: "Feed", path: "/feed" },
-  { label: "Discover", path: "/discover" },
-  { label: "Fan clubs", path: "/dashboard/clubs" },
-  { label: aiLabel, path: "/ai" },
+const defaultNavLinks = (aiLabel: string) => [
+  { label: "Feed", url: "/feed" },
+  { label: "Discover", url: "/discover" },
+  { label: "Fan clubs", url: "/dashboard/clubs" },
+  { label: aiLabel, url: "/ai" },
 ];
 
 interface HeaderInternalProps extends SharedHeaderProps {
@@ -27,9 +27,14 @@ export function SharedHeader(props: HeaderInternalProps) {
     accentColor,
     aiFeatureLabel,
     siteMenuFeatures,
+    customNavLinks,
+    logoUrl,
     demoUser,
     demoAvatarOpen,
   } = props;
+
+  const isSiteMode = !!customNavLinks;
+  const navItems = customNavLinks ?? defaultNavLinks(aiFeatureLabel);
 
   const { user: realUser, login, signup, logout } = useSupabaseAuth();
   const user = demoUser !== undefined ? demoUser : realUser;
@@ -72,30 +77,38 @@ export function SharedHeader(props: HeaderInternalProps) {
       <div className="max-w-[1200px] mx-auto flex items-center justify-between h-20 px-6">
         {/* LEFT — Logo */}
         <a href="/" className="flex items-center no-underline">
-          <img
-            src={tobeLogo}
-            alt="ToBe.fan"
-            style={{ height: 44, width: "auto" }}
-          />
+          {isSiteMode ? (
+            logoUrl ? (
+              <img src={logoUrl} alt={siteName} style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} />
+            ) : (
+              <span className="text-xl font-semibold" style={{ color: accentColor }}>
+                {siteEmoji ? `${siteEmoji} ` : ""}{siteName}.fan
+              </span>
+            )
+          ) : (
+            <img src={tobeLogo} alt="ToBe.fan" style={{ height: 44, width: "auto" }} />
+          )}
         </a>
 
         {/* CENTER — Nav */}
         <nav className="hidden md:flex items-center gap-6">
-          {navLinks(aiFeatureLabel).map((l) => (
+          {navItems.map((l) => (
             <a
               key={l.label}
-              href={l.path}
+              href={l.url}
               className="text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
             >
               {l.label}
             </a>
           ))}
-          <button
-            onClick={() => setSitesOpen(!sitesOpen)}
-            className="flex items-center gap-1 text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
-          >
-            All sites <ChevronDown size={14} />
-          </button>
+          {!isSiteMode && (
+            <button
+              onClick={() => setSitesOpen(!sitesOpen)}
+              className="flex items-center gap-1 text-[14px] font-normal text-ds-text-secondary transition-colors hover:text-ds-text-primary"
+            >
+              All sites <ChevronDown size={14} />
+            </button>
+          )}
         </nav>
 
         {/* RIGHT — Auth */}

@@ -89,19 +89,56 @@ function ContentSection({ section }: { section: SiteSection }) {
   );
 }
 
+interface Trend {
+  id: string;
+  name: string;
+  image_url: string | null;
+  category: string | null;
+}
+
 function TrendingSection({ site }: { site: SiteMeta }) {
+  const [trends, setTrends] = useState<Trend[]>([]);
   const accent = site.color ?? site.accent_color ?? "#111";
+
+  useEffect(() => {
+    supabase
+      .from("trends" as never)
+      .select("id, name, image_url, category, site_id")
+      .eq("site_id", site.id)
+      .order("created_at", { ascending: false })
+      .limit(10)
+      .then(({ data }) => setTrends((data as unknown as Trend[]) ?? []));
+  }, [site.id]);
+
+  if (trends.length === 0) return null;
+
   return (
     <section className="w-full px-6 py-10 bg-ds-bg">
       <div className="max-w-[960px] mx-auto">
         <p
-          className="text-[11px] font-semibold uppercase tracking-wider mb-4"
+          className="text-[11px] font-semibold uppercase tracking-wider mb-5"
           style={{ color: accent }}
         >
           Trending on {site.name}.fan
         </p>
-        <div className="rounded-xl border py-8 text-center text-sm text-ds-text-tertiary">
-          Trending — coming soon
+        <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-none">
+          {trends.map((trend) => (
+            <div key={trend.id} className="flex flex-col items-center gap-2 flex-shrink-0">
+              <div
+                className="w-16 h-16 rounded-full overflow-hidden bg-muted flex items-center justify-center"
+                style={{ border: `2px solid ${accent}22` }}
+              >
+                {trend.image_url ? (
+                  <img src={trend.image_url} alt={trend.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[22px]">{trend.name[0]?.toUpperCase()}</span>
+                )}
+              </div>
+              <span className="text-[12px] text-ds-text-secondary text-center leading-tight max-w-[72px] line-clamp-2">
+                {trend.name}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
