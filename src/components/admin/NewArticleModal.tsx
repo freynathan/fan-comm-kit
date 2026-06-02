@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
@@ -35,9 +36,11 @@ function slugify(s: string) {
 export function NewArticleModal({
   open,
   onOpenChange,
+  onCreated,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  onCreated?: (postId: string) => void;
 }) {
   const navigate = useNavigate();
   const [sites, setSites] = useState<SiteOpt[]>([]);
@@ -177,7 +180,11 @@ Return ONLY a valid JSON object with no markdown, no backticks, no preamble:
       const postId = (postData as { id: string }).id;
 
       onOpenChange(false);
-      navigate(`/admin/post/${postId}`);
+      if (onCreated) {
+        onCreated(postId);
+      } else {
+        navigate(`/admin/post/${postId}`);
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Failed to create article";
       setError(msg);

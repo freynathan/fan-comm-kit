@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import { Loader2, RefreshCw, Check, X as XIcon, ExternalLink, ChevronDown, ChevronRight } from "lucide-react";
+import { Loader2, RefreshCw, Check, X as XIcon, ExternalLink, ChevronDown, ChevronRight, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { useArticleDrawer } from "@/components/article";
 import { ArticleEditor } from "@/components/admin/ArticleEditor";
+import { NewArticleModal } from "@/components/admin/NewArticleModal";
 import { toast } from "sonner";
 
 type Tab = "queue" | "dispatch" | "sources" | "posts";
@@ -88,6 +89,7 @@ function ContentPanel() {
   const [tab, setTab] = useState<Tab>("queue");
   const [stats, setStats] = useState<PipelineStats>({ scanned24h: 0, pending: 0, approved: 0, published: 0, failed: 0 });
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
+  const [newArticleOpen, setNewArticleOpen] = useState(false);
 
   const loadStats = async () => {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -114,17 +116,27 @@ function ContentPanel() {
   return (
     <div>
       {/* Header */}
-      <div className="mb-2">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#0C447C" }}>
-          Content pipeline
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="mb-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#0C447C" }}>
+              Content pipeline
+            </p>
+          </div>
+          <h1 className="text-[28px] md:text-[32px] font-semibold text-[#0A1628] leading-[1.15]" style={{ letterSpacing: "-0.01em" }}>
+            News & synopses
+          </h1>
+          <p className="mt-1 text-[14px] text-ds-text-tertiary">
+            Monitor scanning, review AI synopses, and dispatch to communities.
+          </p>
+        </div>
+        <button
+          onClick={() => setNewArticleOpen(true)}
+          className="mt-1 shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-[#0C447C] px-4 py-2 text-sm font-medium text-white hover:bg-[#093560] transition-colors"
+        >
+          <Plus className="h-4 w-4" /> New Article
+        </button>
       </div>
-      <h1 className="text-[28px] md:text-[32px] font-semibold text-[#0A1628] leading-[1.15]" style={{ letterSpacing: "-0.01em" }}>
-        News & synopses
-      </h1>
-      <p className="mt-1 text-[14px] text-ds-text-tertiary">
-        Monitor scanning, review AI synopses, and dispatch to communities.
-      </p>
 
       {/* Pipeline stats */}
       <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
@@ -169,6 +181,16 @@ function ContentPanel() {
       {editingPostId && (
         <ArticleEditor postId={editingPostId} onClose={() => setEditingPostId(null)} />
       )}
+
+      <NewArticleModal
+        open={newArticleOpen}
+        onOpenChange={setNewArticleOpen}
+        onCreated={(id) => {
+          setNewArticleOpen(false);
+          setTab("posts");
+          setEditingPostId(id);
+        }}
+      />
     </div>
   );
 }
