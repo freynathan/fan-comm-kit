@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useProfileData } from "@/hooks/useProfileData";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { SharedHeader } from "@/components/shared/SharedHeader";
+import { useActiveSiteHeader } from "@/hooks/useActiveSite";
 import { SharedFooter } from "@/components/shared/SharedFooter";
 import { ProfileSkeleton } from "./ProfileSkeleton";
 import { NotFoundProfile } from "./NotFoundProfile";
@@ -19,6 +20,7 @@ export function PublicProfile() {
   const { username } = useParams<{ username: string }>();
   const { data, loading, notFound } = useProfileData(username);
   const { user: authUser } = useSupabaseAuth();
+  const activeSiteHeader = useActiveSiteHeader();
 
   if (loading) return <ProfileSkeleton />;
   if (notFound || !data) return <NotFoundProfile username={username ?? ""} />;
@@ -55,12 +57,7 @@ export function PublicProfile() {
       </Helmet>
 
       <div className="min-h-screen bg-white flex flex-col">
-        <SharedHeader
-          siteName="tobe"
-          siteEmoji="⭐"
-          accentColor="hsl(var(--color-accent))"
-          aiFeatureLabel="AI Relate"
-        />
+        <SharedHeader {...activeSiteHeader} />
         <div className="max-w-3xl mx-auto px-6 w-full flex-1">
           <ProfileHeader
             user={user}

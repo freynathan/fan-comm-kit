@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { DomainButton } from "./DomainButton";
 import { openCommunitiesModal } from "@/lib/communitiesModal";
+import { clearActiveSite } from "@/hooks/useActiveSite";
 
 const categories: { label: string; sites: string[] }[] = [
   { label: "Active lifestyle & fitness", sites: ["yoga", "gym", "running", "bike", "martialarts", "healthy"] },
@@ -61,7 +62,11 @@ export function AllSitesDropdown({ isOpen, onClose, currentSite, accentColor }: 
           ))}
         </div>
         <div className="flex justify-between mt-6 pt-4 border-t border-ds-border">
-          <a href="https://tobe.fan" className="text-sm font-medium text-ds-accent">
+          <a
+            href="https://tobe.fan"
+            className="text-sm font-medium text-ds-accent"
+            onClick={() => clearActiveSite()}
+          >
             ← Back to tobe.fan
           </a>
           <button

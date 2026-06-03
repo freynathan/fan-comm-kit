@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SharedHeader } from "@/components/shared/SharedHeader";
+import { useActiveSiteHeader } from "@/hooks/useActiveSite";
 import { SharedFooter } from "@/components/shared/SharedFooter";
 import { useArticleDrawer } from "@/components/article";
 
@@ -52,6 +53,7 @@ export default function Feed() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeSlug = searchParams.get("site");
   const { open } = useArticleDrawer();
+  const activeSiteHeader = useActiveSiteHeader();
 
   const [rows, setRows] = useState<SynopsisRow[]>([]);
   const [sites, setSites] = useState<SiteLite[]>([]);
@@ -158,12 +160,7 @@ export default function Feed() {
         />
       </Helmet>
 
-      <SharedHeader
-        siteName="tobe"
-        siteEmoji="⭐"
-        accentColor="hsl(var(--color-accent))"
-        aiFeatureLabel="AI Relate"
-      />
+      <SharedHeader {...activeSiteHeader} />
 
       <main className="flex-1 w-full px-6" style={{ paddingTop: 64, paddingBottom: 80 }}>
         <div className="max-w-[960px] mx-auto">

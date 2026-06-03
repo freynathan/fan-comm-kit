@@ -15,6 +15,7 @@ import { AIAdvantageStrip } from "@/components/homepage/AIAdvantageStrip";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayoutRenderer } from "@/components/topic/SiteLayoutRenderer";
 import type { SiteLayout, SiteSection } from "@/hooks/useNetwork";
+import { persistActiveSite, clearActiveSite } from "@/hooks/useActiveSite";
 
 interface SiteData {
   id: string;
@@ -48,6 +49,16 @@ function SiteHomepage({ site, preview }: { site: SiteData; preview: string | nul
   const sections = getSections(site.layout, preview);
   const hasLayout = sections.length > 0;
   const headerLinks = site.layout?.header?.links;
+
+  // Persist site context so dashboard/profile pages keep this site's header
+  useEffect(() => {
+    persistActiveSite({
+      slug: site.slug, name: site.name,
+      color: site.color, accent_color: site.accent_color,
+      emoji: site.emoji, logo_url: site.logo_url, icon_url: null,
+      headerLinks: headerLinks ?? [],
+    });
+  }, [site.slug]);
 
   return (
     <div className="min-h-screen bg-ds-bg">
@@ -149,6 +160,7 @@ const Index = () => {
 
   useEffect(() => {
     if (!siteSlug) {
+      clearActiveSite();
       setSiteData(null);
       setSiteLoading(false);
       return;

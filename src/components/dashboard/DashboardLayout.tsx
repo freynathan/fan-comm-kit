@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { LayoutGrid, Users, Sparkles, TrendingUp, BarChart3, Settings, LogOut, Newspaper } from "lucide-react";
 import { useSupabaseAuth, type AuthUser } from "@/hooks/useSupabaseAuth";
 import { SharedHeader } from "@/components/shared/SharedHeader";
+import { useActiveSiteHeader } from "@/hooks/useActiveSite";
 
 interface NavItem {
   label: string;
@@ -24,6 +25,7 @@ export function DashboardLayout({ user, children }: { user: AuthUser; children: 
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useSupabaseAuth();
+  const activeSiteHeader = useActiveSiteHeader();
 
   const handleLogout = async () => {
     await logout();
@@ -37,12 +39,7 @@ export function DashboardLayout({ user, children }: { user: AuthUser; children: 
 
   return (
     <div className="min-h-screen bg-white">
-      <SharedHeader
-        siteName="tobe"
-        siteEmoji="⭐"
-        accentColor="hsl(var(--color-accent))"
-        aiFeatureLabel="AI Relate"
-      />
+      <SharedHeader {...activeSiteHeader} />
 
       {/* Desktop sidebar */}
       <aside
