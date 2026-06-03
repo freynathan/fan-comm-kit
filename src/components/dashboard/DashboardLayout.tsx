@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutGrid, Users, Sparkles, TrendingUp, BarChart3, Settings, LogOut, Newspaper } from "lucide-react";
+import { LayoutGrid, Users, Store, Sparkles, TrendingUp, BarChart3, Settings, LogOut, Newspaper } from "lucide-react";
 import { useSupabaseAuth, type AuthUser } from "@/hooks/useSupabaseAuth";
 import { SharedHeader } from "@/components/shared/SharedHeader";
 import { useActiveSiteHeader } from "@/hooks/useActiveSite";
@@ -11,14 +11,17 @@ interface NavItem {
   path: string;
 }
 
+const CS = (section: string) => `/dashboard/coming-soon?section=${encodeURIComponent(section)}`;
+
 const NAV_ITEMS: NavItem[] = [
-  { label: "Overview", icon: LayoutGrid, path: "/dashboard" },
-  { label: "Clubs", icon: Users, path: "/dashboard/clubs" },
-  { label: "My connections", icon: Sparkles, path: "/dashboard/fans" },
-  { label: "Content", icon: Newspaper, path: "/dashboard/content" },
-  { label: "Earnings", icon: TrendingUp, path: "/dashboard/earnings" },
-  { label: "Fan Trust Score", icon: BarChart3, path: "/dashboard/analytics" },
-  { label: "Settings", icon: Settings, path: "/dashboard/settings" },
+  { label: "Overview",       icon: LayoutGrid, path: "/dashboard" },
+  { label: "Fan Clubs",      icon: Users,      path: "/dashboard/clubs" },
+  { label: "Brands",         icon: Store,      path: CS("Brands") },
+  { label: "My connections", icon: Sparkles,   path: CS("My connections") },
+  { label: "Content",        icon: Newspaper,  path: CS("Content") },
+  { label: "Earnings",       icon: TrendingUp, path: CS("Earnings") },
+  { label: "Fan Trust Score",icon: BarChart3,  path: CS("Fan Trust Score") },
+  { label: "Settings",       icon: Settings,   path: CS("Settings") },
 ];
 
 export function DashboardLayout({ user, children }: { user: AuthUser; children: ReactNode }) {
@@ -32,10 +35,12 @@ export function DashboardLayout({ user, children }: { user: AuthUser; children: 
     navigate("/");
   };
 
-  const isActive = (path: string) =>
-    path === "/dashboard"
-      ? location.pathname === "/dashboard"
-      : location.pathname.startsWith(path);
+  const isActive = (path: string) => {
+    const [pathname, search] = path.split("?");
+    if (pathname === "/dashboard") return location.pathname === "/dashboard";
+    if (search) return location.pathname === pathname && location.search === `?${search}`;
+    return location.pathname.startsWith(pathname);
+  };
 
   return (
     <div className="min-h-screen bg-white">

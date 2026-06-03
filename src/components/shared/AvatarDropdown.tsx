@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { User, Users, UserCheck, TrendingUp, Settings, ShieldCheck, LogOut, LayoutDashboard } from "lucide-react";
+import { User, Settings, ShieldCheck, LogOut } from "lucide-react";
 import type { SiteMenuFeature } from "./types";
 
 export interface AvatarDropdownProps {
@@ -20,8 +20,8 @@ export function AvatarDropdown({
   isOpen,
   onClose,
   username,
-  siteName,
   accentColor,
+  siteName,
   siteMenuFeatures = [],
   onLogout,
   isAdmin = false,
@@ -42,7 +42,7 @@ export function AvatarDropdown({
   return (
     <div
       ref={ref}
-      className="absolute right-0 top-full mt-2 min-w-[240px] bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+      className="absolute right-0 top-full mt-2 min-w-[200px] bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
     >
       {/* Super Admin — only for admin users */}
       {isAdmin && (
@@ -59,7 +59,7 @@ export function AvatarDropdown({
         </>
       )}
 
-      {/* Section 1 */}
+      {/* My account */}
       <div className="px-3 pt-1 pb-1">
         <span className="text-[10px] uppercase tracking-widest text-gray-400 font-medium">
           My account
@@ -68,19 +68,7 @@ export function AvatarDropdown({
       <a href={`/of/${username}`} className={menuItemClass} style={{ color: "#0A1628" }}>
         <User size={16} strokeWidth={1.75} /> My profile
       </a>
-      <a href="/dashboard" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <LayoutDashboard size={16} strokeWidth={1.75} /> Dashboard
-      </a>
-      <a href="/dashboard/clubs" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <Users size={16} strokeWidth={1.75} /> My fan clubs
-      </a>
-      <a href="/dashboard/fans" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <UserCheck size={16} strokeWidth={1.75} /> My fans
-      </a>
-      <a href="/my/earnings" className={menuItemClass} style={{ color: "#0A1628" }}>
-        <TrendingUp size={16} strokeWidth={1.75} /> My earnings & referrals
-      </a>
-      <a href="/my/settings" className={menuItemClass} style={{ color: "#0A1628" }}>
+      <a href="/dashboard/coming-soon?section=Settings" className={menuItemClass} style={{ color: "#0A1628" }}>
         <Settings size={16} strokeWidth={1.75} /> Settings
       </a>
       <div className="mx-3 my-1 border-t border-gray-100" />
@@ -88,7 +76,7 @@ export function AvatarDropdown({
         <LogOut size={16} strokeWidth={1.75} /> Log out
       </button>
 
-      {/* Section 2 — site-specific */}
+      {/* Site-specific features */}
       {siteMenuFeatures.length > 0 && (
         <>
           <div className="mx-3 my-1 border-t border-gray-100" />

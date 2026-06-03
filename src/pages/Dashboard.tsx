@@ -99,24 +99,28 @@ const Dashboard = () => {
             value={isLoading ? "—" : stats?.totalClubs ?? 0}
             helper="Active clubs you own"
             accentColor="#0C447C"
+            onClick={() => navigate("/dashboard/clubs")}
           />
           <StatCard
             label="Total members"
             value={isLoading ? "—" : stats?.totalMembers ?? 0}
             helper={`${stats?.paidMembers ?? 0} paying`}
             accentColor="#0D9488"
+            onClick={() => navigate("/dashboard/clubs")}
           />
           <StatCard
             label="Monthly revenue"
             value={isLoading ? "—" : `€${(stats?.monthlyRevenue ?? 0).toFixed(0)}`}
             helper="From all paid clubs"
             accentColor="#10B981"
+            onClick={() => navigate("/dashboard/coming-soon?section=Earnings")}
           />
           <StatCard
             label="Fan trust score"
             value={isLoading ? "—" : hasClubs ? stats?.trustScore ?? 0 : "—"}
             helper={hasClubs ? "Across all your clubs" : "Create a club to start building your score"}
             accentColor="#DAA520"
+            onClick={() => navigate("/dashboard/coming-soon?section=Fan+Trust+Score")}
           />
         </div>
 

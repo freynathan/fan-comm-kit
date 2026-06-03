@@ -27,6 +27,7 @@ import AdminNetworkSitePage from "./pages/AdminNetworkSitePage.tsx";
 import AdminNetworkFeeds from "./pages/AdminNetworkFeeds.tsx";
 import AdminNetworkStrategy from "./pages/AdminNetworkStrategy.tsx";
 import AdminContentPage from "./pages/AdminContentPage.tsx";
+import DashboardComingSoon from "./pages/DashboardComingSoon.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ArticleDrawerProvider } from "@/components/article";
 import { CommunitiesModal } from "@/components/shared/CommunitiesModal";
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="/dashboard/clubs/new" element={<DashboardClubNew />} />
               <Route path="/dashboard/fans" element={<DashboardFans />} />
               <Route path="/dashboard/content" element={<DashboardContent />} />
+              <Route path="/dashboard/coming-soon" element={<DashboardComingSoon />} />
               <Route path="/admin" element={<DashboardContent />} />
               <Route path="/admin/fan-clubs" element={<AdminFanClubs />} />
               <Route path="/admin/fan-clubs/new" element={<AdminFanClubForm />} />

@@ -84,7 +84,7 @@ const DashboardClubs = () => {
               return (
                 <button
                   key={club.id}
-                  onClick={() => navigate("/dashboard/clubs")}
+                  onClick={() => navigate(`/admin/fan-clubs/${club.id}`)}
                   className="w-full text-left flex items-center gap-4 p-5 rounded-2xl bg-white transition-colors hover:bg-[#FAFAFB]"
                   style={{ border: "0.5px solid hsl(var(--color-border))" }}
                 >

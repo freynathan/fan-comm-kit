@@ -10,7 +10,6 @@ import { supabase } from "@/integrations/supabase/client";
 
 const defaultNavLinks = (aiLabel: string) => [
   { label: "Feed", url: "/feed" },
-  { label: "Discover", url: "/discover" },
   { label: "Fan clubs", url: "/dashboard/clubs" },
   { label: aiLabel, url: "/ai" },
 ];

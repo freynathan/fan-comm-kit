@@ -3,12 +3,15 @@ interface StatCardProps {
   value: string | number;
   helper?: string;
   accentColor: string;
+  onClick?: () => void;
 }
 
-export function StatCard({ label, value, helper, accentColor }: StatCardProps) {
+export function StatCard({ label, value, helper, accentColor, onClick }: StatCardProps) {
+  const Tag = onClick ? "button" : "div";
   return (
-    <div
-      className="rounded-xl bg-white p-5 relative overflow-hidden"
+    <Tag
+      onClick={onClick}
+      className={`rounded-xl bg-white p-5 relative overflow-hidden text-left w-full${onClick ? " transition-shadow hover:shadow-md cursor-pointer" : ""}`}
       style={{ border: "0.5px solid #E5E5E5" }}
     >
       <div
@@ -22,6 +25,6 @@ export function StatCard({ label, value, helper, accentColor }: StatCardProps) {
         {label}
       </p>
       {helper && <p className="text-[11px] text-ds-text-tertiary mt-1.5">{helper}</p>}
-    </div>
+    </Tag>
   );
 }
